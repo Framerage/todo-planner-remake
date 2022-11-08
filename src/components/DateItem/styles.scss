@@ -37,6 +37,15 @@
     justify-content: center;
     align-items: center;
   }
+  .orange{
+    background-color: orange;
+  }
+  .yellow{
+    background-color: yellow;
+  }
+  .lightgreen{
+    background-color: lightgreen;
+  }
 }
 @media screen and (min-width: 300px) and (max-width: 476px) {
   .dates__item {

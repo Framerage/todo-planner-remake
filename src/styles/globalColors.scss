@@ -1,4 +1,9 @@
-$themeBsColor: rgb(166, 28, 216);
+
+
+:root{
+    --themeColor: blue;
+}
+$themeBsColor: var(--themeColor);
 $themeTsColorMain: blue;
 $themeTsColorSelection: white;
 $textHeadersColor: white;

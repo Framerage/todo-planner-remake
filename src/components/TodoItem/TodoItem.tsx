@@ -1,10 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import './todoItem.scss';
-import curr from './assets/inWorking.png';
-import done from './assets/done.svg';
-import axios from 'axios';
-import { getApi } from 'api/api';
-import { pathsBack } from 'helpers/constances';
+import React, {useCallback, useState} from "react";
+import "./todoItem.scss";
+
 type TodoItemProps = {
   taskName: string;
   taskDescrip: string;
@@ -15,7 +11,7 @@ type TodoItemProps = {
   transferTask: Function;
   editTask: Function;
 };
-const TodoItem: React.FC<TodoItemProps> = ({
+function TodoItem({
   taskName,
   taskDescrip,
   index,
@@ -24,72 +20,63 @@ const TodoItem: React.FC<TodoItemProps> = ({
   removeTask,
   transferTask,
   editTask,
-}) => {
+}: TodoItemProps) {
   const [increaserDate, setIncreaserDate] = useState(0);
   const [isDone, setIsDone] = useState(isTaskDone || false);
-  const onRemoveTask = (id: number) => {
-    if (window.confirm('Are you sure?')) {
-      removeTask(id);
+  const onRemoveTask = (num: number) => {
+    if (window.confirm("Are you sure?")) {
+      removeTask(num);
     } else {
-      alert('Think about removing');
+      window.alert("Think about removing");
     }
   };
 
   const onCheckTask = useCallback(
-    (id: number) => {
-      if (window.confirm('Is task ready?')) {
+    (num: number) => {
+      if (window.confirm("Is task ready?")) {
         setIsDone(!isDone);
-        editTask(id, { isTaskDone: !isDone });
+        editTask(num, {isTaskDone: !isDone});
       } else {
         setIsDone(false);
-        alert('Think about task');
+        window.alert("Think about task");
       }
     },
     [isDone],
   );
-  //TODO: убрать инлайновыйе стили, добавление классов, рабобраться с webpack file-loader for scss
+  // TODO: убрать инлайновыйе стили, добавление классов, рабобраться с webpack file-loader for scss
   return (
-    <div className={isDone ? 'todoItem taskDone' : 'todoItem'}>
-      <div className="todoItem__text">
-        <div className="text__title">
-          <span>{index + ':'}&nbsp;</span>
+    <div className={isDone ? "todoItem taskDone" : "todoItem"}>
+      <div className='todoItem__text'>
+        <div className='text__title'>
+          <span>
+            {`${index}:`}
+            &nbsp;
+          </span>
           <span>{taskName}</span>
         </div>
-        <div className="text__descrip">{taskDescrip}</div>
+        <div className='text__descrip'>{taskDescrip}</div>
       </div>
-      <div className="todoItem_active">
-        <div className="active__kinds">
+      <div className='todoItem_active'>
+        <div className='active__kinds'>
           <div
             onClick={() => onCheckTask(id)}
-            style={{
-              backgroundImage: isDone
-                ? `url(${done})`
-                : `url(${curr})`,
-            }}
             className={
-              isDone
-                ? 'active__doneTaskBtn'
-                : 'active__currentTaskBtn'
-            }>
+              isDone ? "active__doneTaskBtn" : "active__currentTaskBtn"
+            }
+          >
             o
           </div>
-          <div
-            onClick={() => onRemoveTask(id)}
-            className="active__removeBtn">
+          <div onClick={() => onRemoveTask(id)} className='active__removeBtn'>
             x
           </div>
         </div>
-        <div className="active__transferBtn">
-          <p onClick={() => transferTask(id, increaserDate)}>
-            move to
-          </p>
-          <div className="transferBtn__text">
+        <div className='active__transferBtn'>
+          <p onClick={() => transferTask(id, increaserDate)}>move to</p>
+          <div className='transferBtn__text'>
             <input
-              type="number"
+              type='number'
               value={increaserDate}
-              onChange={(e) =>
-                setIncreaserDate(Number(e.target.value))
-              }
+              onChange={e => setIncreaserDate(Number(e.target.value))}
             />
             days
           </div>
@@ -97,5 +84,5 @@ const TodoItem: React.FC<TodoItemProps> = ({
       </div>
     </div>
   );
-};
+}
 export default TodoItem;

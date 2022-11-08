@@ -1,3 +1,2 @@
 // TODO: import AuthState (это тип) from './types'
-
-export {default}  from "./reducer";
+export {default} from "./reducer";

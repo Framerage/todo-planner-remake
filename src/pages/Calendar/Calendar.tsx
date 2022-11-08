@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { checkChoosedMonth, checkChoosedYear } from "store/actions/dateActions";
-import { useDispatch, useSelector } from "react-redux";
-import DateItem from "../../components/DateItem/DateItem";
-import { months, pathsBack } from "helpers/constances";
+import React, {useEffect, useState} from "react";
+import {checkChoosedMonth, checkChoosedYear} from "store/actions/dateActions";
+import {useDispatch, useSelector} from "react-redux";
+import {months, pathsBack} from "constances/constances";
 import axios from "axios";
 import "./styles.scss";
-import { selectUserMonth, selectUserYear } from "store/selectors";
-import { getFetchedTimeStamp } from "helpers/helpers";
-import { getApi } from "api/api";
-import { checkFetchAuth } from "store/auth/actions";
-import { store } from "store/store";
+import {selectUserMonth, selectUserYear} from "store/selectors";
+import {getFetchedTimeStamp} from "helpers/helpers";
+import getApi from "api/api";
+// import {checkFetchAuth} from "store/auth/actions";
+import store from "store/store";
+import DateItem from "../../components/DateItem/DateItem";
 
-type fetchInfoType = {
+type FetchInfoType = {
   taskName: string;
   taskDescrip: string;
   id: number;
@@ -20,32 +20,32 @@ type fetchInfoType = {
 }[];
 type AppDispatch = typeof store.dispatch;
 
-const Calendar: React.FC = () => {
+function Calendar() {
   const dispatch = useDispatch<AppDispatch>();
   const userMonth = useSelector(selectUserMonth);
-  const [today] = useState(new Date());
+  // const [today] = useState(new Date());
   const userYear = useSelector(selectUserYear);
   const [currentMonth, setCurrentMonth] = useState(
-    userMonth || new Date().getMonth()
+    userMonth || new Date().getMonth(),
   );
   const [currentYear, setCurrentYear] = useState(
-    userYear || new Date().getFullYear()
+    userYear || new Date().getFullYear(),
   );
   const [isLostYear, setIsLostYear] = useState(false);
   const [daysInMonth, setDaysInMonth] = useState(
-    new Date(currentYear, currentMonth + 1, 0).getDate()
+    new Date(currentYear, currentMonth + 1, 0).getDate(),
   );
-  const [fetchedInfo, setFetchedInfo] = useState<fetchInfoType>([]);
-  let currentDates = [{ date: 0, taskCount: 0 }];
+  const [fetchedInfo, setFetchedInfo] = useState<FetchInfoType>([]);
+  const currentDates = [{date: 0, taskCount: 0}];
 
   // dispatch(checkFetchAuth())
   // const fetchBase = useSelector(selectFetchAuth);
 
   // кастыль для серва
   if (fetchedInfo) {
-    for (let i = 0; i < daysInMonth; i++) {
+    for (let i = 0; i < daysInMonth; i += 1) {
       let count = 0;
-      for (let y = 0; y < fetchedInfo.length; y++) {
+      for (let y = 0; y < fetchedInfo.length; y += 1) {
         if (
           getFetchedTimeStamp(fetchedInfo[y].forDate).getDate() === i + 1 &&
           currentMonth ===
@@ -54,20 +54,20 @@ const Calendar: React.FC = () => {
             getFetchedTimeStamp(fetchedInfo[y].forDate).getFullYear() &&
           !fetchedInfo[y].isTaskDone
         ) {
-          count = count + 1;
+          count += 1;
           currentDates[i] = {
             date: i + 1,
             taskCount: count,
           };
         } else {
-          currentDates[i] = { date: i + 1, taskCount: count };
+          currentDates[i] = {date: i + 1, taskCount: count};
         }
       }
     }
   }
-  //TODO: review ALL FILE!!!
+  // TODO: review ALL FILE!!!
   const fetchMonthTasks = () => {
-    axios.get(getApi(pathsBack.taskBase)).then(({ data }) => {
+    axios.get(getApi(pathsBack.taskBase)).then(({data}) => {
       setFetchedInfo(data);
     });
   };
@@ -100,28 +100,28 @@ const Calendar: React.FC = () => {
     dispatch(checkChoosedMonth(currentMonth));
     dispatch(checkChoosedYear(currentYear));
     fetchMonthTasks();
-  }, [currentMonth, currentYear]);
+  }, [dispatch, currentMonth, currentYear]);
 
   return (
-    <div className="calendar">
-      <div className="calendar__block">
-        <div className="block__userValues">
-          <div className="userValues__yearParams">
+    <div className='calendar'>
+      <div className='calendar__block'>
+        <div className='block__userValues'>
+          <div className='userValues__yearParams'>
             <span className={isLostYear ? " hidden" : ""} onClick={changeYear}>
               {"<"}
             </span>
             <span>{currentYear}</span>
             <span onClick={changeYear}>{">"}</span>
           </div>
-          <div className="userValues__monthParams">
+          <div className='userValues__monthParams'>
             <span onClick={changeMonth}>{"<"}</span>
-            <span className="monthParams__month">{months[currentMonth]}</span>
+            <span className='monthParams__month'>{months[currentMonth]}</span>
             <span onClick={changeMonth}>{">"}</span>
           </div>
         </div>
-        <div className="block__container">
-          <div className="block__dates">
-            {currentDates.map((item) => (
+        <div className='block__container'>
+          <div className='block__dates'>
+            {currentDates.map(item => (
               <DateItem
                 key={item.date}
                 date={item.date}
@@ -133,5 +133,5 @@ const Calendar: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 export default Calendar;
