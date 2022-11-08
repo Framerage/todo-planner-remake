@@ -1,0 +1,40 @@
+alias for ts+
+all files on ts+
+creatAction, +
+creatasyncthunk+/-
+mvc,mvp, mvvm
+pick omit+
+enum+ generick
+
+db.json?
+json-server --watch db.json --port 3001
+
+cuci@mail.ru
+957301
+
+
+useHistory(> /login)удален в react 6
+убрать module (настройка в webpack (module:true/false наверное)) не нашел
+styles глобальные стили, цвета, шрифты, у каждого компонента свой style.scss, index.js и сам компонент+
+
+все запросы и посты в creatasyncthunk
+coockie(token) +
+
+inline стили переделать(убрать)+ (только в TodoItem)
+husky 
+добавить npm run lint , чтобы git commit -m ывызывал хаски , укоторого под капотом npm run lint
+настроить форматирование пробелов
+
+
+button onClick(e=>onBtn(e))
+e:DragEvent<HTMLButtonElement>
+... onChange
+e: ChangeEvent<HTMLInputElement
+
+
+  // "eslintConfig": {
+  //   "extends": [
+  //     "react-app",
+  //     "react-app/jest"
+  //   ]
+  // },

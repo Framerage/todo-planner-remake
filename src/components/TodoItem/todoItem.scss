@@ -1,0 +1,173 @@
+@import '../../styles/globalColors.scss';
+.todoItem {
+  min-width: 500px;
+  min-height: 50px;
+  border: 1px solid $bordersColor;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 2px $themeBsColor;
+  margin: 10px 0;
+  padding: 0 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .todoItem__text {
+    min-width: 460px;
+    min-height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 0 5px;
+    .text__title {
+      display: flex;
+      span {
+        font-size: 4em;
+        color: $textHeadersColor;
+        text-shadow: 0 0 5px $themeTsColorMain,
+          0 0 10px $themeTsColorMain, 0 0 15px $themeTsColorSelection;
+      }
+    }
+    .text__descrip {
+      color: $textHeadersColor;
+      text-shadow: 0 0 5px $themeTsColorMain,
+        0 0 10px $themeTsColorMain, 0 0 15px $themeTsColorSelection;
+      font-size: 3.5em;
+    }
+  }
+  .todoItem_active {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    margin: 5px 0;
+    min-width: 50px;
+    width: 70px;
+    min-height: 50px;
+    .active__kinds{
+      display: flex;
+      .active__currentTaskBtn{
+        width: 20px;
+        height: 20px;
+        border: 1px solid grey;
+        border-radius: 10px;
+        margin: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        background-size: cover;
+        &:hover {
+          box-shadow: 0 0 10px 2px green;
+        }
+      }
+      .active__doneTaskBtn{
+        width: 20px;
+        height: 20px;
+        border: 1px solid green;
+        border-radius: 10px;
+        margin: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        background-size: cover;
+        &:hover {
+          box-shadow: 0 0 10px 2px white;
+        }
+      }
+      .active__removeBtn {
+        margin: 5px;
+        transition: 0.2s;
+        width: 20px !important;
+        height: 20px;
+        color: $textHeadersColor;
+        text-shadow: 0 0 5px red, 0 0 10px red,
+          0 0 15px $themeTsColorSelection;
+        font-size: 4em;
+        border: 1px solid red;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          box-shadow: 0 0 10px 2px red;
+        }
+      }
+    }
+    .active__transferBtn {
+      border: 1px solid red;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2px 5px;
+      width: 65px;
+      max-height: 60px;
+      color: $textHeadersColor;
+      text-shadow: 0 0 5px red, 0 0 10px red,
+        0 0 15px $themeTsColorSelection;
+      font-size: 4em;
+      transition: 0.2s;
+      p {
+        font-size: 1em;
+        cursor: pointer;
+      }
+      .transferBtn__text {
+        display: flex;
+        align-items: center;
+        font-size: 0.75em;
+        input {
+          width: 30px;
+          height: 20px;
+          margin: 2px 0;
+          font-size: 1.25em;
+          background-color: transparent;
+          color: $textHeadersColor;
+          border: none;
+          outline: 0;
+        }
+      }
+      &:hover {
+        box-shadow: 0 0 10px 2px red;
+      }
+    }
+  }
+}
+.taskDone{
+  opacity: 0.4;
+}
+@media screen and (min-width: 300px) and (max-width: 476px) {
+  .todoItem {
+    min-width: 250px;
+    min-height: 50px;
+    margin: 5px 0;
+    .todoItem__text {
+      min-width: 160px;
+      max-width: 195px;
+      min-height: 40px;
+      padding: 5px 0;
+    }
+    .todoItem_active {
+      width: 70px;
+      .active__transferBtn {
+        width: 65px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 477px) and (max-width: 768px) {
+  .todoItem {
+    min-width: 300px;
+    min-height: 50px;
+    margin: 5px 0;
+    .todoItem__text {
+      min-width: 210px;
+      max-width: 215px;
+      min-height: 40px;
+      padding: 5px 0;
+    }
+    .todoItem_active {
+      width: 70px;
+      .active__transferBtn {
+        width: 65px;
+      }
+    }
+  }
+}

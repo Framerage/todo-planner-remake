@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    // "alwaysStrict": true,
+    // "noImplicitAny": true,
+    // "strictNullChecks": true,
+    // "strictPropertyInitialization": true,
+    // "strictFunctionTypes": true,
+    // "noImplicitThis": true,
+    // "strictBindCallApply": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["/modules/*"],
+      "@services/*": ["services/*"]
+    }
+  },
+  "include": ["src", "src/types"]
+}
