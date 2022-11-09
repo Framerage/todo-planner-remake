@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/todo-planner-remake/static/css/main.913ade83.css",
-    "main.js": "/todo-planner-remake/static/js/main.b0415c2c.js",
-    "static/media/inWorking.png": "/todo-planner-remake/static/media/inWorking.2ebbb0ff03af72abbded.png",
-    "static/media/user(dark).png": "/todo-planner-remake/static/media/user(dark).b157d5032cc4216cd9f3.png",
-    "static/media/done.svg": "/todo-planner-remake/static/media/done.4bd49de75a0e5a3ef4c2aa960665057e.svg",
-    "index.html": "/todo-planner-remake/index.html",
-    "main.913ade83.css.map": "/todo-planner-remake/static/css/main.913ade83.css.map",
-    "main.b0415c2c.js.map": "/todo-planner-remake/static/js/main.b0415c2c.js.map"
+    "main.css": "/static/css/main.e60698d9.css",
+    "main.js": "/static/js/main.b497df5e.js",
+    "static/media/inWorking.png": "/static/media/inWorking.2ebbb0ff03af72abbded.png",
+    "static/media/user(dark).png": "/static/media/user(dark).b157d5032cc4216cd9f3.png",
+    "static/media/done.svg": "/static/media/done.4bd49de75a0e5a3ef4c2.svg",
+    "index.html": "/index.html",
+    "main.e60698d9.css.map": "/static/css/main.e60698d9.css.map",
+    "main.b497df5e.js.map": "/static/js/main.b497df5e.js.map"
   },
   "entrypoints": [
-    "static/css/main.913ade83.css",
-    "static/js/main.b0415c2c.js"
+    "static/css/main.e60698d9.css",
+    "static/js/main.b497df5e.js"
   ]
 }
