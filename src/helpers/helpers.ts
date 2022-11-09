@@ -32,8 +32,6 @@ export const getFullChoosedDate = (
     .split(".")
     .reverse()
     .join("-");
-// new Date('Mon Nov 07 2022 12:48:59 GMT+0300').getUTCDate()
-// new Date('Mon Nov 07 2022 09:48:59 GMT+0000').getTime()
 export const getFetchedTimeStamp = (date: string) => new Date(date);
 export const someDelay = async (num: number) => {
   new Promise(resolve => setTimeout(resolve, num));

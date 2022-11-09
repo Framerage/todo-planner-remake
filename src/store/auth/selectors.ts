@@ -12,7 +12,11 @@ export const selectUserName = createSelector(
   selectAuthState,
   state => state.userName,
 );
-export const selectFetchAuth = createSelector(
+export const selectFetchLoginBase = createSelector(
   selectAuthState,
-  state => state.isFetchAuth,
+  state => state.fetchedLoginBase,
+);
+export const selectFetchedToken = createSelector(
+  selectAuthState,
+  state => state.fetchedToken,
 );

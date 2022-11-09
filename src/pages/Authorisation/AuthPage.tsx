@@ -8,7 +8,7 @@ import {useCookies} from "react-cookie";
 import axios from "axios";
 import getApi from "api/api";
 import store from "store/store";
-import {checkFetchAuth, checkUserName} from "../../store/auth/actions";
+import {checkLoginBase, checkUserName} from "../../store/auth/actions";
 
 type AppDispatch = typeof store.dispatch;
 function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
@@ -79,8 +79,15 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
 
   const testThunk = (e: any) => {
     e.preventDefault();
-    dispatch(checkFetchAuth({userName: "click"}));
+    if (inputUserValue && inputUserPass) {
+      dispatch(
+        checkLoginBase({userName: inputUserValue, userPass: inputUserPass}),
+      );
+    } else {
+      window.alert("Fill all fields");
+    }
   };
+
   return (
     <form className="authForm">
       <div className="authForm__block">

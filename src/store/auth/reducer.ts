@@ -1,41 +1,41 @@
-/* eslint no-param-reassign : "error" */
-
 import {createReducer} from "@reduxjs/toolkit";
-import {checkAuth, checkFetchAuth, checkUserName} from "store/auth/actions";
+import {checkAuth, checkLoginBase, checkUserName} from "store/auth/actions";
+import {AuthStateProps} from "./types";
 
-export type AuthState = {
-  isLoading: boolean;
-  isAuth: boolean;
-  isFetchAuth: {};
-  isErrorFetch: null;
-  userName: string;
-  error: null;
-};
 // TODO: тип из тулкита
 type CheckAuthType = {type: string; payload: boolean};
 type CheckUserNameType = {type: string; payload: string};
 // type checkFetchType={ type: string, payload: {} }
 
-const initialState: AuthState = {
+const initialState: AuthStateProps["auth"] = {
   isLoading: false,
-  isFetchAuth: {},
+  fetchedLoginBase: [
+    {
+      id: "",
+      user: {
+        userName: "",
+        password: "",
+      },
+    },
+  ],
+  fetchedToken: "",
   isErrorFetch: null,
   isAuth: false,
   userName: "",
   error: null,
 };
 
-export default createReducer<AuthState>(initialState, {
-  [checkAuth.type]: (state: AuthState, action: CheckAuthType) => {
+export default createReducer<AuthStateProps["auth"]>(initialState, {
+  [checkAuth.type]: (state, action: CheckAuthType) => {
     state.isAuth = action.payload;
   },
-  [checkUserName.type]: (state: AuthState, action: CheckUserNameType) => {
+  [checkUserName.type]: (state, action: CheckUserNameType) => {
     state.userName = action.payload;
   },
-  [checkFetchAuth.fulfilled.type]: (state: AuthState, action: any) => {
-    // console.log(action.payload, "payload");
+  [checkLoginBase.fulfilled.type]: (state, action: any) => {
+    console.log(action.payload, "payload");
     // state.error=null,
-    state.isFetchAuth = action.payload;
+    state.fetchedToken = action.payload;
   },
 
   // [checkFetchAuth.pending]:(state:initialStateTypes,action:any)=>{.
