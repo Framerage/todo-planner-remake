@@ -115,7 +115,7 @@ function TodoList() {
     } else {
       setIsTaskListReadty(false);
     }
-  }, [taskList, choosedMonth, choosedDate, choosedYear, fullDate]);
+  }, []);
 
   const removeTask = useCallback(
     async (id: number) => {
@@ -152,23 +152,23 @@ function TodoList() {
   );
 
   return (
-    <div className='todoList'>
-      <div className='todoList__block'>
-        <div className='block__creator'>
+    <div className="todoList">
+      <div className="todoList__block">
+        <div className="block__creator">
           <input
             value={inputNameTask}
             onChange={e => setInputNameTask(e.target.value)}
-            type='text'
-            placeholder='name of task'
+            type="text"
+            placeholder="name of task"
           />
           <input
             value={inputDescriptionTask}
             onChange={e => setInputDescriptionTask(e.target.value)}
-            type='text'
-            placeholder='description of task'
+            type="text"
+            placeholder="description of task"
           />
           <button
-            type='button'
+            type="button"
             onClick={() =>
               createNewTask(fullDate, {
                 name: inputNameTask[0].toUpperCase() + inputNameTask.slice(1),
@@ -181,8 +181,8 @@ function TodoList() {
             Create task
           </button>
         </div>
-        <div className='block__listContainer'>
-          <div className='listContainer__list'>
+        <div className="block__listContainer">
+          <div className="listContainer__list">
             <h2>
               Tasklist of {choosedDate} {months[choosedMonth]} {choosedYear} (
               {aWeekDay})

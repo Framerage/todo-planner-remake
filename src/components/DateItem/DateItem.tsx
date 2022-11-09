@@ -30,8 +30,12 @@ function DateItem({date, taskCount}: DateItemProps) {
     });
   }, [taskCount]);
   return (
-    <div onClick={() => getChoosedDate(date)} className='dates__item'>
-      <div className='item__date'>{date}</div>
+    <div
+      role="presentation"
+      onClick={() => getChoosedDate(date)}
+      className="dates__item"
+    >
+      <div className="item__date">{date}</div>
       <span className={counterStyle}>{taskCount}</span>
     </div>
   );

@@ -18,19 +18,22 @@ interface FetchTodoType {
 export const checkFetchAuth = createAsyncThunk<
   FetchTodoType,
   {userName: string}
->("FETCH_isAuthFetch", async ({userName}) => {
-  try {
-    const responce = await axios.get(getApi(pathsBack.login), {
-      data: {},
-      params: {},
-    });
-    if (responce.status >= 400) {
-      throw new Error('Can"t get logins');
+>("FETCH_isAuthFetch", async () =>
+  // {userName}
+  {
+    try {
+      const responce = await axios.get(getApi(pathsBack.login), {
+        data: {},
+        params: {},
+      });
+      if (responce.status >= 400) {
+        throw new Error('Can"t get logins');
+      }
+      // console.log(userName);
+      // console.log(responce, "resp");
+      return responce.data;
+    } catch (e) {
+      return e;
     }
-    console.log(userName);
-    // console.log(responce, "resp");
-    return responce.data;
-  } catch (e) {
-    return e;
-  }
-});
+  },
+);

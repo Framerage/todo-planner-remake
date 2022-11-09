@@ -21,32 +21,32 @@ function Layout() {
   // console.log({cookies});
   useEffect(() => {
     if (
-      localStorage.userCookies
+      cookies.userToken
       // &&hist.location.pathname!==pathsBase.calendar
     ) {
-      hist.go(1);
-    } else {
+      localStorage.setItem("isAuthSuccess", `${isAuthSuccess}`);
       navigate(pathsBase.calendar);
+    } else {
+      hist.go(-1);
     }
-  }, [localStorage.userCookies]);
+    console.log("отработал лейаут");
+  }, [cookies.userToken]);
 
   const {pathname} = useLocation();
   return (
-    <div className='wrapper'>
-      <Header
-        namePage={getPageName(pathname, !!localStorage.userCookies) || " "}
-      />
-      {localStorage.userCookies ? (
+    <div className="wrapper">
+      <Header namePage={getPageName(pathname, !!cookies.userToken) || " "} />
+      {cookies.userToken ? (
         <Routes>
           <Route index path={pathsBase.calendar} element={<Calendar />} />
           <Route path={`${pathsBase.calendar}/:id`} element={<TodoList />} />
-          <Route path='*' element={<Error />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       ) : (
         <Routes>
           <Route
             index
-            path='*'
+            path="*"
             element={<AuthPage setIsAuthSuccess={setIsAuthSuccess} />}
           />
         </Routes>

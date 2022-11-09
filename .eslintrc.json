@@ -32,7 +32,7 @@
     ],
     "rules": {
         "quotes": [
-            "error",
+            2,
             "double",
             {
                 "avoidEscape": true
@@ -54,6 +54,13 @@
         "no-param-reassign":"off",
         "no-restricted-exports":"off",
         "no-new":"off",
-        "no-else-return":["error", {"allowElseIf": false}]
+        "no-else-return":["error", {"allowElseIf": false}],
+        "no-promise-executor-return":"off",
+        "consistent-return":"off",
+        "import/no-unresolved": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "off",
+        "indent":"off",
+        "no-extra-boolean-cast":"off"
     }
 }

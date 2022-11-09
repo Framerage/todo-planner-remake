@@ -103,24 +103,34 @@ function Calendar() {
   }, [dispatch, currentMonth, currentYear]);
 
   return (
-    <div className='calendar'>
-      <div className='calendar__block'>
-        <div className='block__userValues'>
-          <div className='userValues__yearParams'>
-            <span className={isLostYear ? " hidden" : ""} onClick={changeYear}>
+    <div className="calendar">
+      <div className="calendar__block">
+        <div className="block__userValues">
+          <div className="userValues__yearParams">
+            <span
+              role="presentation"
+              className={isLostYear ? " hidden" : ""}
+              onClick={changeYear}
+            >
               {"<"}
             </span>
             <span>{currentYear}</span>
-            <span onClick={changeYear}>{">"}</span>
+            <span role="presentation" onClick={changeYear}>
+              {">"}
+            </span>
           </div>
-          <div className='userValues__monthParams'>
-            <span onClick={changeMonth}>{"<"}</span>
-            <span className='monthParams__month'>{months[currentMonth]}</span>
-            <span onClick={changeMonth}>{">"}</span>
+          <div className="userValues__monthParams">
+            <span role="presentation" onClick={changeMonth}>
+              {"<"}
+            </span>
+            <span className="monthParams__month">{months[currentMonth]}</span>
+            <span role="presentation" onClick={changeMonth}>
+              {">"}
+            </span>
           </div>
         </div>
-        <div className='block__container'>
-          <div className='block__dates'>
+        <div className="block__container">
+          <div className="block__dates">
             {currentDates.map(item => (
               <DateItem
                 key={item.date}

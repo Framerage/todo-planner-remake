@@ -9,7 +9,6 @@ import axios from "axios";
 import getApi from "api/api";
 import store from "store/store";
 import {checkFetchAuth, checkUserName} from "../../store/auth/actions";
-import globalTheme from "../../styles/globalColors.scss";
 
 type AppDispatch = typeof store.dispatch;
 function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
@@ -58,11 +57,12 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
     if (
       inputUserValue.length !== 0 &&
       inputUserPass.length !== 0 &&
-      !!localStorage.userCookies
+      !!!cookies.userToken
     ) {
       setIsAuthSuccess(true);
       dispatch(checkUserName(inputUserValue));
       navigate(pathsBase.calendar);
+      console.log("отработал авторизейшн");
     } else {
       dispatch(checkUserName(""));
       setIsAuthSuccess(false);
@@ -82,22 +82,22 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
     dispatch(checkFetchAuth({userName: "click"}));
   };
   return (
-    <form className='authForm'>
-      <div className='authForm__block'>
+    <form className="authForm">
+      <div className="authForm__block">
         <input
           onChange={e => setInputUserValue(e.target.value)}
-          type='text'
-          placeholder='userName'
+          type="text"
+          placeholder="userName"
         />
         <input
           onChange={e => setInputUserPass(e.target.value)}
-          type='text'
-          placeholder='password'
+          type="text"
+          placeholder="password"
         />
-        <button type='button' onClick={getUsersValues}>
+        <button type="button" onClick={getUsersValues}>
           Enter
         </button>
-        <button type='button' onClick={e => testThunk(e)}>
+        <button type="button" onClick={e => testThunk(e)}>
           Test
         </button>
       </div>

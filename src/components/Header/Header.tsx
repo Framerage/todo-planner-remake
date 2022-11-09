@@ -19,7 +19,7 @@ function Header({namePage}: HeaderProps) {
   const loginUser = useSelector(selectUserName);
   const [cookies, removeCookies] = useCookies(["userToken"]);
   const hist = createBrowserHistory();
-
+  console.log(loginUser, "user");
   const onDropAuth = () => {
     // dispatch(checkAuth(false));
     removeCookies("userToken", "");
@@ -29,21 +29,22 @@ function Header({namePage}: HeaderProps) {
     navigate(pathsBase.firstPage);
   };
   return (
-    <header className='header'>
-      <div className='header__logo'>ToDo Planner</div>
-      <div className='header__content'>
-        <span className='content__pageName'>{namePage}</span>
-        <div className='content__navigation'>
-          <span className='userName'>{loginUser}</span>
-          <img onClick={onDropAuth} src={user} alt='user' />
+    <header className="header">
+      <div className="header__logo">ToDo Planner</div>
+      <div className="header__content">
+        <span className="content__pageName">{namePage}</span>
+        <div className="content__navigation">
+          <span className="userName">{loginUser}</span>
+          <img role="presentation" onClick={onDropAuth} src={user} alt="user" />
         </div>
       </div>
-      <div className='header__returnBtn'>
+      <div className="header__returnBtn">
         <div
+          role="presentation"
           style={{
             display: !cookies.userToken ? "none" : "",
           }}
-          className='returnBtn'
+          className="returnBtn"
           onClick={hist.back}
         >
           {"<"}

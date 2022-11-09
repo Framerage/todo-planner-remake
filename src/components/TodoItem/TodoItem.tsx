@@ -31,34 +31,32 @@ function TodoItem({
     }
   };
 
-  const onCheckTask = useCallback(
-    (num: number) => {
-      if (window.confirm("Is task ready?")) {
-        setIsDone(!isDone);
-        editTask(num, {isTaskDone: !isDone});
-      } else {
-        setIsDone(false);
-        window.alert("Think about task");
-      }
-    },
-    [isDone],
-  );
+  const onCheckTask = useCallback((num: number) => {
+    if (window.confirm("Is task ready?")) {
+      setIsDone(!isDone);
+      editTask(num, {isTaskDone: !isDone});
+    } else {
+      setIsDone(false);
+      window.alert("Think about task");
+    }
+  }, []);
   // TODO: убрать инлайновыйе стили, добавление классов, рабобраться с webpack file-loader for scss
   return (
     <div className={isDone ? "todoItem taskDone" : "todoItem"}>
-      <div className='todoItem__text'>
-        <div className='text__title'>
+      <div className="todoItem__text">
+        <div className="text__title">
           <span>
             {`${index}:`}
             &nbsp;
           </span>
           <span>{taskName}</span>
         </div>
-        <div className='text__descrip'>{taskDescrip}</div>
+        <div className="text__descrip">{taskDescrip}</div>
       </div>
-      <div className='todoItem_active'>
-        <div className='active__kinds'>
+      <div className="todoItem_active">
+        <div className="active__kinds">
           <div
+            role="presentation"
             onClick={() => onCheckTask(id)}
             className={
               isDone ? "active__doneTaskBtn" : "active__currentTaskBtn"
@@ -66,15 +64,24 @@ function TodoItem({
           >
             o
           </div>
-          <div onClick={() => onRemoveTask(id)} className='active__removeBtn'>
+          <div
+            role="presentation"
+            onClick={() => onRemoveTask(id)}
+            className="active__removeBtn"
+          >
             x
           </div>
         </div>
-        <div className='active__transferBtn'>
-          <p onClick={() => transferTask(id, increaserDate)}>move to</p>
-          <div className='transferBtn__text'>
+        <div className="active__transferBtn">
+          <p
+            role="presentation"
+            onClick={() => transferTask(id, increaserDate)}
+          >
+            move to
+          </p>
+          <div className="transferBtn__text">
             <input
-              type='number'
+              type="number"
               value={increaserDate}
               onChange={e => setIncreaserDate(Number(e.target.value))}
             />
