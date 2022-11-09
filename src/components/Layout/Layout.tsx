@@ -26,17 +26,19 @@ function Layout() {
     ) {
       localStorage.setItem("isAuthSuccess", `${isAuthSuccess}`);
       navigate(pathsBase.calendar);
+      console.log("layout d");
     } else {
-      hist.go(-1);
+      hist.go(1);
+      console.log("layout 1");
     }
-    console.log("отработал лейаут");
   }, [cookies.userToken]);
 
+  // console.log(cookies.userToken, "token");
   const {pathname} = useLocation();
   return (
     <div className="wrapper">
       <Header namePage={getPageName(pathname, !!cookies.userToken) || " "} />
-      {cookies.userToken ? (
+      {!!cookies.userToken ? (
         <Routes>
           <Route index path={pathsBase.calendar} element={<Calendar />} />
           <Route path={`${pathsBase.calendar}/:id`} element={<TodoList />} />

@@ -19,7 +19,6 @@ function Header({namePage}: HeaderProps) {
   const loginUser = useSelector(selectUserName);
   const [cookies, removeCookies] = useCookies(["userToken"]);
   const hist = createBrowserHistory();
-  console.log(loginUser, "user");
   const onDropAuth = () => {
     // dispatch(checkAuth(false));
     removeCookies("userToken", "");

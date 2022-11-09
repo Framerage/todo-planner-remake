@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import "./styles.scss";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {pathsBack, pathsBase} from "constances/constances";
+// import {useNavigate} from "react-router-dom";
+import {pathsBack} from "constances/constances";
 // import {selectFetchAuth} from "store/auth/selectors";
 import {useCookies} from "react-cookie";
 import axios from "axios";
@@ -16,7 +16,7 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
   const [inputUserValue, setInputUserValue] = useState("");
   const [inputUserPass, setInputUserPass] = useState("");
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // function setLoginUser(inputUserValue: string): any {
   //   throw new Error("Function not implemented.");
   // }
@@ -61,7 +61,7 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
     ) {
       setIsAuthSuccess(true);
       dispatch(checkUserName(inputUserValue));
-      navigate(pathsBase.calendar);
+      // navigate(pathsBase.calendar);
       console.log("отработал авторизейшн");
     } else {
       dispatch(checkUserName(""));

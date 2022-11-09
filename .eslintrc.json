@@ -17,6 +17,11 @@
         // "plugin:@typescript-eslint/recommended"
     ],
     "overrides": [
+        {
+            "files": [
+                "**/*.ts","**/*.js","**/*.tsx","**/*.jsx"
+            ]
+        }
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -24,7 +29,8 @@
             "jsx": true},
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project": "./tsconfig.json"
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
     },
     "plugins": [
         "react",
