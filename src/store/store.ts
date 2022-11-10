@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import authReducer from "./auth";
-import dateReducer from "./reducers/dateReducer";
+import dateReducer from "./date";
 
 const rootReducer = combineReducers({
   auth: authReducer,

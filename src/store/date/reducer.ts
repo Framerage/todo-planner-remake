@@ -19,8 +19,6 @@ export default createReducer<DateStateProps["date"]>(initialStateDate, {
     state.year = action.payload;
   },
   [editChoosedTask.fulfilled.type]: (state, action: any) => {
-    console.log(action.payload, " result select");
-    // state.error = null;
     state.isTaskEdit = action.payload;
   },
 });

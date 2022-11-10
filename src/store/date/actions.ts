@@ -19,9 +19,8 @@ export const editChoosedTask = createAsyncThunk<
     if (responce.status >= 400) {
       throw new Error('Can"t edit task');
     }
-    console.log(responce, "resp data");
-    // return responce.status===200;
-    return responce.data;
+    const isEdit = [responce.status === 200, responce.data];
+    return isEdit[0];
   } catch (e) {
     return e;
   }

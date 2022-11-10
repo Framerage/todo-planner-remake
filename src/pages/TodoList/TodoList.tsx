@@ -155,14 +155,14 @@ function TodoList() {
   );
 
   const iseditTask = useSelector(selectIsEditTask);
-  console.log(iseditTask, " iseditTask 123");
-
   useEffect(() => {
     console.log(iseditTask, " iseditTask");
   }, [iseditTask]);
-  const testEdit = (e: any) => {
+  const testEdit = async (e: any) => {
     e.preventDefault();
     dispatch(editChoosedTask({id: 97588, param: {forDate: "2022-11-11"}}));
+    await someDelay(1000);
+    setTaskList(taskList.filter(el => el.id !== 97588));
   };
   return (
     <div className="todoList">
