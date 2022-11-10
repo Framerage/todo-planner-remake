@@ -1,40 +1,27 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {checkAuth, checkLoginBase, checkUserName} from "store/auth/actions";
-import {AuthStateProps} from "./types";
+import {
+  checkAuth,
+  checkLoginToken,
+  checkUserName,
+  dropLoginToken,
+} from "store/auth/actions";
+import initialStateAuth from "./constances";
+import {AuthStateProps, CheckAuthType, CheckUserNameType} from "./types";
 
 // TODO: тип из тулкита
-type CheckAuthType = {type: string; payload: boolean};
-type CheckUserNameType = {type: string; payload: string};
-// type checkFetchType={ type: string, payload: {} }
 
-const initialState: AuthStateProps["auth"] = {
-  isLoading: false,
-  fetchedLoginBase: [
-    {
-      id: "",
-      user: {
-        userName: "",
-        password: "",
-      },
-    },
-  ],
-  fetchedToken: "",
-  isErrorFetch: null,
-  isAuth: false,
-  userName: "",
-  error: null,
-};
-
-export default createReducer<AuthStateProps["auth"]>(initialState, {
+export default createReducer<AuthStateProps["auth"]>(initialStateAuth, {
   [checkAuth.type]: (state, action: CheckAuthType) => {
     state.isAuth = action.payload;
   },
   [checkUserName.type]: (state, action: CheckUserNameType) => {
     state.userName = action.payload;
   },
-  [checkLoginBase.fulfilled.type]: (state, action: any) => {
-    console.log(action.payload, "payload");
-    // state.error=null,
+  [dropLoginToken.type]: state => {
+    state.fetchedToken = "";
+  },
+  [checkLoginToken.fulfilled.type]: (state, action: any) => {
+    state.error = null;
     state.fetchedToken = action.payload;
   },
 

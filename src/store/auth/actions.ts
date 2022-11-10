@@ -6,34 +6,28 @@ import {AuthStateProps} from "./types";
 
 export const checkAuth = createAction<boolean>("AUTH_isAuth");
 export const checkUserName = createAction<string>("AUTH_userName");
+export const dropLoginToken = createAction<string>("AUTH_dropLogin");
 
-// TODO: настроить форматирование при созхранениии (и все что с ним связано )
-export const checkLoginBase = createAsyncThunk<
+export const checkLoginToken = createAsyncThunk<
   AuthStateProps,
-  {userName: string; userPass: string}
+  {userName: string | null; userPass: string | null}
 >("FETCH_isAuthFetch", async ({userName, userPass}) => {
-  try {
-    const responce = await axios.get(getApi(pathsBack.login), {
-      data: {},
-      params: {},
-    });
-    if (responce.status >= 400) {
-      throw new Error('Can"t get logins');
-    }
-    let gettedToken;
-    console.log(userName, userPass);
-    console.log(responce.data, "resp");
-
-    if (userName && userPass) {
-      gettedToken = responce.data.filter(
+  if (userName && userPass) {
+    try {
+      const responce = await axios.get(getApi(pathsBack.login), {
+        data: {},
+        params: {},
+      });
+      if (responce.status >= 400) {
+        throw new Error('Can"t get logins');
+      }
+      const gettedToken = responce.data.filter(
         (el: {user: {userName: string; userPass: string}; token: string}) =>
           el.user.userName === userName && el.user.userPass === userPass,
       );
-      // console.log(gettedToken, "gettedToken");
+      return gettedToken[0].token;
+    } catch (e) {
+      return e;
     }
-    return gettedToken[0].token;
-    // return responce.data;
-  } catch (e) {
-    return e;
   }
 });

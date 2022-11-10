@@ -17,3 +17,5 @@ export type AuthStateProps = {
     error: null;
   };
 };
+export type CheckAuthType = {type: string; payload: boolean};
+export type CheckUserNameType = {type: string; payload: string};

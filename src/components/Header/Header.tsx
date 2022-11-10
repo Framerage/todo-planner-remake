@@ -1,12 +1,13 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {pathsBase} from "constances/constances";
 import "./styles.scss";
 import {useCookies} from "react-cookie";
 import {createBrowserHistory} from "history";
 import {selectUserName} from "store/auth/selectors";
-import user from "../../assets/images/user(dark).png";
+import {dropLoginToken} from "store/auth/actions";
+import user from "assets/images/user(dark).png";
 
 // TODO: сгрупировать иморты + перевести все пути на абсолютные + можно поискать правила для авто-группировки
 
@@ -14,17 +15,15 @@ type HeaderProps = {
   namePage: string;
 };
 function Header({namePage}: HeaderProps) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const loginUser = useSelector(selectUserName);
   const [cookies, removeCookies] = useCookies(["userToken"]);
   const hist = createBrowserHistory();
   const onDropAuth = () => {
-    // dispatch(checkAuth(false));
+    dispatch(dropLoginToken(""));
     removeCookies("userToken", "");
-    // localStorage.clear();
     localStorage.removeItem("userCookies");
-    // localStorage.setItem('userCookies', '');
     navigate(pathsBase.firstPage);
   };
   return (

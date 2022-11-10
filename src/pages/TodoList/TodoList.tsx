@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import "./styles.scss";
 import {months, pathsBack, weekDays} from "constances/constances";
 import TodoItem from "components/TodoItem/TodoItem";
@@ -11,6 +11,9 @@ import {
 } from "helpers/helpers";
 import {selectUserDate, selectUserMonth, selectUserYear} from "store/selectors";
 import getApi from "api/api";
+import {editChoosedTask} from "store/date/actions";
+import {selectIsEditTask} from "store/date/selectors";
+import store from "store/store";
 
 type TasksType = {
   taskName: string;
@@ -20,7 +23,7 @@ type TasksType = {
   forDate: string;
 }[];
 const fullDayMseconds = 24 * 60 * 60 * 1000;
-
+type AppDispatch = typeof store.dispatch;
 function TodoList() {
   const choosedDate =
     useSelector(selectUserDate) || Number(localStorage.sessionStoryDate);
@@ -39,7 +42,7 @@ function TodoList() {
   );
   const [inputNameTask, setInputNameTask] = useState("");
   const [inputDescriptionTask, setInputDescriptionTask] = useState("");
-
+  const dispatch = useDispatch<AppDispatch>();
   const createNewTask = useCallback(
     async (date: string, task: {name: string; description: string}) => {
       if (inputNameTask && inputDescriptionTask) {
@@ -151,6 +154,16 @@ function TodoList() {
     [choosedYear, choosedMonth, choosedDate, taskList],
   );
 
+  const iseditTask = useSelector(selectIsEditTask);
+  console.log(iseditTask, " iseditTask 123");
+
+  useEffect(() => {
+    console.log(iseditTask, " iseditTask");
+  }, [iseditTask]);
+  const testEdit = (e: any) => {
+    e.preventDefault();
+    dispatch(editChoosedTask({id: 97588, param: {forDate: "2022-11-11"}}));
+  };
   return (
     <div className="todoList">
       <div className="todoList__block">
@@ -179,6 +192,9 @@ function TodoList() {
             }
           >
             Create task
+          </button>
+          <button type="button" onClick={e => testEdit(e)}>
+            test edit
           </button>
         </div>
         <div className="block__listContainer">
