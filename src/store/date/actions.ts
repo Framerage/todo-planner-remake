@@ -42,6 +42,30 @@ export const editChoosedTask = createAsyncThunk<
   }
 });
 
+export const postNewTask = createAsyncThunk<
+  DateStateProps,
+  {
+    obj: {
+      taskName: string;
+      taskDescrip: string;
+      isTaskDone: boolean;
+      // id: number;
+      forDate: string;
+    };
+  }
+>("DATE_postNewTask", async ({obj}) => {
+  try {
+    const responce = await axios.post(getApi(pathsBack.taskBase), obj);
+    if (responce.status >= 400) {
+      throw new Error('Can"t post task');
+    }
+    // const isPost = [responce.status === 200, responce.data];
+    // return isPost[0];
+    return responce.data;
+  } catch (e) {
+    return e;
+  }
+});
 export const deleteChoosedTask = createAsyncThunk<DateStateProps, {id: number}>(
   "DATE_delTAsk",
   async ({id}) => {

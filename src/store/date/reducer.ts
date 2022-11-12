@@ -6,6 +6,7 @@ import {
   deleteChoosedTask,
   editChoosedTask,
   fetchTaskBase,
+  postNewTask,
 } from "./actions";
 import initialStateDate from "./constances";
 import {ActionsUserDateMonthYearProps, DateStateProps} from "./types";
@@ -25,6 +26,9 @@ export default createReducer<DateStateProps["date"]>(initialStateDate, {
   },
   [editChoosedTask.fulfilled.type]: (state, action: any) => {
     state.isTaskEdit = action.payload;
+  },
+  [postNewTask.fulfilled.type]: (state, action: any) => {
+    state.postedTask = action.payload;
   },
   [deleteChoosedTask.fulfilled.type]: (state, action: any) => {
     state.isTaskDelete = action.payload;

@@ -8,6 +8,14 @@ const initialStateDate: DateStateProps["date"] = {
   taskList: [],
   isTaskEdit: false,
   isTaskDelete: false,
+  isTaskPost: false,
+  postedTask: {
+    taskName: "",
+    taskDescrip: "",
+    isTaskDone: false,
+    id: 0,
+    forDate: "",
+  },
   error: null,
 };
 export default initialStateDate;

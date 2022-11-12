@@ -38,7 +38,6 @@ function Calendar() {
   );
   const [fetchedInfo, setFetchedInfo] =
     useState<FetchInfoType>(fetchedTaskList);
-  const [isTaskBaseReady, setIsTaskBaseReady] = useState(false);
 
   // кастыль для серва
   const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
@@ -99,21 +98,8 @@ function Calendar() {
   };
 
   useEffect(() => {
-    if (isTaskBaseReady === false) {
-      dispatch(fetchTaskBase());
-      setIsTaskBaseReady(true);
-
-      console.log("otrabotal useeff [] true");
-    } else {
-      // setFetchedInfo([]);
-      setFetchedInfo(fetchedTaskList);
-
-      setIsTaskBaseReady(false);
-      console.log("otrabotal useeff [] false");
-    }
-    console.log(fetchedTaskList, " отработал дисп");
-  }, []);
-
+    setFetchedInfo(fetchedTaskList);
+  }, [fetchedTaskList]);
   useEffect(() => {
     if (currentMonth < 0) {
       setCurrentMonth(11);
@@ -132,8 +118,6 @@ function Calendar() {
     dispatch(checkUserMonth(currentMonth));
     dispatch(checkUserYear(currentYear));
     dispatch(fetchTaskBase());
-    setFetchedInfo(fetchedTaskList);
-    console.log("otrabotal useeff current");
   }, [currentMonth, currentYear]);
 
   return (

@@ -43,6 +43,10 @@
         background-color: black;
         border: 1px solid white;
         box-shadow: 0 0 10px 2px $themeBsColor;
+        cursor: pointer;
+        &:hover {
+        box-shadow: 0 0 15px 2px white;
+        }
       }
     }
     .block__listContainer {

@@ -19,10 +19,10 @@ export const pathsBase: {
   error: string;
   firstPage: string;
 } = {
-  login: "login",
-  firstPage: "/",
-  calendar: "dates",
-  error: "error",
+  login: "todo-planner-remake/login",
+  firstPage: "todo-planner-remake/",
+  calendar: "todo-planner-remake/dates",
+  error: "todo-planner-remake/error",
 };
 export const pathsBack: {taskBase: string; login: string} = {
   login: "login",

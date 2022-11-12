@@ -11,8 +11,13 @@ import {
 } from "helpers/helpers";
 import {selectUserDate, selectUserMonth, selectUserYear} from "store/selectors";
 import getApi from "api/api";
-import {deleteChoosedTask, editChoosedTask} from "store/date/actions";
+import {
+  deleteChoosedTask,
+  editChoosedTask,
+  postNewTask,
+} from "store/date/actions";
 import store from "store/store";
+import {selectPostedTask} from "store/date/selectors";
 
 type TasksType = {
   taskName: string;
@@ -39,53 +44,97 @@ function TodoList() {
     choosedDate,
     0,
   );
+  const newTask = useSelector(selectPostedTask);
   const [inputNameTask, setInputNameTask] = useState("");
   const [inputDescriptionTask, setInputDescriptionTask] = useState("");
   const dispatch = useDispatch<AppDispatch>();
-  const createNewTask = useCallback(
-    async (date: string, task: {name: string; description: string}) => {
-      if (inputNameTask && inputDescriptionTask) {
-        try {
-          const obj = {
-            taskName: task.name,
-            taskDescrip: task.description,
-            forDate: date,
-            isTaskDone: false,
-          };
-          setTaskList(prev => [
-            ...prev,
-            {
-              taskName: task.name,
-              taskDescrip: task.description,
-              id: 0,
-              forDate: date,
-              isTaskDone: false,
-            },
-          ]);
-          const {data} = await axios.post(getApi(pathsBack.taskBase), obj);
-          setTaskList(prev =>
-            prev.map(item => {
-              if (item.taskDescrip === data.taskDescrip) {
-                return {
-                  ...item,
-                  id: data.id,
-                };
-              }
-              return item;
-            }),
-          );
-        } catch (e) {
-          return e;
-        }
-        setInputNameTask("");
-        setInputDescriptionTask("");
-        return true;
-      }
+
+  const createNewTask = (
+    date: string,
+    task: {name: string; description: string},
+  ) => {
+    if (inputNameTask && inputDescriptionTask) {
+      const obj = {
+        taskName: task.name,
+        taskDescrip: task.description,
+        forDate: date,
+        isTaskDone: false,
+      };
+      dispatch(postNewTask({obj}));
+      setTaskList(prev => [
+        ...prev,
+        {
+          taskName: task.name,
+          taskDescrip: task.description,
+          id: 0,
+          forDate: date,
+          isTaskDone: false,
+        },
+      ]);
+      setInputNameTask("");
+      setInputDescriptionTask("");
+    } else {
       window.alert("Fill all fields");
-      return false;
-    },
-    [inputNameTask, inputDescriptionTask],
-  );
+    }
+  };
+
+  useEffect(() => {
+    setTaskList(prev =>
+      prev.map(item => {
+        if (item.taskDescrip === newTask.taskDescrip) {
+          return {
+            ...item,
+            id: newTask.id,
+          };
+        }
+        return item;
+      }),
+    );
+  }, [newTask]);
+  // const createNewTask = useCallback(
+  //   async (date: string, task: {name: string; description: string}) => {
+  //     if (inputNameTask && inputDescriptionTask) {
+  //       try {
+  //         const obj = {
+  //           taskName: task.name,
+  //           taskDescrip: task.description,
+  //           forDate: date,
+  //           isTaskDone: false,
+  //         };
+  //         setTaskList(prev => [
+  //           ...prev,
+  //           {
+  //             taskName: task.name,
+  //             taskDescrip: task.description,
+  //             id: 0,
+  //             forDate: date,
+  //             isTaskDone: false,
+  //           },
+  //         ]);
+  //         const {data} = await axios.post(getApi(pathsBack.taskBase), obj);
+  //         setTaskList(prev =>
+  //           prev.map(item => {
+  //             if (item.taskDescrip === data.taskDescrip) {
+  //               return {
+  //                 ...item,
+  //                 id: data.id,
+  //               };
+  //             }
+  //             return item;
+  //           }),
+  //         );
+  //       } catch (e) {
+  //         return e;
+  //       }
+  //       setInputNameTask("");
+  //       setInputDescriptionTask("");
+  //       return true;
+  //     }
+  //     window.alert("Fill all fields");
+  //     return false;
+  //   },
+  //   [inputNameTask, inputDescriptionTask],
+  // );
 
   useEffect(() => {
     const fetchTaskList = async () => {
@@ -163,10 +212,13 @@ function TodoList() {
             type="button"
             onClick={() =>
               createNewTask(fullDate, {
-                name: inputNameTask[0].toUpperCase() + inputNameTask.slice(1),
-                description:
-                  inputDescriptionTask[0].toUpperCase() +
-                  inputDescriptionTask.slice(1),
+                name: inputNameTask
+                  ? inputNameTask[0].toUpperCase() + inputNameTask.slice(1)
+                  : inputNameTask,
+                description: inputDescriptionTask
+                  ? inputDescriptionTask[0].toUpperCase() +
+                    inputDescriptionTask.slice(1)
+                  : inputDescriptionTask,
               })
             }
           >

@@ -24,6 +24,10 @@ export const selectIsEditTask = createSelector(
   selectDateState,
   state => state.isTaskEdit,
 );
+export const selectPostedTask = createSelector(
+  selectDateState,
+  state => state.postedTask,
+);
 export const selectIsTaskDelete = createSelector(
   selectDateState,
   state => state.isTaskDelete,

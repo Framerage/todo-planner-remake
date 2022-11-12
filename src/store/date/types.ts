@@ -7,6 +7,14 @@ export type DateStateProps = {
     year: number;
     isTaskEdit: boolean;
     isTaskDelete: boolean;
+    isTaskPost: boolean;
+    postedTask: {
+      taskName: string;
+      taskDescrip: string;
+      isTaskDone: boolean;
+      id: number;
+      forDate: string;
+    };
     error: null;
   };
 };
