@@ -8,6 +8,21 @@ export const checkUserDate = createAction<number>("DATE_checkDate");
 export const checkUserMonth = createAction<number>("DATE_checkMonth");
 export const checkUserYear = createAction<number>("DATE_checkYear");
 
+export const fetchTaskBase = createAsyncThunk<DateStateProps>(
+  "DATE_fetchTaskBase",
+  async () => {
+    try {
+      const responce = await axios.get(getApi(pathsBack.taskBase));
+      if (responce.status >= 429) {
+        throw new Error('Can"t edit task');
+      }
+      return responce.data;
+    } catch (e) {
+      return e;
+    }
+  },
+);
+
 export const editChoosedTask = createAsyncThunk<
   DateStateProps,
   {id: number; param: {}}
@@ -19,9 +34,28 @@ export const editChoosedTask = createAsyncThunk<
     if (responce.status >= 400) {
       throw new Error('Can"t edit task');
     }
+    // return responce.status===200
     const isEdit = [responce.status === 200, responce.data];
     return isEdit[0];
   } catch (e) {
     return e;
   }
 });
+
+export const deleteChoosedTask = createAsyncThunk<DateStateProps, {id: number}>(
+  "DATE_delTAsk",
+  async ({id}) => {
+    try {
+      const responce = await axios.delete(
+        `${getApi(pathsBack.taskBase)}/${id}`,
+      );
+      if (responce.status >= 400) {
+        throw new Error('Can"t delete task');
+      }
+      const delResult = [responce.status, responce.data];
+      return delResult[0];
+    } catch (e) {
+      return e;
+    }
+  },
+);

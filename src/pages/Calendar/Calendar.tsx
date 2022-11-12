@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {checkChoosedMonth, checkChoosedYear} from "store/actions/dateActions";
 import {useDispatch, useSelector} from "react-redux";
-import {months, pathsBack} from "constances/constances";
-import axios from "axios";
+import {months} from "constances/constances";
 import "./styles.scss";
 import {selectUserMonth, selectUserYear} from "store/selectors";
 import {getFetchedTimeStamp} from "helpers/helpers";
-import getApi from "api/api";
-// import {checkFetchAuth} from "store/auth/actions";
 import store from "store/store";
+import {checkUserMonth, checkUserYear, fetchTaskBase} from "store/date/actions";
+import {selectFetchedTaskBase} from "store/date/selectors";
+
 import DateItem from "../../components/DateItem/DateItem";
 
 type FetchInfoType = {
@@ -23,54 +22,71 @@ type AppDispatch = typeof store.dispatch;
 function Calendar() {
   const dispatch = useDispatch<AppDispatch>();
   const userMonth = useSelector(selectUserMonth);
-  // const [today] = useState(new Date());
   const userYear = useSelector(selectUserYear);
+
+  const [today] = useState(new Date());
+  const fetchedTaskList = useSelector(selectFetchedTaskBase);
   const [currentMonth, setCurrentMonth] = useState(
-    userMonth || new Date().getMonth(),
+    userMonth || today.getMonth(),
   );
   const [currentYear, setCurrentYear] = useState(
-    userYear || new Date().getFullYear(),
+    userYear || today.getFullYear(),
   );
   const [isLostYear, setIsLostYear] = useState(false);
   const [daysInMonth, setDaysInMonth] = useState(
     new Date(currentYear, currentMonth + 1, 0).getDate(),
   );
-  const [fetchedInfo, setFetchedInfo] = useState<FetchInfoType>([]);
-  const currentDates = [{date: 0, taskCount: 0}];
-
-  // dispatch(checkFetchAuth())
-  // const fetchBase = useSelector(selectFetchAuth);
+  const [fetchedInfo, setFetchedInfo] =
+    useState<FetchInfoType>(fetchedTaskList);
+  const [isTaskBaseReady, setIsTaskBaseReady] = useState(false);
 
   // кастыль для серва
+  const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
+
   if (fetchedInfo) {
     for (let i = 0; i < daysInMonth; i += 1) {
       let count = 0;
+      let readyCount = 0;
       for (let y = 0; y < fetchedInfo.length; y += 1) {
         if (
           getFetchedTimeStamp(fetchedInfo[y].forDate).getDate() === i + 1 &&
           currentMonth ===
             getFetchedTimeStamp(fetchedInfo[y].forDate).getMonth() &&
           currentYear ===
-            getFetchedTimeStamp(fetchedInfo[y].forDate).getFullYear() &&
-          !fetchedInfo[y].isTaskDone
+            getFetchedTimeStamp(fetchedInfo[y].forDate).getFullYear()
         ) {
-          count += 1;
+          currentDates[i] = {
+            ...currentDates[i],
+            date: i + 1,
+          };
+          if (!fetchedInfo[y].isTaskDone) {
+            count += 1;
+            currentDates[i] = {
+              ...currentDates[i],
+              date: i + 1,
+              taskCount: count,
+              readyCounter: readyCount,
+            };
+          } else {
+            readyCount += 1;
+            currentDates[i] = {
+              ...currentDates[i],
+              date: i + 1,
+              taskCount: count,
+              readyCounter: readyCount,
+            };
+          }
+        } else {
           currentDates[i] = {
             date: i + 1,
             taskCount: count,
+            readyCounter: readyCount,
           };
-        } else {
-          currentDates[i] = {date: i + 1, taskCount: count};
         }
       }
     }
   }
   // TODO: review ALL FILE!!!
-  const fetchMonthTasks = () => {
-    axios.get(getApi(pathsBack.taskBase)).then(({data}) => {
-      setFetchedInfo(data);
-    });
-  };
 
   const changeYear = (e: any) => {
     const betweens = e.target.textContent === "<" ? -1 : 1;
@@ -83,13 +99,29 @@ function Calendar() {
   };
 
   useEffect(() => {
+    if (isTaskBaseReady === false) {
+      dispatch(fetchTaskBase());
+      setIsTaskBaseReady(true);
+
+      console.log("otrabotal useeff [] true");
+    } else {
+      // setFetchedInfo([]);
+      setFetchedInfo(fetchedTaskList);
+
+      setIsTaskBaseReady(false);
+      console.log("otrabotal useeff [] false");
+    }
+    console.log(fetchedTaskList, " отработал дисп");
+  }, []);
+
+  useEffect(() => {
     if (currentMonth < 0) {
       setCurrentMonth(11);
     }
     if (currentMonth > 11) {
       setCurrentMonth(0);
     }
-    if (currentYear - 1 < new Date().getFullYear()) {
+    if (currentYear - 1 < today.getFullYear()) {
       setIsLostYear(true);
     } else {
       setIsLostYear(false);
@@ -97,10 +129,12 @@ function Calendar() {
     setDaysInMonth(new Date(currentYear, currentMonth + 1, 0).getDate());
     localStorage.setItem("sessionStoryMonth", String(currentMonth));
     localStorage.setItem("sessionStoryYear", String(currentYear));
-    dispatch(checkChoosedMonth(currentMonth));
-    dispatch(checkChoosedYear(currentYear));
-    fetchMonthTasks();
-  }, [dispatch, currentMonth, currentYear]);
+    dispatch(checkUserMonth(currentMonth));
+    dispatch(checkUserYear(currentYear));
+    dispatch(fetchTaskBase());
+    setFetchedInfo(fetchedTaskList);
+    console.log("otrabotal useeff current");
+  }, [currentMonth, currentYear]);
 
   return (
     <div className="calendar">
@@ -136,6 +170,7 @@ function Calendar() {
                 key={item.date}
                 date={item.date}
                 taskCount={item.taskCount}
+                readyCount={item.readyCounter}
               />
             ))}
           </div>

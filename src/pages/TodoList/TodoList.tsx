@@ -11,8 +11,7 @@ import {
 } from "helpers/helpers";
 import {selectUserDate, selectUserMonth, selectUserYear} from "store/selectors";
 import getApi from "api/api";
-import {editChoosedTask} from "store/date/actions";
-import {selectIsEditTask} from "store/date/selectors";
+import {deleteChoosedTask, editChoosedTask} from "store/date/actions";
 import store from "store/store";
 
 type TasksType = {
@@ -120,50 +119,30 @@ function TodoList() {
     }
   }, []);
 
-  const removeTask = useCallback(
-    async (id: number) => {
-      await axios.delete(`${getApi(pathsBack.taskBase)}/${id}`);
-      setTaskList(taskList.filter(el => el.id !== id));
-    },
-    [taskList],
-  );
-
-  const editTask = async (id: number, param: {}) => {
-    await axios.put(`${getApi(pathsBack.taskBase)}/${id}`, {
-      ...param,
-    });
-    // .then(({data})=>console.log(data))
-  };
+  const removeTask = useCallback(async (id: number) => {
+    dispatch(deleteChoosedTask({id}));
+    setTaskList(taskList.filter(el => el.id !== id));
+  }, []);
 
   const transferTask = useCallback(
     async (id: number, increaserDate: number) => {
       if (window.confirm("Are you sure?")) {
-        const nextDate = getFullChoosedDate(
+        const nessesaryDate = getFullChoosedDate(
           choosedYear,
           choosedMonth,
           choosedDate,
           fullDayMseconds * increaserDate,
         );
-        editTask(id, {forDate: nextDate});
+        dispatch(editChoosedTask({id, param: {forDate: `${nessesaryDate}`}}));
         await someDelay(1000);
         setTaskList(taskList.filter(el => el.id !== id));
       } else {
         window.alert("Ok,think about it");
       }
     },
-    [choosedYear, choosedMonth, choosedDate, taskList],
+    [choosedYear, choosedMonth, choosedDate],
   );
 
-  const iseditTask = useSelector(selectIsEditTask);
-  useEffect(() => {
-    console.log(iseditTask, " iseditTask");
-  }, [iseditTask]);
-  const testEdit = async (e: any) => {
-    e.preventDefault();
-    dispatch(editChoosedTask({id: 97588, param: {forDate: "2022-11-11"}}));
-    await someDelay(1000);
-    setTaskList(taskList.filter(el => el.id !== 97588));
-  };
   return (
     <div className="todoList">
       <div className="todoList__block">
@@ -193,9 +172,6 @@ function TodoList() {
           >
             Create task
           </button>
-          <button type="button" onClick={e => testEdit(e)}>
-            test edit
-          </button>
         </div>
         <div className="block__listContainer">
           <div className="listContainer__list">
@@ -211,7 +187,6 @@ function TodoList() {
                   index={index + 1}
                   removeTask={removeTask}
                   transferTask={transferTask}
-                  editTask={editTask}
                 />
               ))
             ) : (

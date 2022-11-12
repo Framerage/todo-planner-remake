@@ -1,4 +1,7 @@
 import React, {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+import {editChoosedTask} from "store/date/actions";
+import store from "store/store";
 import "./todoItem.scss";
 
 type TodoItemProps = {
@@ -9,8 +12,9 @@ type TodoItemProps = {
   isTaskDone: boolean;
   removeTask: Function;
   transferTask: Function;
-  editTask: Function;
 };
+type AppDispatch = typeof store.dispatch;
+
 function TodoItem({
   taskName,
   taskDescrip,
@@ -19,10 +23,10 @@ function TodoItem({
   isTaskDone,
   removeTask,
   transferTask,
-  editTask,
 }: TodoItemProps) {
   const [increaserDate, setIncreaserDate] = useState(0);
   const [isDone, setIsDone] = useState(isTaskDone || false);
+  const dispatch = useDispatch<AppDispatch>();
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
       removeTask(num);
@@ -34,7 +38,8 @@ function TodoItem({
   const onCheckTask = useCallback((num: number) => {
     if (window.confirm("Is task ready?")) {
       setIsDone(!isDone);
-      editTask(num, {isTaskDone: !isDone});
+      // editTask(num, {isTaskDone: !isDone});
+      dispatch(editChoosedTask({id: num, param: {isTaskDone: !isDone}}));
     } else {
       setIsDone(false);
       window.alert("Think about task");

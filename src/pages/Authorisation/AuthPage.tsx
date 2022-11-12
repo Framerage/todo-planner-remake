@@ -1,36 +1,28 @@
 import React, {useState, useEffect} from "react";
 import "./styles.scss";
 import {useDispatch, useSelector} from "react-redux";
-// import {useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
 import store from "store/store";
 import {selectFetchedToken} from "store/auth/selectors";
 import {checkUserName, checkLoginToken} from "store/auth/actions";
 
 type AppDispatch = typeof store.dispatch;
-function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
+function AuthPage() {
   const [cookies, setCookies, removeCookies] = useCookies(["userToken"]);
   const [inputUserValue, setInputUserValue] = useState("");
   const [inputUserPass, setInputUserPass] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const fetchedToken = useSelector(selectFetchedToken);
-  // const navigate = useNavigate();
-
-  console.log(cookies, "cookies");
 
   useEffect(() => {
     if (fetchedToken) {
-      setIsAuthSuccess(true);
       dispatch(checkUserName(inputUserValue));
       setCookies("userToken", fetchedToken, {path: "/"});
-      localStorage.setItem("userCookies", fetchedToken);
-      console.log("отработал авторизейшн login");
+      localStorage.setItem("loginUser", String(cookies.userToken));
     } else {
       dispatch(checkUserName(""));
-      setIsAuthSuccess(false);
       removeCookies("userToken", {path: "/"});
-      localStorage.removeItem("userCookies");
-      console.log("отработал авторизейшн ne login");
+      localStorage.setItem("loginUser", "");
     }
   }, [fetchedToken]);
 
@@ -44,7 +36,12 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
       window.alert("Fill all fields");
     }
   };
-
+  const keyBoardEvent = (e: any) => {
+    const ev = e || window.event;
+    if (ev.keyCode === 13 || ev.which) {
+      getUsersValues(e);
+    }
+  };
   return (
     <form className="authForm">
       <div className="authForm__block">
@@ -58,7 +55,11 @@ function AuthPage({setIsAuthSuccess}: {setIsAuthSuccess: Function}) {
           type="text"
           placeholder="password"
         />
-        <button type="button" onClick={getUsersValues}>
+        <button
+          type="button"
+          onClick={getUsersValues}
+          onKeyPress={e => keyBoardEvent(e)}
+        >
           Enter
         </button>
       </div>

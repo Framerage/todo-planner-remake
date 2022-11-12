@@ -16,7 +16,15 @@ export const selectUserYear = createSelector(
   selectDateState,
   state => state.year,
 );
+export const selectFetchedTaskBase = createSelector(
+  selectDateState,
+  state => state.taskList,
+);
 export const selectIsEditTask = createSelector(
   selectDateState,
   state => state.isTaskEdit,
+);
+export const selectIsTaskDelete = createSelector(
+  selectDateState,
+  state => state.isTaskDelete,
 );

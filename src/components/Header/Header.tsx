@@ -23,7 +23,6 @@ function Header({namePage}: HeaderProps) {
   const onDropAuth = () => {
     dispatch(dropLoginToken(""));
     removeCookies("userToken", "");
-    localStorage.removeItem("userCookies");
     navigate(pathsBase.firstPage);
   };
   return (
@@ -43,7 +42,7 @@ function Header({namePage}: HeaderProps) {
             display: !cookies.userToken ? "none" : "",
           }}
           className="returnBtn"
-          onClick={hist.back}
+          onClick={() => hist.go(-1)}
         >
           {"<"}
         </div>

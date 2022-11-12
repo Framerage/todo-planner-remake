@@ -26,7 +26,19 @@
     button {
       font-size: 3em;
       width: 50px;
+      height: 20px;
       margin: 5px;
+      border: none;
+      &:hover{
+        cursor: pointer;
+        box-shadow: 0 0 10px 5px $themeBsColor;
+        border-radius: 5px;
+      }
+      &:focus{
+        cursor: pointer;
+        box-shadow: 0 0 10px 5px $themeBsColor;
+        border-radius: 5px;
+      }
     }
   }
 }

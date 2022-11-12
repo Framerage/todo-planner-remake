@@ -5,7 +5,9 @@ const initialStateDate: DateStateProps["date"] = {
   month: NaN,
   year: NaN,
   dateInfo: [],
+  taskList: [],
   isTaskEdit: false,
+  isTaskDelete: false,
   error: null,
 };
 export default initialStateDate;

@@ -4,9 +4,7 @@ import "./styles.scss";
 function Error() {
   return (
     <div className="errorBlock">
-      <h1 style={{color: "red"}}>
-        Error with authorization. Please, try again!
-      </h1>
+      <h1>Error with authorization. Please, try again!</h1>
     </div>
   );
 }

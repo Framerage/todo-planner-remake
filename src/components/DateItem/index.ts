@@ -1,3 +1,3 @@
-import DateItem from "./DateItem";
+export {default} from "./DateItem";
 
-export default DateItem;
+// export default DateItem;
