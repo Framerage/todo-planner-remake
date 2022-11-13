@@ -1,23 +1,22 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import "./styles.scss";
-import {months, pathsBack, weekDays} from "constances/constances";
+import {months, weekDays} from "constances/constances";
 import TodoItem from "components/TodoItem/TodoItem";
-import axios from "axios";
 import {
   getFetchedTimeStamp,
   getFullChoosedDate,
   someDelay,
 } from "helpers/helpers";
 import {selectUserDate, selectUserMonth, selectUserYear} from "store/selectors";
-import getApi from "api/api";
 import {
   deleteChoosedTask,
   editChoosedTask,
+  fetchTaskBase,
   postNewTask,
 } from "store/date/actions";
 import store from "store/store";
-import {selectPostedTask} from "store/date/selectors";
+import {selectFetchedTaskBase, selectPostedTask} from "store/date/selectors";
 
 type TasksType = {
   taskName: string;
@@ -29,6 +28,7 @@ type TasksType = {
 const fullDayMseconds = 24 * 60 * 60 * 1000;
 type AppDispatch = typeof store.dispatch;
 function TodoList() {
+  const fetchedTasks = useSelector(selectFetchedTaskBase);
   const choosedDate =
     useSelector(selectUserDate) || Number(localStorage.sessionStoryDate);
   const choosedMonth =
@@ -77,7 +77,6 @@ function TodoList() {
       window.alert("Fill all fields");
     }
   };
-
   useEffect(() => {
     setTaskList(prev =>
       prev.map(item => {
@@ -91,85 +90,66 @@ function TodoList() {
       }),
     );
   }, [newTask]);
-  // const createNewTask = useCallback(
-  //   async (date: string, task: {name: string; description: string}) => {
-  //     if (inputNameTask && inputDescriptionTask) {
-  //       try {
-  //         const obj = {
-  //           taskName: task.name,
-  //           taskDescrip: task.description,
-  //           forDate: date,
-  //           isTaskDone: false,
-  //         };
-  //         setTaskList(prev => [
-  //           ...prev,
-  //           {
-  //             taskName: task.name,
-  //             taskDescrip: task.description,
-  //             id: 0,
-  //             forDate: date,
-  //             isTaskDone: false,
-  //           },
-  //         ]);
-  //         const {data} = await axios.post(getApi(pathsBack.taskBase), obj);
-  //         setTaskList(prev =>
-  //           prev.map(item => {
-  //             if (item.taskDescrip === data.taskDescrip) {
-  //               return {
-  //                 ...item,
-  //                 id: data.id,
-  //               };
-  //             }
-  //             return item;
-  //           }),
-  //         );
-  //       } catch (e) {
-  //         return e;
-  //       }
-  //       setInputNameTask("");
-  //       setInputDescriptionTask("");
-  //       return true;
-  //     }
-  //     window.alert("Fill all fields");
-  //     return false;
-  //   },
-  //   [inputNameTask, inputDescriptionTask],
-  // );
 
   useEffect(() => {
-    const fetchTaskList = async () => {
-      await axios.get(getApi(pathsBack.taskBase)).then(({data}) => {
-        data.map(
-          (el: {
-            taskName: string;
-            taskDescrip: string;
-            id: number;
-            forDate: string;
-            isTaskDone: boolean;
-          }) => {
-            if (
-              choosedDate === getFetchedTimeStamp(el.forDate).getDate() &&
-              choosedMonth === getFetchedTimeStamp(el.forDate).getMonth() &&
-              choosedYear === getFetchedTimeStamp(el.forDate).getFullYear()
-            ) {
-              setTaskList(prev => [...prev, el]);
-            }
-            return data;
-          },
-        );
-      });
-    };
+    // if (taskList.length === 0) {
+    //   dispatch(fetchTaskBase());
+    // } else {
+    //   fetchedTasks.map(
+    //     (el: {
+    //       taskName: string;
+    //       taskDescrip: string;
+    //       id: number;
+    //       forDate: string;
+    //       isTaskDone: boolean;
+    //     }) => {
+    //       if (
+    //         choosedDate === getFetchedTimeStamp(el.forDate).getDate() &&
+    //         choosedMonth === getFetchedTimeStamp(el.forDate).getMonth() &&
+    //         choosedYear === getFetchedTimeStamp(el.forDate).getFullYear()
+    //       ) {
+    //         setTaskList(prev => [...prev, el]);
+    //       }
+    //       return fetchedTasks;
+    //     },
+    //   );
+    // }
+    console.log("rerender done");
+    dispatch(fetchTaskBase());
+  }, []);
+
+  useEffect(() => {
     if (!isTaskListReady && taskList.length === 0) {
-      fetchTaskList();
+      fetchedTasks.map(
+        (el: {
+          taskName: string;
+          taskDescrip: string;
+          id: number;
+          forDate: string;
+          isTaskDone: boolean;
+        }) => {
+          if (
+            choosedDate === getFetchedTimeStamp(el.forDate).getDate() &&
+            choosedMonth === getFetchedTimeStamp(el.forDate).getMonth() &&
+            choosedYear === getFetchedTimeStamp(el.forDate).getFullYear()
+          ) {
+            setTaskList(prev => [...prev, el]);
+          }
+          return fetchedTasks;
+        },
+      );
       setAweekDay(weekDays[getFetchedTimeStamp(fullDate).getDay()]);
       setIsTaskListReadty(true);
+      console.log("stage fetched true");
     } else {
       setIsTaskListReadty(false);
+      console.log("stage fetched false");
     }
-  }, []);
+  }, [fetchedTasks]);
 
   const removeTask = useCallback(async (id: number) => {
     dispatch(deleteChoosedTask({id}));
+    await someDelay(1000);
     setTaskList(taskList.filter(el => el.id !== id));
   }, []);
 
@@ -184,7 +164,9 @@ function TodoList() {
         );
         dispatch(editChoosedTask({id, param: {forDate: `${nessesaryDate}`}}));
         await someDelay(1000);
+        dispatch(fetchTaskBase());
         setTaskList(taskList.filter(el => el.id !== id));
+        console.log("trasfer work");
       } else {
         window.alert("Ok,think about it");
       }
