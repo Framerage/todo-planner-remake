@@ -2,7 +2,7 @@
   "name": "todo-planner-remake",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://framerage.github.io/",
+  "homepage": "https://framerage.github.io/todo-planner-remake",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.14.1",
