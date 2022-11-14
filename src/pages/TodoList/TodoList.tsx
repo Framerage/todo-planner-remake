@@ -64,7 +64,6 @@ function TodoList() {
       // тип any потому что хз что подставлять, на tasksType ругается
       dispatch(postNewTask({obj})).then(({payload}: any) => {
         if (payload) {
-          console.log(payload, " action create");
           setTaskList(prev => [...prev, payload]);
         }
       });
@@ -79,9 +78,6 @@ function TodoList() {
       setTaskList(prev =>
         prev.map(item => {
           if (item.taskDescrip === newTask.taskDescrip) {
-            console.log(newTask.taskDescrip, " newTask.taskDescrip");
-            console.log(item.taskDescrip, " item.taskDescrip");
-
             return {
               ...item,
               id: newTask.id,
@@ -149,26 +145,27 @@ function TodoList() {
     }
   }, [fetchedTasks]);
 
-  const editTask = useCallback(async (id: number, isDone: boolean) => {
-    dispatch(editChoosedTask({id, param: {isTaskDone: `${isDone}`}})).then(
-      action => {
-        console.log(action, "action info");
-        setTaskList(prev =>
-          prev.map(item => {
-            console.log(item.id === id, "from edit");
-            if (item.id === id) {
-              return {
-                ...item,
-                isTaskDone: isDone,
-              };
-            }
-            return item;
-          }),
-        );
-      },
-    );
-    await someDelay(1000);
-  }, []);
+  const editTask = useCallback(
+    async (id: number, isDone: boolean) => {
+      dispatch(editChoosedTask({id, param: {isTaskDone: `${isDone}`}})).then(
+        () => {
+          setTaskList(prev =>
+            prev.map(item => {
+              if (item.id === id) {
+                return {
+                  ...item,
+                  isTaskDone: isDone,
+                };
+              }
+              return item;
+            }),
+          );
+        },
+      );
+      await someDelay(1000);
+    },
+    [taskList],
+  );
 
   const removeTask = useCallback(
     (id: number) => {
@@ -179,7 +176,6 @@ function TodoList() {
     [taskList],
   );
 
-  console.log(taskList, " taskList");
   const transferTask = useCallback(
     (id: number, increaserDate: number) => {
       if (window.confirm("Are you sure?") && increaserDate !== 0) {

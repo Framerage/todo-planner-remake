@@ -47,6 +47,7 @@
       .userValues__monthParams {
         display: flex;
         margin: 0 10px;
+        max-width: 150px;
 
         span {
           font-size: 5em;
@@ -60,6 +61,7 @@
         }
         .monthParams__month {
           min-width: 100px;
+          max-width: 120px;
           text-align: center;
           font-size: 5em;
           color: $textHeadersColor;
@@ -98,8 +100,11 @@
       .block__userValues {
         width: 250px;
         .userValues__monthParams {
+          span{
+            margin: 0;
+          }
           .monthParams__month {
-            min-width: 50px;
+            font-size: 4.5em;
           }
         }
       }

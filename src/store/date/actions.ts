@@ -34,7 +34,6 @@ export const editChoosedTask = createAsyncThunk<
     if (responce.status >= 400) {
       throw new Error('Can"t edit task');
     }
-    // return responce.status===200
     const isEdit = [responce.status === 200, responce.data];
     return isEdit[0];
   } catch (e) {
@@ -49,7 +48,6 @@ export const postNewTask = createAsyncThunk<
       taskName: string;
       taskDescrip: string;
       isTaskDone: boolean;
-      // id: number;
       forDate: string;
     };
   }
@@ -59,8 +57,6 @@ export const postNewTask = createAsyncThunk<
     if (responce.status >= 400) {
       throw new Error('Can"t post task');
     }
-    // const isPost = [responce.status === 200, responce.data];
-    // return isPost[0];
     return responce.data;
   } catch (e) {
     return e;

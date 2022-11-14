@@ -22,8 +22,9 @@ function TodoItem({
   transferTask,
   editTask,
 }: TodoItemProps) {
+  // console.log(isTaskDone, " isTaskDone from todoitem");
   const [increaserDate, setIncreaserDate] = useState(0);
-  const [isDone, setIsDone] = useState(isTaskDone);
+  const [isDone, setIsDone] = useState(false);
   // const []
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
@@ -33,22 +34,31 @@ function TodoItem({
     }
   };
 
-  const onCheckTask = useCallback((num: number) => {
-    if (window.confirm("Is task ready?")) {
-      setIsDone(!isDone);
-      editTask(num, !isDone);
-      console.log(!isDone, "is done");
-      // dispatch(editChoosedTask({id: num, param: {isTaskDone: !isDone}}));
-    } else {
-      setIsDone(false);
-      // editTask(num, !isDone);
+  const onCheckTask = useCallback(
+    (num: number) => {
+      if (window.confirm("Is task ready?")) {
+        if (isDone === true) {
+          setIsDone(false);
+          editTask(num, false);
+        } else {
+          setIsDone(true);
+          editTask(num, true);
+        }
+        // setIsDone(!isDone);
+        // console.log(!isDone, "is done");
+        // dispatch(editChoosedTask({id: num, param: {isTaskDone: !isDone}}));
+      } else {
+        setIsDone(false);
+        // editTask(num, !isDone);
 
-      window.alert("Think about task");
-    }
-  }, []);
+        window.alert("Think about task");
+      }
+    },
+    [isDone],
+  );
   // TODO: убрать инлайновыйе стили, добавление классов, рабобраться с webpack file-loader for scss
   return (
-    <div className={isDone ? "todoItem taskDone" : "todoItem"}>
+    <div className={isTaskDone ? "todoItem taskDone" : "todoItem"}>
       <div className="todoItem__text">
         <div className="text__title">
           <span>
