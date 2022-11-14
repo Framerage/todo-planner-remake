@@ -15,8 +15,9 @@ import {
   fetchTaskBase,
   postNewTask,
 } from "store/date/actions";
-import store from "store/store";
 import {selectFetchedTaskBase, selectPostedTask} from "store/date/selectors";
+import {AppDispatch} from "store/types";
+// import {DateStateProps} from "store/date/types";
 
 type TasksType = {
   taskName: string;
@@ -26,15 +27,13 @@ type TasksType = {
   forDate: string;
 }[];
 const fullDayMseconds = 24 * 60 * 60 * 1000;
-type AppDispatch = typeof store.dispatch;
 function TodoList() {
+  const dispatch = useDispatch<AppDispatch>();
+  const newTask = useSelector(selectPostedTask);
   const fetchedTasks = useSelector(selectFetchedTaskBase);
-  const choosedDate =
-    useSelector(selectUserDate) || Number(localStorage.sessionStoryDate);
-  const choosedMonth =
-    useSelector(selectUserMonth) || Number(localStorage.sessionStoryMonth);
-  const choosedYear =
-    useSelector(selectUserYear) || Number(localStorage.sessionStoryYear);
+  const choosedDate = useSelector(selectUserDate);
+  const choosedMonth = useSelector(selectUserMonth);
+  const choosedYear = useSelector(selectUserYear);
   const [aWeekDay, setAweekDay] = useState("");
   const [taskList, setTaskList] = useState<TasksType>([]);
   const [isTaskListReady, setIsTaskListReadty] = useState(false);
@@ -44,53 +43,58 @@ function TodoList() {
     choosedDate,
     0,
   );
-  const newTask = useSelector(selectPostedTask);
+  const [isIdToken, setIsIdToken] = useState(false);
   const [inputNameTask, setInputNameTask] = useState("");
   const [inputDescriptionTask, setInputDescriptionTask] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
 
   const createNewTask = (
     date: string,
     task: {name: string; description: string},
   ) => {
-    if (inputNameTask && inputDescriptionTask) {
+    const condition = inputNameTask && inputDescriptionTask;
+    if (!condition) {
+      window.alert("Fill all fields");
+    } else {
       const obj = {
         taskName: task.name,
         taskDescrip: task.description,
         forDate: date,
         isTaskDone: false,
       };
-      dispatch(postNewTask({obj}));
-      setTaskList(prev => [
-        ...prev,
-        {
-          taskName: task.name,
-          taskDescrip: task.description,
-          id: 0,
-          forDate: date,
-          isTaskDone: false,
-        },
-      ]);
+      // тип any потому что хз что подставлять, на tasksType ругается
+      dispatch(postNewTask({obj})).then(({payload}: any) => {
+        if (payload) {
+          console.log(payload, " action create");
+          setTaskList(prev => [...prev, payload]);
+        }
+      });
       setInputNameTask("");
       setInputDescriptionTask("");
-    } else {
-      window.alert("Fill all fields");
     }
   };
   useEffect(() => {
-    setTaskList(prev =>
-      prev.map(item => {
-        if (item.taskDescrip === newTask.taskDescrip) {
-          return {
-            ...item,
-            id: newTask.id,
-          };
-        }
-        return item;
-      }),
-    );
+    if (isIdToken) {
+      setIsIdToken(false);
+    } else {
+      setTaskList(prev =>
+        prev.map(item => {
+          if (item.taskDescrip === newTask.taskDescrip) {
+            console.log(newTask.taskDescrip, " newTask.taskDescrip");
+            console.log(item.taskDescrip, " item.taskDescrip");
+
+            return {
+              ...item,
+              id: newTask.id,
+            };
+          }
+          return item;
+        }),
+      );
+      setIsIdToken(true);
+    }
   }, [newTask]);
 
+  // rerender
   useEffect(() => {
     // if (taskList.length === 0) {
     //   dispatch(fetchTaskBase());
@@ -140,38 +144,61 @@ function TodoList() {
       );
       setAweekDay(weekDays[getFetchedTimeStamp(fullDate).getDay()]);
       setIsTaskListReadty(true);
-      console.log("stage fetched true");
     } else {
       setIsTaskListReadty(false);
-      console.log("stage fetched false");
     }
   }, [fetchedTasks]);
 
-  const removeTask = useCallback(async (id: number) => {
-    dispatch(deleteChoosedTask({id}));
+  const editTask = useCallback(async (id: number, isDone: boolean) => {
+    dispatch(editChoosedTask({id, param: {isTaskDone: `${isDone}`}})).then(
+      action => {
+        console.log(action, "action info");
+        setTaskList(prev =>
+          prev.map(item => {
+            console.log(item.id === id, "from edit");
+            if (item.id === id) {
+              return {
+                ...item,
+                isTaskDone: isDone,
+              };
+            }
+            return item;
+          }),
+        );
+      },
+    );
     await someDelay(1000);
-    setTaskList(taskList.filter(el => el.id !== id));
   }, []);
 
+  const removeTask = useCallback(
+    (id: number) => {
+      dispatch(deleteChoosedTask({id})).then(() => {
+        setTaskList(taskList.filter(el => el.id !== id));
+      });
+    },
+    [taskList],
+  );
+
+  console.log(taskList, " taskList");
   const transferTask = useCallback(
-    async (id: number, increaserDate: number) => {
-      if (window.confirm("Are you sure?")) {
+    (id: number, increaserDate: number) => {
+      if (window.confirm("Are you sure?") && increaserDate !== 0) {
         const nessesaryDate = getFullChoosedDate(
           choosedYear,
           choosedMonth,
           choosedDate,
           fullDayMseconds * increaserDate,
         );
-        dispatch(editChoosedTask({id, param: {forDate: `${nessesaryDate}`}}));
-        await someDelay(1000);
-        dispatch(fetchTaskBase());
-        setTaskList(taskList.filter(el => el.id !== id));
-        console.log("trasfer work");
+        dispatch(
+          editChoosedTask({id, param: {forDate: `${nessesaryDate}`}}),
+        ).then(() => {
+          setTaskList(taskList.filter(el => el.id !== id));
+        });
       } else {
         window.alert("Ok,think about it");
       }
     },
-    [choosedYear, choosedMonth, choosedDate],
+    [choosedYear, choosedMonth, choosedDate, taskList],
   );
 
   return (
@@ -181,7 +208,6 @@ function TodoList() {
           <input
             value={inputNameTask}
             onChange={e => setInputNameTask(e.target.value)}
-            type="text"
             placeholder="name of task"
           />
           <input
@@ -194,9 +220,7 @@ function TodoList() {
             type="button"
             onClick={() =>
               createNewTask(fullDate, {
-                name: inputNameTask
-                  ? inputNameTask[0].toUpperCase() + inputNameTask.slice(1)
-                  : inputNameTask,
+                name: inputNameTask[0].toUpperCase() + inputNameTask.slice(1),
                 description: inputDescriptionTask
                   ? inputDescriptionTask[0].toUpperCase() +
                     inputDescriptionTask.slice(1)
@@ -213,7 +237,7 @@ function TodoList() {
               Tasklist of {choosedDate} {months[choosedMonth]} {choosedYear} (
               {aWeekDay})
             </h2>
-            {taskList.length !== 0 ? (
+            {taskList.length ? (
               taskList.map((task, index) => (
                 <TodoItem
                   key={task.taskName + task.id}
@@ -221,6 +245,7 @@ function TodoList() {
                   index={index + 1}
                   removeTask={removeTask}
                   transferTask={transferTask}
+                  editTask={editTask}
                 />
               ))
             ) : (

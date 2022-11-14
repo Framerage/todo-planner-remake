@@ -76,7 +76,7 @@ export const deleteChoosedTask = createAsyncThunk<DateStateProps, {id: number}>(
       if (responce.status >= 400) {
         throw new Error('Can"t delete task');
       }
-      const delResult = [responce.status, responce.data];
+      const delResult = [responce.status === 200, responce.data];
       return delResult[0];
     } catch (e) {
       return e;

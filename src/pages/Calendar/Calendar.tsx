@@ -4,10 +4,9 @@ import {months} from "constances/constances";
 import "./styles.scss";
 import {selectUserMonth, selectUserYear} from "store/selectors";
 import {getFetchedTimeStamp} from "helpers/helpers";
-import store from "store/store";
 import {checkUserMonth, checkUserYear, fetchTaskBase} from "store/date/actions";
 import {selectFetchedTaskBase} from "store/date/selectors";
-
+import {AppDispatch} from "store/types";
 import DateItem from "../../components/DateItem/DateItem";
 
 type FetchInfoType = {
@@ -17,7 +16,6 @@ type FetchInfoType = {
   forDate: string;
   isTaskDone: boolean;
 }[];
-type AppDispatch = typeof store.dispatch;
 
 function Calendar() {
   const dispatch = useDispatch<AppDispatch>();
