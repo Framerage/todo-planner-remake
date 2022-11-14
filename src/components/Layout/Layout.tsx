@@ -2,7 +2,7 @@ import Error from "components/Error/Error";
 import AuthPage from "pages/Authorisation/AuthPage";
 import React, {useEffect} from "react";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
-import {pathsBase} from "constances/constances";
+import {PATHS_BASE} from "constances/constances";
 import {getPageName} from "helpers/helpers";
 import Header from "components/Header/Header";
 import "./styles.scss";
@@ -16,8 +16,11 @@ function Layout() {
   const [cookies] = useCookies(["userToken"]);
   const hist = createBrowserHistory();
   useEffect(() => {
-    if (cookies.userToken && hist.location.pathname !== "/&nbsp;") {
-      navigate(pathsBase.calendar);
+    if (
+      cookies.userToken &&
+      hist.location.pathname !== "todo-planner-remake/&nbsp;"
+    ) {
+      navigate(PATHS_BASE.calendar);
     } else {
       navigate(hist.location.pathname);
     }
@@ -29,8 +32,8 @@ function Layout() {
       <Header namePage={getPageName(pathname, !!cookies.userToken) || " "} />
       {!!cookies.userToken ? (
         <Routes>
-          <Route index path={pathsBase.calendar} element={<Calendar />} />
-          <Route path={`${pathsBase.calendar}/:id`} element={<TodoList />} />
+          <Route index path={PATHS_BASE.calendar} element={<Calendar />} />
+          <Route path={`${PATHS_BASE.calendar}/:id`} element={<TodoList />} />
           <Route path="*" element={<Error />} />
         </Routes>
       ) : (

@@ -7,23 +7,24 @@ import {getFetchedTimeStamp} from "helpers/helpers";
 import {checkUserMonth, checkUserYear, fetchTaskBase} from "store/date/actions";
 import {selectFetchedTaskBase} from "store/date/selectors";
 import {AppDispatch} from "store/types";
+import {TasksProps} from "types/appTypes";
 import DateItem from "../../components/DateItem/DateItem";
 
-type FetchInfoType = {
-  taskName: string;
-  taskDescrip: string;
-  id: number;
-  forDate: string;
-  isTaskDone: boolean;
-}[];
+// type FetchInfoType = {
+//   taskName: string;
+//   taskDescrip: string;
+//   id: number;
+//   forDate: string;
+//   isTaskDone: boolean;
+// }[];
 
 function Calendar() {
   const dispatch = useDispatch<AppDispatch>();
   const userMonth = useSelector(selectUserMonth);
   const userYear = useSelector(selectUserYear);
+  const fetchedTaskList = useSelector(selectFetchedTaskBase);
 
   const [today] = useState(new Date());
-  const fetchedTaskList = useSelector(selectFetchedTaskBase);
   const [currentMonth, setCurrentMonth] = useState(
     userMonth || today.getMonth(),
   );
@@ -34,23 +35,20 @@ function Calendar() {
   const [daysInMonth, setDaysInMonth] = useState(
     new Date(currentYear, currentMonth + 1, 0).getDate(),
   );
-  const [fetchedInfo, setFetchedInfo] =
-    useState<FetchInfoType>(fetchedTaskList);
+  const [fetchedInfo, setFetchedInfo] = useState<TasksProps[]>(fetchedTaskList);
 
   // кастыль для серва
   const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
-
   if (fetchedInfo) {
     for (let i = 0; i < daysInMonth; i += 1) {
       let count = 0;
       let readyCount = 0;
       for (let y = 0; y < fetchedInfo.length; y += 1) {
+        const nessTimeStamp = getFetchedTimeStamp(fetchedInfo[y].forDate);
         if (
-          getFetchedTimeStamp(fetchedInfo[y].forDate).getDate() === i + 1 &&
-          currentMonth ===
-            getFetchedTimeStamp(fetchedInfo[y].forDate).getMonth() &&
-          currentYear ===
-            getFetchedTimeStamp(fetchedInfo[y].forDate).getFullYear()
+          nessTimeStamp.getDate() === i + 1 &&
+          currentMonth === nessTimeStamp.getMonth() &&
+          currentYear === nessTimeStamp.getFullYear()
         ) {
           currentDates[i] = {
             ...currentDates[i],
@@ -60,7 +58,7 @@ function Calendar() {
             count += 1;
             currentDates[i] = {
               ...currentDates[i],
-              date: i + 1,
+              // date: i + 1,
               taskCount: count,
               readyCounter: readyCount,
             };
@@ -68,7 +66,7 @@ function Calendar() {
             readyCount += 1;
             currentDates[i] = {
               ...currentDates[i],
-              date: i + 1,
+              // date: i + 1,
               taskCount: count,
               readyCounter: readyCount,
             };
@@ -85,12 +83,14 @@ function Calendar() {
   }
   // TODO: review ALL FILE!!!
 
-  const changeYear = (e: any) => {
+  const changeYear = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    if (!(e.target instanceof HTMLElement)) return;
     const betweens = e.target.textContent === "<" ? -1 : 1;
     setCurrentYear(currentYear + betweens);
   };
 
-  const changeMonth = (e: any) => {
+  const changeMonth = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    if (!(e.target instanceof HTMLElement)) return;
     const betweens = e.target.textContent === "<" ? -1 : 1;
     setCurrentMonth(currentMonth + betweens);
   };
@@ -148,12 +148,7 @@ function Calendar() {
         <div className="block__container">
           <div className="block__dates">
             {currentDates.map(item => (
-              <DateItem
-                key={item.date}
-                date={item.date}
-                taskCount={item.taskCount}
-                readyCount={item.readyCounter}
-              />
+              <DateItem key={item.date} {...item} />
             ))}
           </div>
         </div>

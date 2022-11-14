@@ -75,7 +75,7 @@ function TodoItem({
             role="presentation"
             onClick={() => onCheckTask(id)}
             className={
-              isDone ? "active__doneTaskBtn" : "active__currentTaskBtn"
+              isTaskDone ? "active__TaskBtn taskBtnDone" : "active__TaskBtn"
             }
           >
             o

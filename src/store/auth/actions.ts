@@ -1,7 +1,7 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import getApi from "api/api";
 import axios from "axios";
-import {pathsBack} from "constances/constances";
+import {PATHS_BACK} from "constances/constances";
 import {AuthStateProps} from "./types";
 
 export const checkAuth = createAction<boolean>("AUTH_isAuth");
@@ -14,7 +14,7 @@ export const checkLoginToken = createAsyncThunk<
 >("FETCH_isAuthFetch", async ({userName, userPass}) => {
   if (userName && userPass) {
     try {
-      const responce = await axios.get(getApi(pathsBack.login), {
+      const responce = await axios.get(getApi(PATHS_BACK.login), {
         data: {},
         params: {},
       });

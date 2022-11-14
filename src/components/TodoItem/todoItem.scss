@@ -44,7 +44,7 @@
     min-height: 50px;
     .active__kinds{
       display: flex;
-      .active__currentTaskBtn{
+      .active__TaskBtn{
         width: 20px;
         height: 20px;
         border: 1px solid grey;
@@ -53,25 +53,14 @@
         cursor: pointer;
         transition: 0.2s;
         background-size: cover;
-        background-image: url(./assets/inWorking.png);
+        background-image: url(../../assets/images/inWorking.png);
         &:hover {
           box-shadow: 0 0 10px 2px green;
         }
       }
-      .active__doneTaskBtn{
-        width: 20px;
-        height: 20px;
+      .taskBtnDone{
         border: 1px solid green;
-        border-radius: 10px;
-        margin: 5px;
-        cursor: pointer;
-        transition: 0.2s;
-        background-size: cover;
-        background-image: url(./assets/done.svg);
-
-        &:hover {
-          box-shadow: 0 0 10px 2px white;
-        }
+        background-image: url(../../assets/images/done.svg);
       }
       .active__removeBtn {
         margin: 5px;

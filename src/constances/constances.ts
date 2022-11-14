@@ -15,7 +15,7 @@ export const MONTHS: string[] = [
   "November",
   "December",
 ];
-export const pathsBase: {
+export const PATHS_BASE: {
   login: string;
   calendar: string;
   error: string;
@@ -26,7 +26,7 @@ export const pathsBase: {
   calendar: "todo-planner-remake/dates",
   error: "todo-planner-remake/error",
 };
-export const pathsBack: {taskBase: string; login: string} = {
+export const PATHS_BACK: {taskBase: string; login: string} = {
   login: "login",
   taskBase: "dataBase",
 };

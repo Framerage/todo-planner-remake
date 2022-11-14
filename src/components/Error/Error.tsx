@@ -8,6 +8,4 @@ function Error() {
     </div>
   );
 }
-
 export default Error;
-// TODO: export const Error, file index.ts export {default} from './Error'

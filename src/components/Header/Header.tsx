@@ -1,7 +1,7 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {pathsBase} from "constances/constances";
+import {PATHS_BASE} from "constances/constances";
 import "./styles.scss";
 import {useCookies} from "react-cookie";
 import {createBrowserHistory} from "history";
@@ -23,7 +23,7 @@ function Header({namePage}: HeaderProps) {
   const onDropAuth = () => {
     dispatch(dropLoginToken(""));
     removeCookies("userToken", "");
-    navigate(pathsBase.firstPage);
+    navigate(PATHS_BASE.firstPage);
   };
   return (
     <header className="header">

@@ -1,19 +1,19 @@
-import {pathsBase} from "../constances/constances";
+import {PATHS_BASE} from "../constances/constances";
 
 export const getPageName = (pathname: string, isAuth: boolean) => {
-  if (pathname === "/login" || isAuth === false) {
+  if (pathname === "todo-planner-remake/login" || isAuth === false) {
     return "Authorization";
   }
 
-  if (pathname.includes(pathsBase.calendar)) {
+  if (pathname.includes(PATHS_BASE.calendar)) {
     return "Calendar";
   }
 
-  if (pathname.includes(`${pathsBase.calendar}/:`)) {
+  if (pathname.includes(`${PATHS_BASE.calendar}/:`)) {
     return "ToDo List";
   }
 
-  if (pathname.includes(`${pathsBase.error}`)) {
+  if (pathname.includes(`${PATHS_BASE.error}`)) {
     return "Error";
   }
   return "";

@@ -1,7 +1,7 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import getApi from "api/api";
 import axios from "axios";
-import {pathsBack} from "constances/constances";
+import {PATHS_BACK} from "constances/constances";
 import {DateStateProps} from "./types";
 
 export const checkUserDate = createAction<number>("DATE_checkDate");
@@ -12,7 +12,7 @@ export const fetchTaskBase = createAsyncThunk<DateStateProps>(
   "DATE_fetchTaskBase",
   async () => {
     try {
-      const responce = await axios.get(getApi(pathsBack.taskBase));
+      const responce = await axios.get(getApi(PATHS_BACK.taskBase));
       if (responce.status >= 429) {
         throw new Error('Can"t edit task');
       }
@@ -28,7 +28,7 @@ export const editChoosedTask = createAsyncThunk<
   {id: number; param: {}}
 >("DATE_putTask", async ({id, param}) => {
   try {
-    const responce = await axios.put(`${getApi(pathsBack.taskBase)}/${id}`, {
+    const responce = await axios.put(`${getApi(PATHS_BACK.taskBase)}/${id}`, {
       ...param,
     });
     if (responce.status >= 400) {
@@ -53,7 +53,7 @@ export const postNewTask = createAsyncThunk<
   }
 >("DATE_postNewTask", async ({obj}) => {
   try {
-    const responce = await axios.post(getApi(pathsBack.taskBase), obj);
+    const responce = await axios.post(getApi(PATHS_BACK.taskBase), obj);
     if (responce.status >= 400) {
       throw new Error('Can"t post task');
     }
@@ -67,7 +67,7 @@ export const deleteChoosedTask = createAsyncThunk<DateStateProps, {id: number}>(
   async ({id}) => {
     try {
       const responce = await axios.delete(
-        `${getApi(pathsBack.taskBase)}/${id}`,
+        `${getApi(PATHS_BACK.taskBase)}/${id}`,
       );
       if (responce.status >= 400) {
         throw new Error('Can"t delete task');

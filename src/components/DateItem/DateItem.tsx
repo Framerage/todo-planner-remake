@@ -7,10 +7,10 @@ import "./styles.scss";
 type DateItemProps = {
   date: number;
   taskCount: number;
-  readyCount: number;
+  readyCounter: number;
 };
 
-function DateItem({date, taskCount, readyCount}: DateItemProps) {
+function DateItem({date, taskCount, readyCounter}: DateItemProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [counterStyle, setCounterStyle] = useState("item__counter lightgreen");
@@ -38,7 +38,7 @@ function DateItem({date, taskCount, readyCount}: DateItemProps) {
     >
       <div className="item__date">{date}</div>
       <span className={counterStyle}>{taskCount}</span>
-      <span className="item__readyCounter">{readyCount}</span>
+      <span className="item__readyCounter">{readyCounter}</span>
     </div>
   );
 }
