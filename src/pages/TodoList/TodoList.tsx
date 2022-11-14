@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import "./styles.scss";
-import {months, weekDays} from "constances/constances";
+import {FULL_DAY_MSECONDS, MONTHS, WEEK_DAYS} from "constances/constances";
 import TodoItem from "components/TodoItem/TodoItem";
 import {
+  editFirstSymbolToUpperCase,
   getFetchedTimeStamp,
   getFullChoosedDate,
   someDelay,
@@ -17,16 +18,9 @@ import {
 } from "store/date/actions";
 import {selectFetchedTaskBase, selectPostedTask} from "store/date/selectors";
 import {AppDispatch} from "store/types";
-// import {DateStateProps} from "store/date/types";
+import {DateStateProps} from "store/date/types";
+import {TasksProps} from "types/appTypes";
 
-type TasksType = {
-  taskName: string;
-  taskDescrip: string;
-  isTaskDone: boolean;
-  id: number;
-  forDate: string;
-}[];
-const fullDayMseconds = 24 * 60 * 60 * 1000;
 function TodoList() {
   const dispatch = useDispatch<AppDispatch>();
   const newTask = useSelector(selectPostedTask);
@@ -35,7 +29,9 @@ function TodoList() {
   const choosedMonth = useSelector(selectUserMonth);
   const choosedYear = useSelector(selectUserYear);
   const [aWeekDay, setAweekDay] = useState("");
-  const [taskList, setTaskList] = useState<TasksType>([]);
+  const [taskList, setTaskList] = useState<
+    DateStateProps["date"]["postedTask"][]
+  >([]);
   const [isTaskListReady, setIsTaskListReadty] = useState(false);
   const fullDate = getFullChoosedDate(
     choosedYear,
@@ -43,7 +39,7 @@ function TodoList() {
     choosedDate,
     0,
   );
-  const [isIdToken, setIsIdToken] = useState(false);
+  const [isIdTaken, setIsIdTaken] = useState(false);
   const [inputNameTask, setInputNameTask] = useState("");
   const [inputDescriptionTask, setInputDescriptionTask] = useState("");
 
@@ -71,9 +67,10 @@ function TodoList() {
       setInputDescriptionTask("");
     }
   };
+  // all ok
   useEffect(() => {
-    if (isIdToken) {
-      setIsIdToken(false);
+    if (isIdTaken) {
+      setIsIdTaken(false);
     } else {
       setTaskList(prev =>
         prev.map(item => {
@@ -86,87 +83,55 @@ function TodoList() {
           return item;
         }),
       );
-      setIsIdToken(true);
+      setIsIdTaken(true);
     }
   }, [newTask]);
 
-  // rerender
+  // rerender , all ok
   useEffect(() => {
-    // if (taskList.length === 0) {
-    //   dispatch(fetchTaskBase());
-    // } else {
-    //   fetchedTasks.map(
-    //     (el: {
-    //       taskName: string;
-    //       taskDescrip: string;
-    //       id: number;
-    //       forDate: string;
-    //       isTaskDone: boolean;
-    //     }) => {
-    //       if (
-    //         choosedDate === getFetchedTimeStamp(el.forDate).getDate() &&
-    //         choosedMonth === getFetchedTimeStamp(el.forDate).getMonth() &&
-    //         choosedYear === getFetchedTimeStamp(el.forDate).getFullYear()
-    //       ) {
-    //         setTaskList(prev => [...prev, el]);
-    //       }
-    //       return fetchedTasks;
-    //     },
-    //   );
-    // }
-    console.log("rerender done");
     dispatch(fetchTaskBase());
   }, []);
-
+  // all ok
   useEffect(() => {
     if (!isTaskListReady && taskList.length === 0) {
-      fetchedTasks.map(
-        (el: {
-          taskName: string;
-          taskDescrip: string;
-          id: number;
-          forDate: string;
-          isTaskDone: boolean;
-        }) => {
-          if (
-            choosedDate === getFetchedTimeStamp(el.forDate).getDate() &&
-            choosedMonth === getFetchedTimeStamp(el.forDate).getMonth() &&
-            choosedYear === getFetchedTimeStamp(el.forDate).getFullYear()
-          ) {
-            setTaskList(prev => [...prev, el]);
-          }
-          return fetchedTasks;
-        },
-      );
-      setAweekDay(weekDays[getFetchedTimeStamp(fullDate).getDay()]);
+      fetchedTasks.map((el: TasksProps) => {
+        const curTimeStamp = getFetchedTimeStamp(el.forDate);
+        if (
+          choosedDate === curTimeStamp.getDate() &&
+          choosedMonth === curTimeStamp.getMonth() &&
+          choosedYear === curTimeStamp.getFullYear()
+        ) {
+          setTaskList(prev => [...prev, el]);
+        }
+        return fetchedTasks;
+      });
+      setAweekDay(WEEK_DAYS[getFetchedTimeStamp(fullDate).getDay()]);
       setIsTaskListReadty(true);
     } else {
       setIsTaskListReadty(false);
     }
   }, [fetchedTasks]);
-
+  // all ok
   const editTask = useCallback(
-    async (id: number, isDone: boolean) => {
-      dispatch(editChoosedTask({id, param: {isTaskDone: `${isDone}`}})).then(
-        () => {
-          setTaskList(prev =>
-            prev.map(item => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  isTaskDone: isDone,
-                };
-              }
-              return item;
-            }),
-          );
-        },
-      );
-      await someDelay(1000);
+    (id: number, isDone: boolean) => {
+      dispatch(editChoosedTask({id, param: {isTaskDone: isDone}})).then(() => {
+        setTaskList(prev =>
+          prev.map(item => {
+            if (item.id === id) {
+              return {
+                ...item,
+                isTaskDone: isDone,
+              };
+            }
+            return item;
+          }),
+        );
+      });
+      someDelay(1000);
     },
     [taskList],
   );
-
+  // all ok
   const removeTask = useCallback(
     (id: number) => {
       dispatch(deleteChoosedTask({id})).then(() => {
@@ -175,7 +140,7 @@ function TodoList() {
     },
     [taskList],
   );
-
+  // all ok
   const transferTask = useCallback(
     (id: number, increaserDate: number) => {
       if (window.confirm("Are you sure?") && increaserDate !== 0) {
@@ -183,7 +148,7 @@ function TodoList() {
           choosedYear,
           choosedMonth,
           choosedDate,
-          fullDayMseconds * increaserDate,
+          FULL_DAY_MSECONDS * increaserDate,
         );
         dispatch(
           editChoosedTask({id, param: {forDate: `${nessesaryDate}`}}),
@@ -209,18 +174,14 @@ function TodoList() {
           <input
             value={inputDescriptionTask}
             onChange={e => setInputDescriptionTask(e.target.value)}
-            type="text"
             placeholder="description of task"
           />
           <button
             type="button"
             onClick={() =>
               createNewTask(fullDate, {
-                name: inputNameTask[0].toUpperCase() + inputNameTask.slice(1),
-                description: inputDescriptionTask
-                  ? inputDescriptionTask[0].toUpperCase() +
-                    inputDescriptionTask.slice(1)
-                  : inputDescriptionTask,
+                name: editFirstSymbolToUpperCase(inputNameTask),
+                description: editFirstSymbolToUpperCase(inputDescriptionTask),
               })
             }
           >
@@ -230,7 +191,7 @@ function TodoList() {
         <div className="block__listContainer">
           <div className="listContainer__list">
             <h2>
-              Tasklist of {choosedDate} {months[choosedMonth]} {choosedYear} (
+              Tasklist of {choosedDate} {MONTHS[choosedMonth]} {choosedYear} (
               {aWeekDay})
             </h2>
             {taskList.length ? (

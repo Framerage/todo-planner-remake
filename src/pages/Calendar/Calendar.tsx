@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {months} from "constances/constances";
+import {MONTHS} from "constances/constances";
 import "./styles.scss";
 import {selectUserMonth, selectUserYear} from "store/selectors";
 import {getFetchedTimeStamp} from "helpers/helpers";
@@ -139,7 +139,7 @@ function Calendar() {
             <span role="presentation" onClick={changeMonth}>
               {"<"}
             </span>
-            <span className="monthParams__month">{months[currentMonth]}</span>
+            <span className="monthParams__month">{MONTHS[currentMonth]}</span>
             <span role="presentation" onClick={changeMonth}>
               {">"}
             </span>

@@ -1,5 +1,7 @@
 // TODO: перенести в отдельную папку
-export const months: string[] = [
+export const FULL_DAY_MSECONDS = 24 * 60 * 60 * 1000;
+
+export const MONTHS: string[] = [
   "January",
   "February",
   "March",
@@ -29,7 +31,7 @@ export const pathsBack: {taskBase: string; login: string} = {
   taskBase: "dataBase",
 };
 
-export const weekDays: string[] = [
+export const WEEK_DAYS: string[] = [
   "Sunday",
   "Monday",
   "Tuesday",

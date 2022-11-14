@@ -17,7 +17,7 @@ useHistory(> /login)удален в react 6
 убрать module (настройка в webpack (module:true/false наверное)) не нашел
 styles глобальные стили, цвета, шрифты, у каждого компонента свой style.scss, index.js и сам компонент+
 
-все запросы и посты в creatasyncthunk
+все запросы и посты в creatasyncthunk+
 coockie(token) +
 
 inline стили переделать(убрать)+ (только в TodoItem)+

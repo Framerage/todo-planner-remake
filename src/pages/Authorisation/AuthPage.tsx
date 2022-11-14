@@ -2,11 +2,10 @@ import React, {useState, useEffect} from "react";
 import "./styles.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {useCookies} from "react-cookie";
-import store from "store/store";
 import {selectFetchedToken} from "store/auth/selectors";
 import {checkUserName, checkLoginToken} from "store/auth/actions";
+import {AppDispatch} from "store/types";
 
-type AppDispatch = typeof store.dispatch;
 function AuthPage() {
   const [cookies, setCookies, removeCookies] = useCookies(["userToken"]);
   const [inputUserValue, setInputUserValue] = useState("");
@@ -26,7 +25,7 @@ function AuthPage() {
     }
   }, [fetchedToken]);
 
-  const getUsersValues = (e: any) => {
+  const getUsersValues = (e: React.DragEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (inputUserValue && inputUserPass) {
       dispatch(
@@ -36,12 +35,7 @@ function AuthPage() {
       window.alert("Fill all fields");
     }
   };
-  const keyBoardEvent = (e: any) => {
-    const ev = e || window.event;
-    if (ev.keyCode === 13 || ev.which) {
-      getUsersValues(e);
-    }
-  };
+
   return (
     <form className="authForm">
       <div className="authForm__block">
@@ -55,11 +49,7 @@ function AuthPage() {
           type="text"
           placeholder="password"
         />
-        <button
-          type="button"
-          onClick={getUsersValues}
-          onKeyPress={e => keyBoardEvent(e)}
-        >
+        <button type="button" onClick={getUsersValues}>
           Enter
         </button>
       </div>
