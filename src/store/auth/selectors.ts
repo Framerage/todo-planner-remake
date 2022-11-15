@@ -1,22 +1,21 @@
 import {createSelector} from "@reduxjs/toolkit";
-import {AuthStateProps} from "./types";
+// import {AuthStateProps} from "./types";
 
-const rootSelect = (state: AuthStateProps) => state;
-const selectAuthState = createSelector(rootSelect, root => root.auth);
+import {Store} from "../store";
 
-export const selectIsAuth = createSelector(
-  selectAuthState,
-  state => state.isAuth,
-);
+const rootSelect = (state: Store) => state.auth;
+// const selectAuthState = createSelector(rootSelect, root => root.auth);
+
+export const selectIsAuth = createSelector(rootSelect, state => state.isAuth);
 export const selectUserName = createSelector(
-  selectAuthState,
+  rootSelect,
   state => state.userName,
 );
 export const selectFetchLoginBase = createSelector(
-  selectAuthState,
+  rootSelect,
   state => state.fetchedLoginBase,
 );
 export const selectFetchedToken = createSelector(
-  selectAuthState,
+  rootSelect,
   state => state.fetchedToken,
 );

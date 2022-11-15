@@ -2,10 +2,13 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {MONTHS} from "constances/constances";
 import "./styles.scss";
-import {selectUserMonth, selectUserYear} from "store/selectors";
 import {getFetchedTimeStamp} from "helpers/helpers";
 import {checkUserMonth, checkUserYear, fetchTaskBase} from "store/date/actions";
-import {selectFetchedTaskBase} from "store/date/selectors";
+import {
+  selectFetchedTaskBase,
+  selectUserMonth,
+  selectUserYear,
+} from "store/date/selectors";
 import {AppDispatch} from "store/types";
 import {TasksProps} from "types/appTypes";
 import DateItem from "../../components/DateItem/DateItem";
@@ -58,7 +61,6 @@ function Calendar() {
             count += 1;
             currentDates[i] = {
               ...currentDates[i],
-              // date: i + 1,
               taskCount: count,
               readyCounter: readyCount,
             };
@@ -66,7 +68,6 @@ function Calendar() {
             readyCount += 1;
             currentDates[i] = {
               ...currentDates[i],
-              // date: i + 1,
               taskCount: count,
               readyCounter: readyCount,
             };
@@ -81,7 +82,6 @@ function Calendar() {
       }
     }
   }
-  // TODO: review ALL FILE!!!
 
   const changeYear = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     if (!(e.target instanceof HTMLElement)) return;

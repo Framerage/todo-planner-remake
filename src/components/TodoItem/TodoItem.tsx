@@ -22,10 +22,8 @@ function TodoItem({
   transferTask,
   editTask,
 }: TodoItemProps) {
-  // console.log(isTaskDone, " isTaskDone from todoitem");
   const [increaserDate, setIncreaserDate] = useState(0);
-  const [isDone, setIsDone] = useState(false);
-  // const []
+  const [isDone, setIsDone] = useState(isTaskDone);
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
       removeTask(num);
@@ -44,27 +42,18 @@ function TodoItem({
           setIsDone(true);
           editTask(num, true);
         }
-        // setIsDone(!isDone);
-        // console.log(!isDone, "is done");
-        // dispatch(editChoosedTask({id: num, param: {isTaskDone: !isDone}}));
       } else {
         setIsDone(false);
-        // editTask(num, !isDone);
-
         window.alert("Think about task");
       }
     },
     [isDone],
   );
-  // TODO: убрать инлайновыйе стили, добавление классов, рабобраться с webpack file-loader for scss
   return (
     <div className={isTaskDone ? "todoItem taskDone" : "todoItem"}>
       <div className="todoItem__text">
         <div className="text__title">
-          <span>
-            {`${index}:`}
-            &nbsp;
-          </span>
+          <span>{index}:&nbsp;</span>
           <span>{taskName}</span>
         </div>
         <div className="text__descrip">{taskDescrip}</div>

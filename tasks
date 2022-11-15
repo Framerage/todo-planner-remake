@@ -1,10 +1,9 @@
 alias for ts+
 all files on ts+
 creatAction, +
-creatasyncthunk+/-
-mvc,mvp, mvvm
+creatasyncthunk+
 pick omit+
-enum+ generick
+enum+ generick+
 
 db.json?
 json-server --watch db.json --port 3001
@@ -38,3 +37,11 @@ e: ChangeEvent<HTMLInputElement
   //     "react-app/jest"
   //   ]
   // },
+  ~1&[]
+  ~[1]&1 почитать про тильду в js 
+  ~[]&1
+
+бинарный код в массив
+
+
+mvc,mvp, mvvm

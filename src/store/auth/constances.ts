@@ -1,6 +1,6 @@
 import {AuthStateProps} from "./types";
 
-const initialStateAuth: AuthStateProps["auth"] = {
+const initialStateAuth: AuthStateProps = {
   isLoading: false,
   fetchedLoginBase: [
     {

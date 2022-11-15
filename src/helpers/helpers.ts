@@ -1,4 +1,4 @@
-import {PATHS_BASE} from "../constances/constances";
+import {ERRORS_API, PATHS_BASE} from "../constances/constances";
 
 export const getPageName = (pathname: string, isAuth: boolean) => {
   if (pathname === "todo-planner-remake/login" || isAuth === false) {
@@ -38,4 +38,9 @@ export const someDelay = async (num: number) => {
 };
 export const editFirstSymbolToUpperCase = (text: string) => {
   return text[0].toUpperCase() + text.slice(1);
+};
+export const checkResponceStatus = (resp: number) => {
+  if (resp !== 200) {
+    throw new Error(ERRORS_API[resp as keyof typeof ERRORS_API]);
+  }
 };

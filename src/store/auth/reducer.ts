@@ -1,4 +1,4 @@
-import {createReducer} from "@reduxjs/toolkit";
+import {createReducer, PayloadAction} from "@reduxjs/toolkit";
 import {
   checkAuth,
   checkLoginToken,
@@ -10,7 +10,7 @@ import {AuthStateProps, CheckAuthType, CheckUserNameType} from "./types";
 
 // TODO: тип из тулкита
 
-export default createReducer<AuthStateProps["auth"]>(initialStateAuth, {
+export default createReducer<AuthStateProps>(initialStateAuth, {
   [checkAuth.type]: (state, action: CheckAuthType) => {
     state.isAuth = action.payload;
   },
@@ -20,7 +20,7 @@ export default createReducer<AuthStateProps["auth"]>(initialStateAuth, {
   [dropLoginToken.type]: state => {
     state.fetchedToken = "";
   },
-  [checkLoginToken.fulfilled.type]: (state, action: any) => {
+  [checkLoginToken.fulfilled.type]: (state, action: PayloadAction<string>) => {
     state.error = null;
     state.fetchedToken = action.payload;
   },

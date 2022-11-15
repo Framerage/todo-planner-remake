@@ -9,14 +9,19 @@ import {
   getFullChoosedDate,
   someDelay,
 } from "helpers/helpers";
-import {selectUserDate, selectUserMonth, selectUserYear} from "store/selectors";
 import {
   deleteChoosedTask,
   editChoosedTask,
   fetchTaskBase,
   postNewTask,
 } from "store/date/actions";
-import {selectFetchedTaskBase, selectPostedTask} from "store/date/selectors";
+import {
+  selectFetchedTaskBase,
+  selectPostedTask,
+  selectUserDate,
+  selectUserMonth,
+  selectUserYear,
+} from "store/date/selectors";
 import {AppDispatch} from "store/types";
 import {DateStateProps} from "store/date/types";
 import {TasksProps} from "types/appTypes";
@@ -29,9 +34,7 @@ function TodoList() {
   const choosedMonth = useSelector(selectUserMonth);
   const choosedYear = useSelector(selectUserYear);
   const [aWeekDay, setAweekDay] = useState("");
-  const [taskList, setTaskList] = useState<
-    DateStateProps["date"]["postedTask"][]
-  >([]);
+  const [taskList, setTaskList] = useState<DateStateProps["postedTask"][]>([]);
   const [isTaskListReady, setIsTaskListReadty] = useState(false);
   const fullDate = getFullChoosedDate(
     choosedYear,
@@ -43,30 +46,51 @@ function TodoList() {
   const [inputNameTask, setInputNameTask] = useState("");
   const [inputDescriptionTask, setInputDescriptionTask] = useState("");
 
-  const createNewTask = (
-    date: string,
-    task: {name: string; description: string},
-  ) => {
-    const condition = inputNameTask && inputDescriptionTask;
-    if (!condition) {
-      window.alert("Fill all fields");
-    } else {
-      const obj = {
-        taskName: task.name,
-        taskDescrip: task.description,
-        forDate: date,
-        isTaskDone: false,
-      };
-      // тип any потому что хз что подставлять, на tasksType ругается
-      dispatch(postNewTask({obj})).then(({payload}: any) => {
-        if (payload) {
-          setTaskList(prev => [...prev, payload]);
-        }
-      });
-      setInputNameTask("");
-      setInputDescriptionTask("");
-    }
-  };
+  const createNewTask = useCallback(
+    (date: string, task: {name: string; description: string}) => {
+      const condition = task.name && task.description;
+      if (!condition) {
+        window.alert("Fill all fields");
+      } else {
+        const obj = {
+          taskName: task.name,
+          taskDescrip: task.description,
+          forDate: date,
+          isTaskDone: false,
+        };
+        // тип any потому что хз что подставлять, на tasksType ругается
+        dispatch(postNewTask(obj)).then(({payload}: any) =>
+          // PayloadAction<
+          //   DateStateProps,
+          //   string,
+          //   {
+          //     arg: {
+          //       obj: {
+          //         taskName: string;
+          //         taskDescrip: string;
+          //         isTaskDone: boolean;
+          //         forDate: string;
+          //       };
+          //     };
+          //     requestId: string;
+          //     requestStatus: "fulfilled";
+          //   },
+          //   never
+          // >
+          {
+            setTaskList(prev => [...prev, payload]);
+
+            // if (payload) {
+            //   setTaskList(prev => [...prev, payload]);
+            // }
+          },
+        );
+        setInputNameTask("");
+        setInputDescriptionTask("");
+      }
+    },
+    [taskList],
+  );
   // all ok
   useEffect(() => {
     if (isIdTaken) {
@@ -134,7 +158,7 @@ function TodoList() {
   // all ok
   const removeTask = useCallback(
     (id: number) => {
-      dispatch(deleteChoosedTask({id})).then(() => {
+      dispatch(deleteChoosedTask(id)).then(() => {
         setTaskList(taskList.filter(el => el.id !== id));
       });
     },

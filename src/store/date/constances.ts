@@ -1,9 +1,9 @@
 import {DateStateProps} from "./types";
 
-const initialStateDate: DateStateProps["date"] = {
-  date: NaN || Number(localStorage.sessionStoryDate),
-  month: NaN || Number(localStorage.sessionStoryMonth),
-  year: NaN || Number(localStorage.sessionStoryYear),
+const initialStateDate: DateStateProps = {
+  date: Number(localStorage.sessionStoryDate),
+  month: Number(localStorage.sessionStoryMonth),
+  year: Number(localStorage.sessionStoryYear),
   dateInfo: [],
   taskList: [],
   isTaskEdit: false,

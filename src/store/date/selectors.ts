@@ -1,34 +1,25 @@
 import {createSelector} from "@reduxjs/toolkit";
-import {DateStateProps} from "./types";
+import {Store} from "../store";
 
-const rootSelect = (state: DateStateProps) => state;
-const selectDateState = createSelector(rootSelect, root => root.date);
+const rootSelect = (state: Store) => state.date;
+// const selectDateState = createSelector(rootSelect, root => root.date);
 
-export const selectUserDate = createSelector(
-  selectDateState,
-  state => state.date,
-);
-export const selectUserMonth = createSelector(
-  selectDateState,
-  state => state.month,
-);
-export const selectUserYear = createSelector(
-  selectDateState,
-  state => state.year,
-);
+export const selectUserDate = createSelector(rootSelect, state => state.date);
+export const selectUserMonth = createSelector(rootSelect, state => state.month);
+export const selectUserYear = createSelector(rootSelect, state => state.year);
 export const selectFetchedTaskBase = createSelector(
-  selectDateState,
+  rootSelect,
   state => state.taskList,
 );
 export const selectIsEditTask = createSelector(
-  selectDateState,
+  rootSelect,
   state => state.isTaskEdit,
 );
 export const selectPostedTask = createSelector(
-  selectDateState,
+  rootSelect,
   state => state.postedTask,
 );
 export const selectIsTaskDelete = createSelector(
-  selectDateState,
+  rootSelect,
   state => state.isTaskDelete,
 );

@@ -1,4 +1,4 @@
-import {createReducer} from "@reduxjs/toolkit";
+import {createReducer, PayloadAction} from "@reduxjs/toolkit";
 import {
   checkUserDate,
   checkUserMonth,
@@ -11,7 +11,7 @@ import {
 import initialStateDate from "./constances";
 import {ActionsUserDateMonthYearProps, DateStateProps} from "./types";
 
-export default createReducer<DateStateProps["date"]>(initialStateDate, {
+export default createReducer<DateStateProps>(initialStateDate, {
   [checkUserDate.type]: (state, action: ActionsUserDateMonthYearProps) => {
     state.date = action.payload;
   },
@@ -21,16 +21,25 @@ export default createReducer<DateStateProps["date"]>(initialStateDate, {
   [checkUserYear.type]: (state, action: ActionsUserDateMonthYearProps) => {
     state.year = action.payload;
   },
-  [fetchTaskBase.fulfilled.type]: (state, action: any) => {
+  [fetchTaskBase.fulfilled.type]: (state, action: PayloadAction<[]>) => {
     state.taskList = action.payload;
   },
-  [editChoosedTask.fulfilled.type]: (state, action: any) => {
+  [editChoosedTask.fulfilled.type]: (state, action: PayloadAction<boolean>) => {
     state.isTaskEdit = action.payload;
   },
-  [postNewTask.fulfilled.type]: (state, action: any) => {
+  [postNewTask.fulfilled.type]: (
+    state,
+    action: PayloadAction<DateStateProps["postedTask"]>,
+  ) => {
     state.postedTask = action.payload;
   },
-  [deleteChoosedTask.fulfilled.type]: (state, action: any) => {
+  [deleteChoosedTask.fulfilled.type]: (
+    state,
+    action: PayloadAction<boolean>,
+  ) => {
     state.isTaskDelete = action.payload;
   },
+  // [deleteChoosedTask.rejected.type]: () => {
+  //   console.error("some error");
+  // },
 });

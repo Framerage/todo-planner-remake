@@ -7,11 +7,11 @@ import {checkUserName, checkLoginToken} from "store/auth/actions";
 import {AppDispatch} from "store/types";
 
 function AuthPage() {
+  const fetchedToken = useSelector(selectFetchedToken);
   const [cookies, setCookies, removeCookies] = useCookies(["userToken"]);
   const [inputUserValue, setInputUserValue] = useState("");
   const [inputUserPass, setInputUserPass] = useState("");
   const dispatch = useDispatch<AppDispatch>();
-  const fetchedToken = useSelector(selectFetchedToken);
 
   useEffect(() => {
     if (fetchedToken) {
