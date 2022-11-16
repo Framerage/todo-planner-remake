@@ -9,8 +9,6 @@ import {selectUserName} from "store/auth/selectors";
 import {dropLoginToken} from "store/auth/actions";
 import user from "assets/images/user(dark).png";
 
-// TODO: сгрупировать иморты + перевести все пути на абсолютные + можно поискать правила для авто-группировки(не нашлось, было что-то в es5)
-
 type HeaderProps = {
   namePage: string;
 };
@@ -20,12 +18,14 @@ function Header({namePage}: HeaderProps) {
   const loginUser = useSelector(selectUserName);
   const [cookies, setCookies] = useCookies(["userToken"]);
   const hist = createBrowserHistory();
+
   const onDropAuth = () => {
     dispatch(dropLoginToken(""));
     setCookies("userToken", "", {path: "todo-planner-remake/"});
     navigate(PATHS_BASE.firstPage);
     localStorage.clear();
   };
+
   return (
     <header className="header">
       <div className="header__logo">ToDo Planner</div>

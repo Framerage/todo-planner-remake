@@ -42,7 +42,7 @@ function TodoList() {
     choosedDate,
     0,
   );
-  const [isIdTaken, setIsIdTaken] = useState(false);
+  const [isNewTaken, setNewIdTaken] = useState(false);
   const [inputNameTask, setInputNameTask] = useState("");
   const [inputDescriptionTask, setInputDescriptionTask] = useState("");
 
@@ -58,7 +58,7 @@ function TodoList() {
           forDate: date,
           isTaskDone: false,
         };
-        // тип any потому что хз что подставлять, на tasksType ругается
+        // тип any потому что хз что подставлять, на TasksProps ругается
         dispatch(postNewTask(obj)).then(({payload}: any) =>
           // PayloadAction<
           //   DateStateProps,
@@ -79,10 +79,6 @@ function TodoList() {
           // >
           {
             setTaskList(prev => [...prev, payload]);
-
-            // if (payload) {
-            //   setTaskList(prev => [...prev, payload]);
-            // }
           },
         );
         setInputNameTask("");
@@ -93,8 +89,8 @@ function TodoList() {
   );
   // all ok
   useEffect(() => {
-    if (isIdTaken) {
-      setIsIdTaken(false);
+    if (isNewTaken) {
+      setNewIdTaken(false);
     } else {
       setTaskList(prev =>
         prev.map(item => {
@@ -107,7 +103,7 @@ function TodoList() {
           return item;
         }),
       );
-      setIsIdTaken(true);
+      setNewIdTaken(true);
     }
   }, [newTask]);
 

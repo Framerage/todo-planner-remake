@@ -8,8 +8,6 @@ import {
 import initialStateAuth from "./constances";
 import {AuthStateProps, CheckAuthType, CheckUserNameType} from "./types";
 
-// TODO: тип из тулкита
-
 export default createReducer<AuthStateProps>(initialStateAuth, {
   [checkAuth.type]: (state, action: CheckAuthType) => {
     state.isAuth = action.payload;

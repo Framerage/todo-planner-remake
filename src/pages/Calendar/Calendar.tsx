@@ -39,58 +39,69 @@ function Calendar() {
     new Date(currentYear, currentMonth + 1, 0).getDate(),
   );
   const [fetchedInfo, setFetchedInfo] = useState<TasksProps[]>(fetchedTaskList);
+  const [datesAndTasks, setDatesAndTasks] = useState<
+    {date: number; taskCount: number; readyCounter: number}[]
+  >([]);
+  const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
 
   // кастыль для серва
-  const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
-  if (fetchedInfo.length) {
-    for (let i = 0; i < daysInMonth; i += 1) {
-      let count = 0;
-      let readyCount = 0;
-      for (let y = 0; y < fetchedInfo.length; y += 1) {
-        const nessTimeStamp = getFetchedTimeStamp(fetchedInfo[y].forDate);
-        if (
-          nessTimeStamp.getDate() === i + 1 &&
-          currentMonth === nessTimeStamp.getMonth() &&
-          currentYear === nessTimeStamp.getFullYear()
-        ) {
-          currentDates[i] = {
-            ...currentDates[i],
-            date: i + 1,
-          };
-          if (!fetchedInfo[y].isTaskDone) {
-            count += 1;
+  const createCalendar = () => {
+    if (fetchedInfo.length) {
+      for (let i = 0; i < daysInMonth; i += 1) {
+        let count = 0;
+        let readyCount = 0;
+        for (let y = 0; y < fetchedInfo.length; y += 1) {
+          const nessTimeStamp = getFetchedTimeStamp(fetchedInfo[y].forDate);
+          if (
+            nessTimeStamp.getDate() === i + 1 &&
+            currentMonth === nessTimeStamp.getMonth() &&
+            currentYear === nessTimeStamp.getFullYear()
+          ) {
             currentDates[i] = {
               ...currentDates[i],
-              taskCount: count,
-              readyCounter: readyCount,
+              date: i + 1,
             };
+            if (!fetchedInfo[y].isTaskDone) {
+              count += 1;
+              currentDates[i] = {
+                ...currentDates[i],
+                taskCount: count,
+                readyCounter: readyCount,
+              };
+            } else {
+              readyCount += 1;
+              currentDates[i] = {
+                ...currentDates[i],
+                taskCount: count,
+                readyCounter: readyCount,
+              };
+            }
           } else {
-            readyCount += 1;
             currentDates[i] = {
-              ...currentDates[i],
+              date: i + 1,
               taskCount: count,
               readyCounter: readyCount,
             };
           }
-        } else {
-          currentDates[i] = {
-            date: i + 1,
-            taskCount: count,
-            readyCounter: readyCount,
-          };
         }
       }
+    } else {
+      for (let i = 0; i < daysInMonth; i += 1) {
+        currentDates[i] = {
+          ...currentDates[i],
+          date: i + 1,
+          taskCount: 0,
+          readyCounter: 0,
+        };
+      }
     }
-  } else {
-    for (let i = 0; i < daysInMonth; i += 1) {
-      currentDates[i] = {
-        ...currentDates[i],
-        date: i + 1,
-        taskCount: 0,
-        readyCounter: 0,
-      };
-    }
-  }
+  };
+
+  useEffect(() => {
+    createCalendar();
+    setDatesAndTasks([...currentDates]);
+  }, [fetchedInfo]);
+
   const changeYear = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     if (!(e.target instanceof HTMLElement)) return;
     const betweens = e.target.textContent === "<" ? -1 : 1;
@@ -155,7 +166,7 @@ function Calendar() {
         </div>
         <div className="block__container">
           <div className="block__dates">
-            {currentDates.map(item => (
+            {datesAndTasks.map(item => (
               <DateItem key={item.date} {...item} />
             ))}
           </div>

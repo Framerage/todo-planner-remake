@@ -47,6 +47,9 @@
         &:hover {
         box-shadow: 0 0 15px 2px white;
         }
+        &:focus {
+          box-shadow: 0 0 15px 2px white;
+          }
       }
     }
     .block__listContainer {

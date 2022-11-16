@@ -12,21 +12,12 @@ type TodoItemProps = {
   editTask: Function;
 };
 
-function TodoItem({
-  taskName,
-  taskDescrip,
-  index,
-  id,
-  isTaskDone,
-  removeTask,
-  transferTask,
-  editTask,
-}: TodoItemProps) {
+function TodoItem({...props}: TodoItemProps) {
   const [increaserDate, setIncreaserDate] = useState(0);
-  const [isDone, setIsDone] = useState(isTaskDone);
+  const [isDone, setIsDone] = useState(props.isTaskDone);
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
-      removeTask(num);
+      props.removeTask(num);
     } else {
       window.alert("Think about removing");
     }
@@ -37,10 +28,10 @@ function TodoItem({
       if (window.confirm("Is task ready?")) {
         if (isDone === true) {
           setIsDone(false);
-          editTask(num, false);
+          props.editTask(num, false);
         } else {
           setIsDone(true);
-          editTask(num, true);
+          props.editTask(num, true);
         }
       } else {
         setIsDone(false);
@@ -50,28 +41,30 @@ function TodoItem({
     [isDone],
   );
   return (
-    <div className={isTaskDone ? "todoItem taskDone" : "todoItem"}>
+    <div className={props.isTaskDone ? "todoItem taskDone" : "todoItem"}>
       <div className="todoItem__text">
         <div className="text__title">
-          <span>{index}:&nbsp;</span>
-          <span>{taskName}</span>
+          <span>{props.index}:&nbsp;</span>
+          <span>{props.taskName}</span>
         </div>
-        <div className="text__descrip">{taskDescrip}</div>
+        <div className="text__descrip">{props.taskDescrip}</div>
       </div>
       <div className="todoItem_active">
         <div className="active__kinds">
           <div
             role="presentation"
-            onClick={() => onCheckTask(id)}
+            onClick={() => onCheckTask(props.id)}
             className={
-              isTaskDone ? "active__TaskBtn taskBtnDone" : "active__TaskBtn"
+              props.isTaskDone
+                ? "active__TaskBtn taskBtnDone"
+                : "active__TaskBtn"
             }
           >
             o
           </div>
           <div
             role="presentation"
-            onClick={() => onRemoveTask(id)}
+            onClick={() => onRemoveTask(props.id)}
             className="active__removeBtn"
           >
             x
@@ -80,7 +73,7 @@ function TodoItem({
         <div className="active__transferBtn">
           <p
             role="presentation"
-            onClick={() => transferTask(id, increaserDate)}
+            onClick={() => props.transferTask(props.id, increaserDate)}
           >
             move to
           </p>

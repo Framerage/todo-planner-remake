@@ -15,13 +15,7 @@ export const fetchTaskBase = createAsyncThunk<DateStateProps>(
   "DATE_fetchTaskBase",
   getFetchedData,
 );
-//   () => {
-//     return axiosGet(PATHS_BACK.taskBase);
-//   },
-// );
-// helper для апи( урл, пут/гет, параметры)
-// проверку по ключам для ошибокj,
-// naming of functions
+
 export const editChoosedTask = createAsyncThunk("DATE_putTask", putFetchedData);
 
 export const postNewTask = createAsyncThunk<DateStateProps, PostedObj>(

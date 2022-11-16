@@ -2,7 +2,6 @@ import {createSelector} from "@reduxjs/toolkit";
 import {Store} from "../store";
 
 const rootSelect = (state: Store) => state.date;
-// const selectDateState = createSelector(rootSelect, root => root.date);
 
 export const selectUserDate = createSelector(rootSelect, state => state.date);
 export const selectUserMonth = createSelector(rootSelect, state => state.month);

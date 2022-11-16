@@ -2,26 +2,18 @@ import axios from "axios";
 import {PATHS_BACK} from "constances/constances";
 import {checkResponceStatus, someDelay} from "helpers/helpers";
 import {PostedObj} from "store/date/types";
-// import {PostedObj} from "store/date/types";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const fetchData = axios.create({
   baseURL: API_URL,
 });
-// TODO: настроить axios instance для настройки урлы по дефолту+
 // TODO: helpers vesus utils google
-// const instance = axios.create({
-//   baseURL: API_URL,
-// });
+
 // const getApi = (params: string) => {
 //   const param = params ? `/${params}` : "";
 
 //   // TODO: почитать про передачу параметров и тела запроса в axios
-//   // TODO: перенестю весь axios сюда +
-
-//   return `${API_URL}${param}`;
-// };
 
 // const fun = () =>{
 //   axios.get('http://localhost:3001', {params:{
@@ -35,7 +27,6 @@ const fetchData = axios.create({
 // };
 
 // fun()
-// export default getApi;
 
 export const getTokenForLogin = async ({
   userName,
@@ -72,11 +63,9 @@ export const getFetchedData = async () => {
   return responce.data;
 };
 export const putFetchedData = async ({id, param}: {id: number; param: {}}) => {
-  // const responce =
   await fetchData.put(`${localStorage.tasksBase}/${id}`, {
     ...param,
   });
-  // return responce.status === 200;
 };
 export const postFetchedData = async (obj: PostedObj) => {
   const responce = await fetchData.post(localStorage.tasksBase, {...obj});

@@ -39,7 +39,4 @@ export default createReducer<DateStateProps>(initialStateDate, {
   ) => {
     state.isTaskDelete = action.payload;
   },
-  // [deleteChoosedTask.rejected.type]: () => {
-  //   console.error("some error");
-  // },
 });

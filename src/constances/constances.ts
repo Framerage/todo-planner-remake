@@ -1,12 +1,6 @@
 export const FULL_DAY_MSECONDS = 24 * 60 * 60 * 1000;
 
 export const ERRORS_API = {
-  // status: [
-  //   {number: 400, error: "error with sent to server"},
-  //   {number: 429, error: "too many appeals"},
-  //   {number: 500, error: "server is offline"},
-  //   {number: 404, error: 'can"t found path'},
-  // ],
   400: "error with sent to server",
   500: "server is offline",
   429: "too many repetitions",

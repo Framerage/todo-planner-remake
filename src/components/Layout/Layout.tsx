@@ -20,9 +20,9 @@ function Layout() {
       cookies.userToken &&
       hist.location.pathname !== "todo-planner-remake/&nbsp;"
     ) {
-      navigate(hist.location.pathname);
-    } else {
       navigate(PATHS_BASE.calendar);
+    } else {
+      navigate(hist.location.pathname);
     }
   }, [cookies.userToken]);
 
