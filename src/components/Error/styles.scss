@@ -1,8 +1,9 @@
+@import '../../styles/globalColors.scss';
 .errorBlock {
   width: 200px;
   height: 50px;
   h1 {
-    color: white;
+    color: $textHeadersColor;
     font-size: 4em;
   }
 }

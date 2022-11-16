@@ -1,8 +1,6 @@
-// import axios from "axios";
-
 import axios from "axios";
 import {PATHS_BACK} from "constances/constances";
-import {checkResponceStatus} from "helpers/helpers";
+import {checkResponceStatus, someDelay} from "helpers/helpers";
 import {PostedObj} from "store/date/types";
 // import {PostedObj} from "store/date/types";
 
@@ -46,33 +44,45 @@ export const getTokenForLogin = async ({
   userName: string | null;
   userPass: string | null;
 }) => {
-  if (userName && userPass) {
-    const responce = await fetchData.get(PATHS_BACK.login);
-    checkResponceStatus(responce.status);
+  const responce = await fetchData.get(PATHS_BACK.login);
+  checkResponceStatus(responce.status);
+  let result;
+  if (
+    responce.data.find(
+      (el: {user: {userName: string; userPass: string}}) =>
+        el.user.userName === userName && el.user.userPass === userPass,
+    )
+  ) {
     const gettedToken = responce.data.filter(
       (el: {user: {userName: string; userPass: string}; token: string}) =>
         el.user.userName === userName && el.user.userPass === userPass,
     );
-    return gettedToken[0].token;
+    localStorage.setItem("tasksBase", gettedToken[0].user.dataBase);
+    await someDelay(2000);
+    result = gettedToken[0].token;
+  } else {
+    result = "";
+    alert("not rigth datas");
   }
+  return result;
 };
 export const getFetchedData = async () => {
-  const responce = await fetchData.get(PATHS_BACK.taskBase);
+  const responce = await fetchData.get(localStorage.tasksBase);
   checkResponceStatus(responce.status);
   return responce.data;
 };
 export const putFetchedData = async ({id, param}: {id: number; param: {}}) => {
-  const responce = await fetchData.put(`${PATHS_BACK.taskBase}/${id}`, {
+  // const responce =
+  await fetchData.put(`${localStorage.tasksBase}/${id}`, {
     ...param,
   });
-  return responce.status === 200;
+  // return responce.status === 200;
 };
 export const postFetchedData = async (obj: PostedObj) => {
-  const responce = await fetchData.post(PATHS_BACK.taskBase, {...obj});
-  // checkResponceStatus(responce.status);
+  const responce = await fetchData.post(localStorage.tasksBase, {...obj});
   return responce.data;
 };
 // захватчик аксиос для responce.status
 export const deleteFetchedData = async (id: number) => {
-  await fetchData.delete(`${PATHS_BACK.taskBase}/${id}`);
+  await fetchData.delete(`${localStorage.tasksBase}/${id}`);
 };

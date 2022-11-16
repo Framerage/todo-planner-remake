@@ -15,10 +15,12 @@ function AuthPage() {
 
   useEffect(() => {
     if (fetchedToken) {
+      localStorage.setItem("userName", inputUserValue);
       dispatch(checkUserName(inputUserValue));
       setCookies("userToken", fetchedToken, {path: "todo-planner-remake/"});
       localStorage.setItem("loginUser", String(cookies.userToken));
     } else {
+      localStorage.setItem("userName", "");
       dispatch(checkUserName(""));
       removeCookies("userToken", {path: "todo-planner-remake/"});
       localStorage.setItem("loginUser", "");

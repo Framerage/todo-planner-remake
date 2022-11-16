@@ -42,7 +42,7 @@ function Calendar() {
 
   // кастыль для серва
   const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
-  if (fetchedInfo) {
+  if (fetchedInfo.length) {
     for (let i = 0; i < daysInMonth; i += 1) {
       let count = 0;
       let readyCount = 0;
@@ -81,8 +81,16 @@ function Calendar() {
         }
       }
     }
+  } else {
+    for (let i = 0; i < daysInMonth; i += 1) {
+      currentDates[i] = {
+        ...currentDates[i],
+        date: i + 1,
+        taskCount: 0,
+        readyCounter: 0,
+      };
+    }
   }
-
   const changeYear = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     if (!(e.target instanceof HTMLElement)) return;
     const betweens = e.target.textContent === "<" ? -1 : 1;

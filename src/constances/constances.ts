@@ -37,9 +37,12 @@ export const PATHS_BASE: {
   calendar: "todo-planner-remake/dates",
   error: "todo-planner-remake/error",
 };
-export const PATHS_BACK: {taskBase: string; login: string} = {
+export const PATHS_BACK: {
+  taskBase: string;
+  login: string;
+} = {
   login: "login",
-  taskBase: "dataBase",
+  taskBase: localStorage.tasksBase,
 };
 
 export const WEEK_DAYS: string[] = [

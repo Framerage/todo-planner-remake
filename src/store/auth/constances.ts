@@ -14,7 +14,7 @@ const initialStateAuth: AuthStateProps = {
   fetchedToken: "",
   isErrorFetch: null,
   isAuth: false,
-  userName: "",
+  userName: localStorage.userName,
   error: null,
 };
 export default initialStateAuth;

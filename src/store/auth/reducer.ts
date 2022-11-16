@@ -17,15 +17,11 @@ export default createReducer<AuthStateProps>(initialStateAuth, {
   [checkUserName.type]: (state, action: CheckUserNameType) => {
     state.userName = action.payload;
   },
-  [dropLoginToken.type]: state => {
-    state.fetchedToken = "";
+  [dropLoginToken.type]: (state, action: CheckUserNameType) => {
+    state.fetchedToken = action.payload;
   },
   [checkLoginToken.fulfilled.type]: (state, action: PayloadAction<string>) => {
     state.error = null;
     state.fetchedToken = action.payload;
   },
-
-  // [checkFetchAuth.pending]:(state:initialStateTypes,action:any)=>{.
-  //     state.isErrorFetch=null
-  // }
 });
