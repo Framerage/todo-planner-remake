@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/todo-planner-remake/static/css/main.cc18fb08.css",
-    "main.js": "/todo-planner-remake/static/js/main.ea14f993.js",
+    "main.js": "/todo-planner-remake/static/js/main.ec0e558e.js",
     "static/media/inWorking.png": "/todo-planner-remake/static/media/inWorking.2ebbb0ff03af72abbded.png",
     "static/media/user(dark).png": "/todo-planner-remake/static/media/user(dark).b157d5032cc4216cd9f3.png",
     "static/media/done.svg": "/todo-planner-remake/static/media/done.4bd49de75a0e5a3ef4c2.svg",
     "index.html": "/todo-planner-remake/index.html",
     "main.cc18fb08.css.map": "/todo-planner-remake/static/css/main.cc18fb08.css.map",
-    "main.ea14f993.js.map": "/todo-planner-remake/static/js/main.ea14f993.js.map"
+    "main.ec0e558e.js.map": "/todo-planner-remake/static/js/main.ec0e558e.js.map"
   },
   "entrypoints": [
     "static/css/main.cc18fb08.css",
-    "static/js/main.ea14f993.js"
+    "static/js/main.ec0e558e.js"
   ]
 }
