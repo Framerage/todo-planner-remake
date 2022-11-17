@@ -10,24 +10,62 @@ const fetchData = axios.create({
 });
 // TODO: helpers vesus utils google
 
-// const getApi = (params: string) => {
-//   const param = params ? `/${params}` : "";
+const fetchLogin = axios.create({
+  baseURL: API_URL,
+});
+// fetchLogin.interceptors.request.use(
+//   request => {
+//     console.log("request done");
+//     return request;
+//   },
+//   error => {
+//     console.error(error);
+//   },
+// );
+// fetchLogin.interceptors.response.use(
+//   resp => {
+//     // checkResponceStatus(resp.status);
 
-//   // TODO: почитать про передачу параметров и тела запроса в axios
-
-// const fun = () =>{
-//   axios.get('http://localhost:3001', {params:{
-//     1:'   ',
-//     2:null,
-//     3:123,
-//     4:false,
-//     5:NaN,
-//     6: undefined
-//   }})
+//     console.log(resp, "responce taken");
+//     return resp;
+//   },
+//   error => {
+//     console.error(error);
+//   },
+// );
+// const fun = () => {
+//   axios.get("http://localhost:3000", {
+//     params: "todo-planner-remake",
+//     // params:{
+//     //   lang:'ru',
+//     //   season:'current'
+//     // }
+//     // {1:'todo/dates/park'}
+//     // 2: null,
+//     // 3: 123,
+//     // 4: false,
+//     // 5: NaN,
+//     // 6: undefined,
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
 // };
 
-// fun()
+// fun();
 
+// axios({
+//   method: "POST",
+//   url: "http://localhost",
+//   params: {
+//     lang: "ru",
+//   },
+//   data: {user: "art", job: "web"},
+//   headers: {
+//     "Content-Type": "application/json",
+//     Authorization: "",
+//   },
+// });
 export const getTokenForLogin = async ({
   userName,
   userPass,
@@ -35,8 +73,7 @@ export const getTokenForLogin = async ({
   userName: string | null;
   userPass: string | null;
 }) => {
-  const responce = await fetchData.get(PATHS_BACK.login);
-  checkResponceStatus(responce.status);
+  const responce = await fetchLogin.get(`${PATHS_BACK.login}`);
   let result;
   if (
     responce.data.find(
@@ -71,7 +108,6 @@ export const postFetchedData = async (obj: PostedObj) => {
   const responce = await fetchData.post(localStorage.tasksBase, {...obj});
   return responce.data;
 };
-// захватчик аксиос для responce.status
 export const deleteFetchedData = async (id: number) => {
   await fetchData.delete(`${localStorage.tasksBase}/${id}`);
 };
