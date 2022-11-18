@@ -182,9 +182,29 @@ function TodoList() {
     [choosedYear, choosedMonth, choosedDate, taskList],
   );
 
+  const removeAllTasks = useCallback(() => {
+    taskList.forEach(item => {
+      dispatch(deleteChoosedTask(item.id)).then(() => {
+        someDelay(1500);
+      });
+    });
+    setTaskList([]);
+  }, [taskList]);
+
   return (
     <div className="todoList">
       <div className="todoList__block">
+        <button
+          onClick={removeAllTasks}
+          className={
+            taskList.length
+              ? "block__generalDelete"
+              : "block__generalDelete emptyTaskList"
+          }
+          type="button"
+        >
+          Delete all tasks
+        </button>
         <div className="block__creator">
           <input
             value={inputNameTask}

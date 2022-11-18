@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {PATHS_BASE} from "constances/constances";
@@ -18,14 +18,20 @@ function Header({namePage}: HeaderProps) {
   const loginUser = useSelector(selectUserName);
   const [cookies, setCookies] = useCookies(["userToken"]);
   const hist = createBrowserHistory();
-
+  const [themeColor, setThemeColor] = useState("0");
   const onDropAuth = () => {
     dispatch(dropLoginToken(""));
     setCookies("userToken", "", {path: "todo-planner-remake/"});
     navigate(PATHS_BASE.firstPage);
     localStorage.clear();
   };
-
+  const changeTheme = (e: any) => {
+    setThemeColor(e.target.value);
+    document.documentElement.style.setProperty(
+      "--themeColor",
+      `#${e.target.value}`,
+    );
+  };
   return (
     <header className="header">
       <div className="header__logo">ToDo Planner</div>
@@ -48,6 +54,14 @@ function Header({namePage}: HeaderProps) {
           {"<"}
         </div>
       </div>
+      <input
+        className="header__colorRange"
+        type="range"
+        min={0}
+        max={999999}
+        value={themeColor}
+        onChange={changeTheme}
+      />
     </header>
   );
 }

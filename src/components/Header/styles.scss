@@ -84,6 +84,28 @@ text-align: center;
       }
     }
   }
+  .header__colorRange{
+    width: 300px;
+    -webkit-appearance: none !important;
+    background:linear-gradient(to right,white,lightgreen,lightblue,lightgrey,yellow,green,blue,violet,red,orange,yellow,white);
+    height:10px;
+  }
+  .header__colorRange::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background:transparent;
+    border: 1px solid white;
+    border-radius: 7px;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.2s;
+    &:hover {
+      opacity: 1;
+      border: 2px solid white;
+      transform: scale(1.05);
+    }
+}
 }
 @media screen and (min-width: 300px) and (max-width: 476px) {
   .header {

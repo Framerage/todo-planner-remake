@@ -28,10 +28,13 @@
       }
     }
     .text__descrip {
+      display: flex;
+      justify-content: space-around;
       color: $textHeadersColor;
       text-shadow: 0 0 5px $themeTsColorMain,
         0 0 10px $themeTsColorMain, 0 0 15px $themeTsColorSelection;
       font-size: 3.5em;
+      margin: 0 5px;
     }
   }
   .todoItem_active {
@@ -119,6 +122,26 @@
       &:hover {
         box-shadow: 0 0 10px 2px red;
       }
+    }
+  }
+  .active__editBtn{
+    margin: 0 5px;
+    transition: 0.2s;
+    width: 15px !important;
+    height: 15px;
+    color: $textHeadersColor;
+    text-shadow: 0 0 5px red, 0 0 10px red,
+      0 0 15px $themeTsColorSelection;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-image: url(../../assets/images/editBtn.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    &:hover {
+      transform: scale(1.1);
     }
   }
 }

@@ -1,23 +1,5 @@
-import {ERRORS_API, PATHS_BASE} from "../constances/constances";
+import {ERRORS_API} from "../constances/constances";
 
-export const getPageName = (pathname: string, isAuth: boolean) => {
-  if (pathname === "todo-planner-remake/login" || isAuth === false) {
-    return "Authorization";
-  }
-
-  if (pathname.includes(PATHS_BASE.calendar)) {
-    return "Calendar";
-  }
-
-  if (pathname.includes(`${PATHS_BASE.calendar}/:`)) {
-    return "ToDo List";
-  }
-
-  if (pathname.includes(`${PATHS_BASE.error}`)) {
-    return "Error";
-  }
-  return "";
-};
 export const getFullChoosedDate = (
   choosedYear: number,
   choosedMonth: number,

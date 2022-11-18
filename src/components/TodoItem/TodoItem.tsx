@@ -40,14 +40,34 @@ function TodoItem({...props}: TodoItemProps) {
     },
     [isDone],
   );
+  const editText = useCallback((id: number, param: string) => {
+    // props.transferTask(id, increaserDate)
+    console.log(id, param);
+  }, []);
   return (
     <div className={props.isTaskDone ? "todoItem taskDone" : "todoItem"}>
       <div className="todoItem__text">
         <div className="text__title">
           <span>{props.index}:&nbsp;</span>
           <span>{props.taskName}</span>
+          <div
+            role="presentation"
+            onClick={() => editText(props.id, props.taskName)}
+            className="active__editBtn"
+          >
+            &nbsp;
+          </div>
         </div>
-        <div className="text__descrip">{props.taskDescrip}</div>
+        <div className="text__descrip">
+          {props.taskDescrip}
+          <div
+            role="presentation"
+            onClick={() => editText(props.id, props.taskDescrip)}
+            className="active__editBtn"
+          >
+            &nbsp;
+          </div>
+        </div>
       </div>
       <div className="todoItem_active">
         <div className="active__kinds">

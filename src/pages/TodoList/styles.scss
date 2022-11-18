@@ -17,6 +17,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    .block__generalDelete{
+      width: 50px;
+      height: 50px;
+      border: 1px solid red;
+      border-radius: 20px;
+      color: red;
+      box-shadow: 0 0 10px 2px $themeBsColor;
+      background-color: transparent;
+      font-size: 3em;
+      margin: 10px;
+      text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+      0 0 15px white, 0 0 20px $themeBsColor;
+      align-self: flex-end;
+      position: absolute;
+      padding: 5px;
+      transition: 0.2s;
+      &:hover ,&:focus{
+        transform: scale(1.05);
+      box-shadow: 0 0 10px 2px white;
+      cursor: pointer;
+      }      
+    }
+    .emptyTaskList{
+      display: none;
+    }
     .block__creator {
       display: flex;
       flex-direction: column;

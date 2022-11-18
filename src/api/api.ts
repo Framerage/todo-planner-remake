@@ -10,9 +10,9 @@ const fetchData = axios.create({
 });
 // TODO: helpers vesus utils google
 
-const fetchLogin = axios.create({
-  baseURL: API_URL,
-});
+// const fetchLogin = axios.create({
+//   baseURL: API_URL,
+// });
 // fetchLogin.interceptors.request.use(
 //   request => {
 //     console.log("request done");
@@ -73,7 +73,7 @@ export const getTokenForLogin = async ({
   userName: string | null;
   userPass: string | null;
 }) => {
-  const responce = await fetchLogin.get(`${PATHS_BACK.login}`);
+  const responce = await fetchData.get(`${PATHS_BACK.login}`);
   let result;
   if (
     responce.data.find(
