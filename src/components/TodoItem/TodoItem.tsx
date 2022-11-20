@@ -1,3 +1,4 @@
+import {editFirstSymbolToUpperCase} from "helpers/helpers";
 import React, {useCallback, useState} from "react";
 import "./todoItem.scss";
 
@@ -15,6 +16,9 @@ type TodoItemProps = {
 function TodoItem({...props}: TodoItemProps) {
   const [increaserDate, setIncreaserDate] = useState(0);
   const [isDone, setIsDone] = useState(props.isTaskDone);
+  const [editText, setEditText] = useState("");
+  const [isModalActive, setIsModalActive] = useState(false);
+  const [typeOfText, setTypeOfText] = useState("");
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
       props.removeTask(num);
@@ -28,10 +32,10 @@ function TodoItem({...props}: TodoItemProps) {
       if (window.confirm("Is task ready?")) {
         if (isDone === true) {
           setIsDone(false);
-          props.editTask(num, false);
+          props.editTask(num, {isTaskDone: false});
         } else {
           setIsDone(true);
-          props.editTask(num, true);
+          props.editTask(num, {isTaskDone: true});
         }
       } else {
         setIsDone(false);
@@ -40,70 +44,120 @@ function TodoItem({...props}: TodoItemProps) {
     },
     [isDone],
   );
-  const editText = useCallback((id: number, param: string) => {
-    // props.transferTask(id, increaserDate)
-    console.log(id, param);
-  }, []);
+  const activeModal = useCallback(
+    (type: string) => {
+      setTypeOfText(type);
+      setIsModalActive(true);
+    },
+    [isModalActive, typeOfText],
+  );
+
+  const checkEdit = useCallback(
+    (id: number) => {
+      if (!editText.length) {
+        alert("Fill field");
+      } else {
+        if (typeOfText === "taskName") {
+          props.editTask(id, {taskName: editFirstSymbolToUpperCase(editText)});
+        } else {
+          props.editTask(id, {
+            taskDescrip: editFirstSymbolToUpperCase(editText),
+          });
+        }
+        setIsModalActive(false);
+        setEditText("");
+      }
+    },
+    [editText, typeOfText],
+  );
   return (
-    <div className={props.isTaskDone ? "todoItem taskDone" : "todoItem"}>
-      <div className="todoItem__text">
-        <div className="text__title">
-          <span>{props.index}:&nbsp;</span>
-          <span>{props.taskName}</span>
-          <div
-            role="presentation"
-            onClick={() => editText(props.id, props.taskName)}
-            className="active__editBtn"
-          >
-            &nbsp;
-          </div>
-        </div>
-        <div className="text__descrip">
-          {props.taskDescrip}
-          <div
-            role="presentation"
-            onClick={() => editText(props.id, props.taskDescrip)}
-            className="active__editBtn"
-          >
-            &nbsp;
-          </div>
-        </div>
+    <div className="itemBlock">
+      <div className={isModalActive ? "modalBlock" : "modalBlock invis"}>
+        <input
+          onChange={e => {
+            setEditText(e.target.value);
+          }}
+        />
+        <button
+          className="modalBtn"
+          type="button"
+          onClick={() => {
+            checkEdit(props.id);
+          }}
+        >
+          OK
+        </button>
+        <button
+          className="modalBtn"
+          type="button"
+          onClick={() => {
+            setIsModalActive(false);
+          }}
+        >
+          x
+        </button>
       </div>
-      <div className="todoItem_active">
-        <div className="active__kinds">
-          <div
-            role="presentation"
-            onClick={() => onCheckTask(props.id)}
-            className={
-              props.isTaskDone
-                ? "active__TaskBtn taskBtnDone"
-                : "active__TaskBtn"
-            }
-          >
-            o
+
+      <div className={props.isTaskDone ? "todoItem taskDone" : "todoItem"}>
+        <div className="todoItem__text">
+          <div className="text__title">
+            <span>{props.index}:&nbsp;</span>
+            <span>{props.taskName}</span>
+            <div
+              role="presentation"
+              onClick={() => activeModal("taskName")}
+              className="active__editBtn"
+            >
+              &nbsp;
+            </div>
           </div>
-          <div
-            role="presentation"
-            onClick={() => onRemoveTask(props.id)}
-            className="active__removeBtn"
-          >
-            x
+          <div className="text__descrip">
+            {props.taskDescrip}
+            <div
+              role="presentation"
+              onClick={() => activeModal("taskDescrip")}
+              className="active__editBtn"
+            >
+              &nbsp;
+            </div>
           </div>
         </div>
-        <div className="active__transferBtn">
-          <p
-            role="presentation"
-            onClick={() => props.transferTask(props.id, increaserDate)}
-          >
-            move to
-          </p>
-          <div className="transferBtn__text">
-            <input
-              type="number"
-              value={increaserDate}
-              onChange={e => setIncreaserDate(Number(e.target.value))}
-            />
-            days
+        <div className="todoItem_active">
+          <div className="active__kinds">
+            <div
+              role="presentation"
+              onClick={() => onCheckTask(props.id)}
+              className={
+                props.isTaskDone
+                  ? "active__TaskBtn taskBtnDone"
+                  : "active__TaskBtn"
+              }
+            >
+              o
+            </div>
+            <div
+              role="presentation"
+              onClick={() => onRemoveTask(props.id)}
+              className="active__removeBtn"
+            >
+              x
+            </div>
+          </div>
+          <div className="active__transferBtn">
+            <p
+              role="presentation"
+              onClick={() => props.transferTask(props.id, increaserDate)}
+            >
+              move to
+            </p>
+            <div className="transferBtn__text">
+              <input
+                type="number"
+                value={increaserDate}
+                onChange={e => setIncreaserDate(Number(e.target.value))}
+              />
+              days
+            </div>
           </div>
         </div>
       </div>

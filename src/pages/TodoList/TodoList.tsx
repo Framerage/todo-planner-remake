@@ -133,14 +133,14 @@ function TodoList() {
   }, [fetchedTasks]);
   // all ok
   const editTask = useCallback(
-    (id: number, isDone: boolean) => {
-      dispatch(editChoosedTask({id, param: {isTaskDone: isDone}})).then(() => {
+    (id: number, params: {}) => {
+      dispatch(editChoosedTask({id, param: params})).then(() => {
         setTaskList(prev =>
           prev.map(item => {
             if (item.id === id) {
               return {
                 ...item,
-                isTaskDone: isDone,
+                ...params,
               };
             }
             return item;

@@ -11,6 +11,7 @@ function AuthPage() {
   const [cookies, setCookies, removeCookies] = useCookies(["userToken"]);
   const [inputUserValue, setInputUserValue] = useState("");
   const [inputUserPass, setInputUserPass] = useState("");
+  const [secretPass, setSecretPass] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -38,18 +39,29 @@ function AuthPage() {
     }
   };
 
+  const togglePass = (e: any) => {
+    setInputUserPass(e.target.value);
+
+    const pass = [""];
+    for (let i = 0; i < e.target.value.length; i += 1) {
+      pass.push("*");
+    }
+    console.log(e.target.value);
+    setSecretPass(pass);
+  };
+  console.log(secretPass);
   return (
     <form className="authForm">
       <div className="authForm__block">
         <input
           onChange={e => setInputUserValue(e.target.value)}
-          type="text"
           placeholder="userName"
         />
         <input
-          onChange={e => setInputUserPass(e.target.value)}
+          onChange={togglePass}
           type="text"
           placeholder="password"
+          // value={secretPass.join("")}
         />
         <button type="button" onClick={getUsersValues}>
           Enter
