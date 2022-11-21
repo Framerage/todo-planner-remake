@@ -1,4 +1,4 @@
-import {PATHS_BASE} from "constances/constances";
+import {PATHS_BASE} from "utils/constances/constances";
 import {useMemo} from "react";
 
 const useGettedPage = (pathname: string, isAuth: boolean) => {

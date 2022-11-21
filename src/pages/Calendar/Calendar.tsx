@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {MONTHS} from "constances/constances";
+import {MONTHS} from "utils/constances/constances";
 import "./styles.scss";
-import {getFetchedTimeStamp} from "helpers/helpers";
+import {getFetchedTimeStamp} from "utils/helpers/helpers";
 import {checkUserMonth, checkUserYear, fetchTaskBase} from "store/date/actions";
 import {
   selectFetchedTaskBase,

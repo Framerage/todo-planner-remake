@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {PATHS_BASE} from "constances/constances";
+import {PATHS_BASE} from "utils/constances/constances";
 import "./styles.scss";
 import {useCookies} from "react-cookie";
 import {createBrowserHistory} from "history";

@@ -1,4 +1,4 @@
-import {editFirstSymbolToUpperCase} from "helpers/helpers";
+import {editFirstSymbolToUpperCase} from "utils/helpers/helpers";
 import React, {useCallback, useState} from "react";
 import "./todoItem.scss";
 
@@ -71,7 +71,7 @@ function TodoItem({...props}: TodoItemProps) {
     [editText, typeOfText],
   );
   return (
-    <div className="itemBlock">
+    <div className={props.isTaskDone ? "itemBlock taskDone" : "itemBlock"}>
       <div className={isModalActive ? "modalBlock" : "modalBlock invis"}>
         <input
           onChange={e => {
@@ -98,7 +98,7 @@ function TodoItem({...props}: TodoItemProps) {
         </button>
       </div>
 
-      <div className={props.isTaskDone ? "todoItem taskDone" : "todoItem"}>
+      <div className="todoItem">
         <div className="todoItem__text">
           <div className="text__title">
             <span>{props.index}:&nbsp;</span>

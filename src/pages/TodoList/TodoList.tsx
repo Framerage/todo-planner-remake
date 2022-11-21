@@ -1,14 +1,18 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import "./styles.scss";
-import {FULL_DAY_MSECONDS, MONTHS, WEEK_DAYS} from "constances/constances";
+import {
+  FULL_DAY_MSECONDS,
+  MONTHS,
+  WEEK_DAYS,
+} from "utils/constances/constances";
 import TodoItem from "components/TodoItem/TodoItem";
 import {
   editFirstSymbolToUpperCase,
   getFetchedTimeStamp,
   getFullChoosedDate,
   someDelay,
-} from "helpers/helpers";
+} from "utils/helpers/helpers";
 import {
   deleteChoosedTask,
   editChoosedTask,

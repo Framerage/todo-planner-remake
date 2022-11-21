@@ -1,6 +1,6 @@
 import axios from "axios";
-import {PATHS_BACK} from "constances/constances";
-import {checkResponceStatus, someDelay} from "helpers/helpers";
+import {PATHS_BACK} from "utils/constances/constances";
+import {checkResponceStatus, someDelay} from "utils/helpers/helpers";
 import {PostedObj} from "store/date/types";
 
 const API_URL = process.env.REACT_APP_API_URL;

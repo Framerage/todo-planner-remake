@@ -190,45 +190,59 @@
       }
     }
   }
-  .taskDone{
-    opacity: 0.4;
-  }
-}
 
+}
+.taskDone{
+  opacity: 0.4;
+}
 @media screen and (min-width: 300px) and (max-width: 476px) {
-  .todoItem {
-    min-width: 250px;
-    min-height: 50px;
-    margin: 5px 0;
-    .todoItem__text {
-      min-width: 130px;
-      max-width: 165px;
-      min-height: 40px;
-      padding: 5px 0;
+  .itemBlock{
+    .modalBlock{
+      width: 92%;
+      min-height: 105px;
+      border: 1px solid red;
     }
-    .todoItem_active {
-      width: 70px;
-      .active__transferBtn {
-        width: 65px;
+    .todoItem {
+      min-width: 250px;
+      min-height: 50px;
+      margin: 5px auto;
+      .todoItem__text {
+        min-width: 130px;
+        max-width: 165px;
+        min-height: 40px;
+        padding: 5px 0;
+      }
+      .todoItem_active {
+        width: 70px;
+        .active__transferBtn {
+          width: 65px;
+        }
       }
     }
   }
 }
 @media screen and (min-width: 477px) and (max-width: 768px) {
-  .todoItem {
-    min-width: 300px;
-    min-height: 50px;
-    margin: 5px 0;
-    .todoItem__text {
-      min-width: 210px;
-      max-width: 215px;
-      min-height: 40px;
-      padding: 5px 0;
+  .itemBlock{
+    .modalBlock{
+      width: 92%;
+      min-height: 105px;
+      border: 1px solid red;
     }
-    .todoItem_active {
-      width: 70px;
-      .active__transferBtn {
-        width: 65px;
+    .todoItem {
+      min-width: 300px;
+      min-height: 50px;
+      margin: 5px 0;
+      .todoItem__text {
+        min-width: 210px;
+        max-width: 215px;
+        min-height: 40px;
+        padding: 5px 0;
+      }
+      .todoItem_active {
+        width: 70px;
+        .active__transferBtn {
+          width: 65px;
+        }
       }
     }
   }

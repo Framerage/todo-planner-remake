@@ -2,7 +2,7 @@ import Error from "components/Error/Error";
 import AuthPage from "pages/Authorisation/AuthPage";
 import React, {useEffect} from "react";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
-import {PATHS_BASE} from "constances/constances";
+import {PATHS_BASE} from "utils/constances/constances";
 import Header from "components/Header/Header";
 import "./styles.scss";
 import Calendar from "pages/Calendar";
