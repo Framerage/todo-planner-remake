@@ -1,5 +1,5 @@
-import {PATHS_BASE} from "utils/constances/constances";
-import {useMemo} from "react";
+import { useMemo } from "react";
+import { PATHS_BASE } from "../utils/constants.ts";
 
 const useGettedPage = (pathname: string, isAuth: boolean) => {
   const getPageName = useMemo(() => {
