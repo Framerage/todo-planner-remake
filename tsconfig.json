@@ -28,7 +28,7 @@
       // "helpers/*": ["helpers/*"],
       // "modules/*": ["modules/*"],
       "pages/*": ["pages/*"],
-      // "store/*": ["store/*"],
+      "store/*": ["store/*"],
       "types/*": ["types/*"],
       // "typings/*": ["typings/*"],
       // "styles/*": ["styles/*"],
@@ -40,11 +40,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "files": [],
+  "include": ["src", "**/*.ts", "**/*.tsx", "src", "src/types","src/@types"],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
+
     {
       "path": "./tsconfig.node.json"
     }

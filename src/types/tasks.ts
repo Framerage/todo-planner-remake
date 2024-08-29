@@ -1,4 +1,4 @@
-export type tTasksProps = {
+export type TTasksProps = {
   taskName: string;
   taskDescrip: string;
   isTaskDone: boolean;

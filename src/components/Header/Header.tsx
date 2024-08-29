@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import {useState} from "react";
 // import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useNavigation} from "react-router-dom";
 // import {PATHS_BASE} from "utils/constances/constances";
 import styles from "./styles.module.scss";
 // import {createBrowserHistory} from "history";
@@ -46,7 +46,7 @@ function Header({namePage}: HeaderProps) {
           <img role="presentation" onClick={onDropAuth} src={user} alt="user" />
         </div>
       </div>
-      <div className={styles.header__returnBtn}>
+      {/* <div className={styles.header__returnBtn}>
         <div
           role="presentation"
           //   style={{
@@ -57,7 +57,7 @@ function Header({namePage}: HeaderProps) {
         >
           {"<"}
         </div>
-      </div>
+      </div> */}
       <input
         className={styles.header__colorRange}
         type="range"

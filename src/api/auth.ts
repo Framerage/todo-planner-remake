@@ -9,6 +9,7 @@ export const fetchAuth = async ({
   userName: string;
   userPass: string;
 }) => {
+  //temp logic
   const responce = await instance(`/login`);
   let result;
   if (
@@ -31,5 +32,5 @@ export const fetchAuth = async ({
     result = "";
     alert("not rigth datas");
   }
-  return result;
+  return !!result;
 };
