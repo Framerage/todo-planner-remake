@@ -1,4 +1,4 @@
-import classes from "./styles.module.scss";
+import styles from "./styles.module.scss";
 import {useForm} from "react-hook-form";
 import authStore from "store/auth.ts";
 
@@ -8,22 +8,21 @@ interface LoginFormData {
 }
 const AuthPage = () => {
   const {register, handleSubmit} = useForm<LoginFormData>();
-
   const handleAuth = (data: {userName: string; userPass: string}) => {
     authStore.fetchAuth({userName: data.userName, userPass: data.userPass});
   };
   return (
-    <form className={classes.authForm} onSubmit={handleSubmit(handleAuth)}>
+    <form className={styles.authForm} onSubmit={handleSubmit(handleAuth)}>
       <input
         {...register("userName", {required: true})}
-        className={classes.formInput}
+        className={styles.formInput}
       />
       <input
         type="password"
         {...register("userPass", {required: true})}
-        className={classes.formInput}
+        className={styles.formInput}
       />
-      <button type="submit" className={classes.formBtn}>
+      <button type="submit" className={styles.formBtn}>
         Enter
       </button>
     </form>
