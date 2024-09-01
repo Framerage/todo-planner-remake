@@ -7,10 +7,6 @@ function App() {
       <AppLayout />
     </BrowserRouter>
   );
-  // <Provider store={store}>
-  {
-    /* </Provider> */
-  }
 }
 
 export default App;

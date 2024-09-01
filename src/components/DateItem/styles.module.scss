@@ -29,7 +29,6 @@
     top: -5px;
     left: 0px;
     font-size: 3em;
-    background-color: rgb(1, 255, 1);
     color: black;
     width: 15px;
     height: 15px;
@@ -48,7 +47,6 @@
     top: -5px;
     right: -5px;
     font-size: 3em;
-    background-color: lightgreen;
     color: black;
     width: 20px;
     height: 20px;
@@ -70,6 +68,15 @@
   }
   .lightgreen{
     background-color: lightgreen;
+  }
+  .lightblue{
+    background-color: lightblue;
+  }
+  .lightgrey{
+    background-color: lightgrey;
+  }
+  .readyGreen{
+    background-color: rgb(1, 255, 1);
   }
 }
 @media screen and (min-width: 300px) and (max-width: 476px) {

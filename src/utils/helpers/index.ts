@@ -7,7 +7,7 @@ export const someDelay = async (num: number) => {
 export const editFirstSymbolToUpperCase = (text: string) => {
   return text[0].toUpperCase() + text.slice(1);
 };
-export const checkResponceStatus = (resp: number) => {
+export const checkResponseStatus = (resp: number) => {
   if (resp !== 200) {
     throw new Error(ERRORS_API[resp as keyof typeof ERRORS_API]);
   }

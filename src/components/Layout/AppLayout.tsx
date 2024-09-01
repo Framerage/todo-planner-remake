@@ -9,13 +9,23 @@ import {CLOSE_ROUTES} from "utils/constants.ts/index.ts";
 import authStore from "store/auth.ts";
 import {observer} from "mobx-react-lite";
 import {MainPage} from "pages/Main/";
-import Calendar from "pages/Calendar";
-import ItemTodos from "components/ItemTodos";
+import {Calendar} from "pages/Calendar";
+import {useEffect} from "react";
+import ItemTodos from "pages/ItemTodos";
 
 const AppLayout = observer(() => {
   const accTkn = Cookies.get("accTkn");
   const {pathname} = useLocation();
-
+  useEffect(() => {
+    if (!accTkn && authStore.isAuth) {
+      authStore.resetAuth();
+      return;
+    }
+    if (!authStore.isAuth && accTkn) {
+      authStore.setAuth(true);
+      return;
+    }
+  }, [accTkn, authStore.isAuth]);
   return (
     <div className={styles.wrapper}>
       <Header namePage={useGettedPage(pathname, !!accTkn) || " "} />

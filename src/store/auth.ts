@@ -1,6 +1,6 @@
 import instance from "api/index";
-import {makeAutoObservable} from "mobx";
 import Cookies from "js-cookie";
+import {makeAutoObservable} from "mobx";
 
 interface IAuthInitialStore {
   isAuth: boolean;
@@ -13,7 +13,6 @@ class AuthStore implements IAuthInitialStore {
     makeAutoObservable(this);
   }
   setAuth(auth: boolean) {
-    console.log(auth, " auth store");
     this.isAuth = auth;
   }
   resetAuth() {

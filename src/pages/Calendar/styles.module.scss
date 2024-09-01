@@ -59,6 +59,7 @@
             0 0 20px $themeTsColorMain;
           cursor: pointer;
         }
+
         .monthParams__month {
           min-width: 100px;
           max-width: 120px;
@@ -73,6 +74,18 @@
           cursor: pointer;
         }
       }
+    }
+    .arrowBtn{
+      font-size: 5em;
+      color: $textHeadersColor;
+      margin: 0 5px;
+      text-shadow: 0 0 5px $themeTsColorMain,
+        0 0 10px $themeTsColorMain,
+        0 0 15px $themeTsColorSelection,
+        0 0 20px $themeTsColorMain;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
     }
     .block__container {
       display: flex;
