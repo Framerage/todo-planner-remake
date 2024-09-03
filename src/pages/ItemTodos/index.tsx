@@ -1,6 +1,5 @@
 import {useState, useEffect, useCallback, FC} from "react";
 // import {useDispatch, useSelector} from "react-redux";
-import styles from "./styles.module.scss";
 // import {
 //   FULL_DAY_MSECONDS,
 //   MONTHS,
@@ -38,12 +37,17 @@ import {
 import {FULL_DAY_MSECONDS, MONTHS, WEEK_DAYS} from "utils/constants.ts";
 import {DateStateProps} from "types/dates";
 import TodoItem from "components/TodoItem";
+import cn from "classnames";
+import tasksStore from "store/tasks.ts";
+import styles from "./styles.module.scss";
+import {useForm} from "react-hook-form";
 // import {TasksProps} from "types/appTypes";
 
 const ItemTodos: FC = () => {
   //   const dispatch = useDispatch<AppDispatch>();
   //   const newTask = useSelector(selectPostedTask);
   //   const fetchedTasks = useSelector(selectFetchedTaskBase);
+
   const fetchedTasks: any[] = [];
   const choosedDate = 1;
   const choosedMonth = 8;
@@ -128,25 +132,25 @@ const ItemTodos: FC = () => {
   //     dispatch(fetchTaskBase());
   //   }, []);
   // all ok
-  useEffect(() => {
-    if (!isTaskListReady && taskList.length === 0) {
-      fetchedTasks.map((el: TTasksProps) => {
-        const curTimeStamp = getFetchedTimeStamp(el.forDate);
-        if (
-          choosedDate === curTimeStamp.getDate() &&
-          choosedMonth === curTimeStamp.getMonth() &&
-          choosedYear === curTimeStamp.getFullYear()
-        ) {
-          setTaskList(prev => [...prev, el]);
-        }
-        return fetchedTasks;
-      });
-      setAweekDay(WEEK_DAYS[getFetchedTimeStamp(fullDate).getDay()]);
-      setIsTaskListReadty(true);
-    } else {
-      setIsTaskListReadty(false);
-    }
-  }, [fetchedTasks]);
+  // useEffect(() => {
+  //   if (!isTaskListReady && taskList.length === 0) {
+  //     fetchedTasks.map((el: TTasksProps) => {
+  //       const curTimeStamp = getFetchedTimeStamp(el.forDate);
+  //       if (
+  //         choosedDate === curTimeStamp.getDate() &&
+  //         choosedMonth === curTimeStamp.getMonth() &&
+  //         choosedYear === curTimeStamp.getFullYear()
+  //       ) {
+  //         setTaskList(prev => [...prev, el]);
+  //       }
+  //       return fetchedTasks;
+  //     });
+  //     setAweekDay(WEEK_DAYS[getFetchedTimeStamp(fullDate).getDay()]);
+  //     setIsTaskListReadty(true);
+  //   } else {
+  //     setIsTaskListReadty(false);
+  //   }
+  // }, [fetchedTasks]);
   // all ok
   const editTask = useCallback(
     (id: number, params: {}) => {
@@ -206,46 +210,93 @@ const ItemTodos: FC = () => {
     });
     setTaskList([]);
   }, [taskList]);
+  interface ITaskItem {
+    taskName: string;
+    taskDescription: string;
+  }
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: {errors},
+    setError,
+  } = useForm<ITaskItem>();
 
+  console.log(errors, "formState");
+  useEffect(() => {
+    if (!Object.keys(errors).length) {
+      console.log("empty");
+      return;
+    }
+    console.log("done");
+    setError("taskName", {
+      type: "required",
+      message: "Fill task name",
+    });
+
+    setError("taskDescription", {
+      type: "required",
+      message: "Fill task description",
+    });
+  }, [errors]);
+  const handleCreateTask = (data: {
+    taskName: string;
+    taskDescription: string;
+  }) => {
+    // authStore.fetchAuth({userName: data.userName, userPass: data.userPass});
+    if (!data.taskName || !data.taskDescription) {
+      window.alert(errors.taskName?.message);
+      return;
+    }
+    console.log(data, " task data");
+  };
   return (
-    <div className="todoList">
-      <div className="todoList__block">
+    <div className={styles.todoList}>
+      <div className={styles.todoList__block}>
         <button
           onClick={removeAllTasks}
-          className={
-            taskList.length
-              ? "block__generalDelete"
-              : "block__generalDelete emptyTaskList"
-          }
+          className={cn(styles.block__generalDelete, {
+            [styles.emptyTaskList]: !!taskList.length,
+          })}
           type="button"
         >
           Delete all tasks
         </button>
-        <div className="block__creator">
+        <form
+          className={styles.block__creator}
+          onSubmit={handleSubmit(handleCreateTask)}
+        >
+          <label htmlFor="taskNameField">
+            <input
+              id="taskNameField"
+              {...register("taskName", {required: true})}
+              // value={inputNameTask}
+              // onChange={e => setInputNameTask(e.target.value)}
+              placeholder="name of task"
+            />
+            <p>{errors.taskName?.message}</p>
+          </label>
+
           <input
-            value={inputNameTask}
-            onChange={e => setInputNameTask(e.target.value)}
-            placeholder="name of task"
-          />
-          <input
-            value={inputDescriptionTask}
-            onChange={e => setInputDescriptionTask(e.target.value)}
+            {...register("taskDescription", {required: true})}
+            // value={inputDescriptionTask}
+            // onChange={e => setInputDescriptionTask(e.target.value)}
             placeholder="description of task"
           />
           <button
-            type="button"
-            onClick={() =>
-              createNewTask(fullDate, {
-                name: editFirstSymbolToUpperCase(inputNameTask),
-                description: editFirstSymbolToUpperCase(inputDescriptionTask),
-              })
-            }
+          // type="button"
+          // onClick={() =>
+          //   createNewTask(fullDate, {
+          //     name: editFirstSymbolToUpperCase(inputNameTask),
+          //     description: editFirstSymbolToUpperCase(inputDescriptionTask),
+          //   })
+          // }
           >
             Create task
           </button>
-        </div>
-        <div className="block__listContainer">
-          <div className="listContainer__list">
+        </form>
+        <div className={styles.block__listContainer}>
+          <div className={styles.listContainer__list}>
             <h2>
               Tasklist of {choosedDate} {MONTHS[choosedMonth]} {choosedYear} (
               {aWeekDay})

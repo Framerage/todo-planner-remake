@@ -32,12 +32,14 @@
       },
       "ecmaVersion": "latest",
       "sourceType": "module",
-      "project": "./tsconfig.json",
+      // "project": "./tsconfig.json",
       "tsconfigRootDir": "./"
     },
     "ignorePatterns": ["dist", ".eslintrc.cjs"],
   "plugins": [ "react-refresh","@typescript-eslint", "prettier"],
   "rules": {
+    "no-restricted-imports": ["error", "import1", "import2"],
+    "@typescript-eslint/no-unused-vars":"warn",
     "@typescript-eslint/no-var-requires":"off",
     "no-undef":"warn",
     "no-nested-ternary":"warn",
@@ -69,8 +71,8 @@
         ],
       "@typescript-eslint/quotes": [
     "error",
+    "double",
     {
-      "quotes":"double",
       "avoidEscape": true
     }
   ],

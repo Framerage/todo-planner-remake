@@ -8,19 +8,23 @@ interface IAuthInitialStore {
 }
 class AuthStore implements IAuthInitialStore {
   isAuth = false;
+
   authError = null;
+
   constructor() {
     makeAutoObservable(this);
   }
+
   setAuth(auth: boolean) {
     this.isAuth = auth;
   }
+
   resetAuth() {
     this.isAuth = false;
   }
 
   fetchAuth({userName, userPass}: {userName: string; userPass: string}) {
-    //temp logic
+    // temp logic
     instance("/login")
       .then(res => {
         const user = res.data.find(

@@ -1,9 +1,9 @@
 import {FC} from "react";
 import {useNavigate} from "react-router-dom";
-import styles from "./styles.module.scss";
 import {observer} from "mobx-react-lite";
 import tasks from "store/tasks";
 import cn from "classnames";
+import styles from "./styles.module.scss";
 
 type DateItemProps = {
   date: number;

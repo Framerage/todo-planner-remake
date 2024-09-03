@@ -1,6 +1,6 @@
-import styles from "./styles.module.scss";
 import {useForm} from "react-hook-form";
 import authStore from "store/auth.ts";
+import styles from "./styles.module.scss";
 
 interface LoginFormData {
   userName: string;

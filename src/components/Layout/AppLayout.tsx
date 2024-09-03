@@ -2,9 +2,7 @@ import {Route, Routes, useLocation} from "react-router-dom";
 import {ErrorPage} from "pages/ErrorPage/";
 import Cookies from "js-cookie";
 import AuthPage from "pages/AuthPage/";
-import styles from "./styles.module.scss";
 import useGettedPage from "hooks/usePageName.ts";
-import Header from "../Header/";
 import {CLOSE_ROUTES} from "utils/constants.ts/index.ts";
 import authStore from "store/auth.ts";
 import {observer} from "mobx-react-lite";
@@ -12,6 +10,8 @@ import {MainPage} from "pages/Main/";
 import {Calendar} from "pages/Calendar";
 import {useEffect} from "react";
 import ItemTodos from "pages/ItemTodos";
+import Header from "../Header";
+import styles from "./styles.module.scss";
 
 const AppLayout = observer(() => {
   const accTkn = Cookies.get("accTkn");
@@ -23,7 +23,6 @@ const AppLayout = observer(() => {
     }
     if (!authStore.isAuth && accTkn) {
       authStore.setAuth(true);
-      return;
     }
   }, [accTkn, authStore.isAuth]);
   return (

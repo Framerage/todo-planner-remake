@@ -2,12 +2,12 @@ import {useState} from "react";
 // import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useNavigation} from "react-router-dom";
 // import {PATHS_BASE} from "utils/constances/constances";
+import Cookies from "js-cookie";
 import styles from "./styles.module.scss";
 // import {createBrowserHistory} from "history";
 // import {selectUserName} from "store/auth/selectors";
 // import {dropLoginToken} from "store/auth/actions";
 import user from "../../assets/icons/user(dark).png";
-import Cookies from "js-cookie";
 
 type HeaderProps = {
   namePage: string;
@@ -35,7 +35,7 @@ function Header({namePage}: HeaderProps) {
     );
   };
   const curUser = localStorage.getItem("userName");
-  //TODO: авторизация, роуты
+  // TODO: авторизация, роуты
   return (
     <header className={styles.header}>
       <div className={styles.header__logo}>ToDo Planner</div>

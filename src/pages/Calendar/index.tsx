@@ -1,13 +1,15 @@
 import {FC, useCallback, useEffect, useMemo, useState} from "react";
-import styles from "./styles.module.scss";
 import {getFetchedTimeStamp} from "utils/helpers";
 import {MONTHS} from "utils/constants.ts";
 import DateItem from "components/DateItem";
 
 import tasksStore from "store/tasks.ts";
 import {observer} from "mobx-react-lite";
+import Loader from "components/Loader";
+import styles from "./styles.module.scss";
 
 export const Calendar: FC = observer(() => {
+  const [isCreating, setIsCreating] = useState(false);
   const daysInMonth = useMemo(
     () => new Date(tasksStore.userYear, tasksStore.userMonth + 1, 0).getDate(),
     [tasksStore.userYear, tasksStore.userMonth],
@@ -19,7 +21,8 @@ export const Calendar: FC = observer(() => {
 
   // кастыль для серва
   const createCalendar = useCallback(() => {
-    let currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
+    setIsCreating(true);
+    const currentDates = [{date: 0, taskCount: 0, readyCounter: 0}];
     if (tasksStore.tasksList && tasksStore.tasksList.length) {
       for (let i = 0; i < daysInMonth; i += 1) {
         let count = 0;
@@ -61,6 +64,7 @@ export const Calendar: FC = observer(() => {
           }
         }
       }
+      setTimeout(() => setIsCreating(false), 2000);
       return currentDates;
     }
     for (let i = 0; i < daysInMonth; i += 1) {
@@ -71,13 +75,19 @@ export const Calendar: FC = observer(() => {
         readyCounter: 0,
       };
     }
+    setTimeout(() => setIsCreating(false), 2000);
 
     return currentDates;
-  }, [tasksStore.tasksList, tasksStore.userMonth, tasksStore.userYear]);
+  }, [
+    tasksStore.tasksList,
+    tasksStore.userMonth,
+    tasksStore.userYear,
+    daysInMonth,
+  ]);
 
   useEffect(() => {
     setDatesAndTasks(createCalendar());
-  }, [tasksStore.userMonth, tasksStore.userYear]);
+  }, [tasksStore.userMonth, tasksStore.userYear, tasksStore.tasksList]);
 
   useEffect(() => {
     tasksStore.fetchTasks();
@@ -102,6 +112,16 @@ export const Calendar: FC = observer(() => {
   }, [tasksStore.userMonth]);
 
   console.log("render calendar");
+  if (isCreating) {
+    return (
+      <Loader
+        loaderWidth={150}
+        loaderHeight={150}
+        dotWidth={15}
+        dotHeight={15}
+      />
+    );
+  }
   return (
     <div className={styles.calendar}>
       <div className={styles.calendar__block}>

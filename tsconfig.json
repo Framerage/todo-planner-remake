@@ -7,7 +7,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -30,7 +30,6 @@
       "pages/*": ["pages/*"],
       "store/*": ["store/*"],
       "types/*": ["types/*"],
-      // "typings/*": ["typings/*"],
       // "styles/*": ["styles/*"],
       "utils/*": ["utils/*"]
     },

@@ -1,5 +1,6 @@
 import {FC, useCallback, useState} from "react";
 import {editFirstSymbolToUpperCase} from "utils/helpers";
+import cn from "classnames";
 import styles from "./styles.module.scss";
 
 type TodoItemProps = {
@@ -13,15 +14,25 @@ type TodoItemProps = {
   editTask: Function;
 };
 
-const TodoItem: FC<TodoItemProps> = ({...props}) => {
+const TodoItem: FC<TodoItemProps> = ({
+  taskName,
+  taskDescrip,
+  index,
+  id,
+  isTaskDone,
+  removeTask,
+  transferTask,
+  editTask,
+}) => {
   const [increaserDate, setIncreaserDate] = useState(0);
-  const [isDone, setIsDone] = useState(props.isTaskDone);
+  const [isDone, setIsDone] = useState(isTaskDone);
   const [editText, setEditText] = useState("");
   const [isModalActive, setIsModalActive] = useState(false);
   const [typeOfText, setTypeOfText] = useState("");
+
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
-      props.removeTask(num);
+      removeTask(num);
     } else {
       window.alert("Think about removing");
     }
@@ -32,10 +43,10 @@ const TodoItem: FC<TodoItemProps> = ({...props}) => {
       if (window.confirm("Is task ready?")) {
         if (isDone === true) {
           setIsDone(false);
-          props.editTask(num, {isTaskDone: false});
+          editTask(num, {isTaskDone: false});
         } else {
           setIsDone(true);
-          props.editTask(num, {isTaskDone: true});
+          editTask(num, {isTaskDone: true});
         }
       } else {
         setIsDone(false);
@@ -58,9 +69,9 @@ const TodoItem: FC<TodoItemProps> = ({...props}) => {
         alert("Fill field");
       } else {
         if (typeOfText === "taskName") {
-          props.editTask(id, {taskName: editFirstSymbolToUpperCase(editText)});
+          editTask(id, {taskName: editFirstSymbolToUpperCase(editText)});
         } else {
-          props.editTask(id, {
+          editTask(id, {
             taskDescrip: editFirstSymbolToUpperCase(editText),
           });
         }
@@ -71,24 +82,38 @@ const TodoItem: FC<TodoItemProps> = ({...props}) => {
     [editText, typeOfText],
   );
   return (
-    <div className={props.isTaskDone ? "itemBlock taskDone" : "itemBlock"}>
-      <div className={isModalActive ? "modalBlock" : "modalBlock invis"}>
+    <div
+      className={cn(
+        {
+          [styles.taskDone]: isTaskDone,
+        },
+        styles.itemBlock,
+      )}
+    >
+      <div
+        className={cn(
+          {
+            [styles.invis]: isModalActive,
+          },
+          styles.modalBlock,
+        )}
+      >
         <input
           onChange={e => {
             setEditText(e.target.value);
           }}
         />
         <button
-          className="modalBtn"
+          className={styles.modalBtn}
           type="button"
           onClick={() => {
-            checkEdit(props.id);
+            checkEdit(id);
           }}
         >
           OK
         </button>
         <button
-          className="modalBtn"
+          className={styles.modalBtn}
           type="button"
           onClick={() => {
             setIsModalActive(false);
@@ -98,59 +123,60 @@ const TodoItem: FC<TodoItemProps> = ({...props}) => {
         </button>
       </div>
 
-      <div className="todoItem">
-        <div className="todoItem__text">
-          <div className="text__title">
-            <span>{props.index}:&nbsp;</span>
-            <span>{props.taskName}</span>
+      <div className={styles.todoItem}>
+        <div className={styles.todoItem__text}>
+          <div className={styles.text__title}>
+            <span>{index}:&nbsp;</span>
+            <span>{taskName}</span>
             <div
               role="presentation"
               onClick={() => activeModal("taskName")}
-              className="active__editBtn"
+              className={styles.active__editBtn}
             >
               &nbsp;
             </div>
           </div>
-          <div className="text__descrip">
-            {props.taskDescrip}
+          <div className={styles.text__descrip}>
+            {taskDescrip}
             <div
               role="presentation"
               onClick={() => activeModal("taskDescrip")}
-              className="active__editBtn"
+              className={styles.active__editBtn}
             >
               &nbsp;
             </div>
           </div>
         </div>
-        <div className="todoItem_active">
-          <div className="active__kinds">
+        <div className={styles.todoItem_active}>
+          <div className={styles.active__kinds}>
             <div
               role="presentation"
-              onClick={() => onCheckTask(props.id)}
-              className={
-                props.isTaskDone
-                  ? "active__TaskBtn taskBtnDone"
-                  : "active__TaskBtn"
-              }
+              onClick={() => onCheckTask(id)}
+              className={cn(
+                {
+                  [styles.taskBtnDone]: isTaskDone,
+                },
+                styles.active__TaskBtn,
+              )}
             >
               o
             </div>
             <div
               role="presentation"
-              onClick={() => onRemoveTask(props.id)}
-              className="active__removeBtn"
+              onClick={() => onRemoveTask(id)}
+              className={styles.active__removeBtn}
             >
               x
             </div>
           </div>
-          <div className="active__transferBtn">
+          <div className={styles.active__transferBtn}>
             <p
               role="presentation"
-              onClick={() => props.transferTask(props.id, increaserDate)}
+              onClick={() => transferTask(id, increaserDate)}
             >
               move to
             </p>
-            <div className="transferBtn__text">
+            <div className={styles.transferBtn__text}>
               <input
                 type="number"
                 value={increaserDate}

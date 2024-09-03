@@ -4,33 +4,45 @@ import {TTasksProps} from "types/tasks";
 
 class TasksStore {
   tasksList: TTasksProps[] = [];
+
   userDate: number | null = null;
+
   userMonth = new Date().getMonth();
+
   userYear = new Date().getFullYear();
+
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, {deep: true});
   }
+
   setUserDate(date: number) {
     this.userDate = date;
   }
+
   setUserMonth(month: number) {
     this.userMonth = month;
   }
+
   incrementUserMonth() {
-    this.userMonth = this.userMonth + 1;
+    this.userMonth += 1;
   }
+
   decrementUserMonth() {
-    this.userMonth = this.userMonth - 1;
+    this.userMonth -= 1;
   }
+
   setUserYear(year: number) {
     this.userYear = year;
   }
+
   incrementUserYear() {
-    this.userYear = this.userYear + 1;
+    this.userYear += 1;
   }
+
   decrementUserYear() {
-    this.userYear = this.userYear - 1;
+    this.userYear -= 1;
   }
+
   fetchTasks() {
     instance(`/${localStorage.tasksBase}`).then(res => {
       this.tasksList = res.data;
