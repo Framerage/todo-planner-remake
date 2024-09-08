@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback, FC} from "react";
+import {useState, useEffect, useCallback, FC, useMemo} from "react";
 // import {useDispatch, useSelector} from "react-redux";
 // import {
 //   FULL_DAY_MSECONDS,
@@ -39,27 +39,25 @@ import {DateStateProps} from "types/dates";
 import TodoItem from "components/TodoItem";
 import cn from "classnames";
 import tasksStore from "store/tasks.ts";
-import styles from "./styles.module.scss";
 import {useForm} from "react-hook-form";
+import {useComputed} from "hooks/useComputed";
+import styles from "./styles.module.scss";
 // import {TasksProps} from "types/appTypes";
 
 const ItemTodos: FC = () => {
   //   const dispatch = useDispatch<AppDispatch>();
   //   const newTask = useSelector(selectPostedTask);
   //   const fetchedTasks = useSelector(selectFetchedTaskBase);
-
   const fetchedTasks: any[] = [];
-  const choosedDate = 1;
-  const choosedMonth = 8;
-  const choosedYear = 2024;
+  const choosedDate = tasksStore.selectedDate;
+  const choosedMonth = tasksStore.selectedMonth;
+  const choosedYear = tasksStore.selectedYear;
   const [aWeekDay, setAweekDay] = useState("");
-  const [taskList, setTaskList] = useState<DateStateProps["postedTask"][]>([]);
+  // const [taskList, setTaskList] = useState<DateStateProps["postedTask"][]>([]);
   const [isTaskListReady, setIsTaskListReadty] = useState(false);
-  const fullDate = getFullChoosedDate(
-    choosedYear,
-    choosedMonth,
-    choosedDate,
-    0,
+  const fullDate = useMemo(
+    () => getFullChoosedDate(choosedYear, choosedMonth, choosedDate, 0),
+    [choosedYear, choosedMonth, choosedDate],
   );
   const [isNewTaken, setNewIdTaken] = useState(false);
   const [inputNameTask, setInputNameTask] = useState("");
@@ -105,7 +103,7 @@ const ItemTodos: FC = () => {
         setInputDescriptionTask("");
       }
     },
-    [taskList],
+    [tasksStore.tasksList],
   );
   // all ok
   //   useEffect(() => {
@@ -152,6 +150,31 @@ const ItemTodos: FC = () => {
   //   }
   // }, [fetchedTasks]);
   // all ok
+  const dayTaskList = useMemo(() => {
+    // const result = tasksStore.tasksList.filter(el => {
+    //   const curTimeStamp = getFetchedTimeStamp(el.forDate);
+    //   return (
+    //     choosedDate === curTimeStamp.getDate() &&
+    //     choosedMonth === curTimeStamp.getMonth() &&
+    //     choosedYear === curTimeStamp.getFullYear()
+    //   );
+    // });
+    // return result;
+    return tasksStore.tasksList;
+  }, [choosedYear, choosedMonth, choosedDate, tasksStore]);
+
+  // const dayTaskList = useComputed(() => tasksStore.tasksList);
+
+  // console.log(tasksStore.tasksList.length, "tasksStore.tasksList", dayTaskList);
+
+  useEffect(() => {
+    if (!tasksStore.tasksList) {
+      tasksStore.fetchTasks();
+    }
+  }, [tasksStore.tasksList]);
+  useEffect(() => {
+    setAweekDay(WEEK_DAYS[getFetchedTimeStamp(fullDate).getDay()]);
+  }, []);
   const editTask = useCallback(
     (id: number, params: {}) => {
       //   dispatch(editChoosedTask({id, param: params})).then(() => {
@@ -169,7 +192,7 @@ const ItemTodos: FC = () => {
       //   });
       someDelay(1000);
     },
-    [taskList],
+    [tasksStore.tasksList],
   );
   // all ok
   const removeTask = useCallback(
@@ -178,7 +201,7 @@ const ItemTodos: FC = () => {
       //     setTaskList(taskList.filter(el => el.id !== id));
       //   });
     },
-    [taskList],
+    [tasksStore.tasksList],
   );
   // all ok
   const transferTask = useCallback(
@@ -199,101 +222,77 @@ const ItemTodos: FC = () => {
         window.alert("Ok,think about it");
       }
     },
-    [choosedYear, choosedMonth, choosedDate, taskList],
+    [choosedYear, choosedMonth, choosedDate, tasksStore.tasksList],
   );
 
   const removeAllTasks = useCallback(() => {
-    taskList.forEach(item => {
-      //   dispatch(deleteChoosedTask(item.id)).then(() => {
-      //     someDelay(1500);
-      //   });
-    });
-    setTaskList([]);
-  }, [taskList]);
+    tasksStore.tasksList &&
+      tasksStore.tasksList.forEach(item => {
+        //   dispatch(deleteChoosedTask(item.id)).then(() => {
+        //     someDelay(1500);
+        //   });
+      });
+    // setTaskList([]);
+  }, [tasksStore.tasksList]);
   interface ITaskItem {
     taskName: string;
     taskDescription: string;
   }
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: {errors},
-    setError,
-  } = useForm<ITaskItem>();
+  const {register, handleSubmit, setValue} = useForm<ITaskItem>();
 
-  console.log(errors, "formState");
-  useEffect(() => {
-    if (!Object.keys(errors).length) {
-      console.log("empty");
-      return;
-    }
-    console.log("done");
-    setError("taskName", {
-      type: "required",
-      message: "Fill task name",
-    });
-
-    setError("taskDescription", {
-      type: "required",
-      message: "Fill task description",
-    });
-  }, [errors]);
-  const handleCreateTask = (data: {
-    taskName: string;
-    taskDescription: string;
-  }) => {
-    // authStore.fetchAuth({userName: data.userName, userPass: data.userPass});
-    if (!data.taskName || !data.taskDescription) {
-      window.alert(errors.taskName?.message);
-      return;
-    }
-    console.log(data, " task data");
-  };
+  const handleCreateTask = useCallback(
+    (data: {taskName: string; taskDescription: string}) => {
+      // authStore.fetchAuth({userName: data.userName, userPass: data.userPass});
+      if (!data.taskName || !data.taskDescription) {
+        alert("Заполните все поля");
+        return;
+      }
+      console.log(data, " task data");
+      const obj = {
+        id: Math.random().toFixed(2),
+        taskName: editFirstSymbolToUpperCase(data.taskName),
+        taskDescrip: editFirstSymbolToUpperCase(data.taskDescription),
+        forDate: fullDate,
+        isTaskDone: false,
+      };
+      tasksStore.postNewTask(obj);
+      setValue("taskName", "");
+      setValue("taskDescription", "");
+    },
+    [fullDate],
+  );
   return (
     <div className={styles.todoList}>
       <div className={styles.todoList__block}>
         <button
           onClick={removeAllTasks}
           className={cn(styles.block__generalDelete, {
-            [styles.emptyTaskList]: !!taskList.length,
+            [styles.emptyTaskList]:
+              tasksStore.tasksList && !!tasksStore.tasksList.length,
           })}
           type="button"
         >
           Delete all tasks
         </button>
         <form
-          className={styles.block__creator}
+          className={styles.taskForm}
           onSubmit={handleSubmit(handleCreateTask)}
         >
           <label htmlFor="taskNameField">
             <input
               id="taskNameField"
               {...register("taskName", {required: true})}
-              // value={inputNameTask}
-              // onChange={e => setInputNameTask(e.target.value)}
               placeholder="name of task"
+              className={styles.taskForm__field}
             />
-            <p>{errors.taskName?.message}</p>
           </label>
 
           <input
             {...register("taskDescription", {required: true})}
-            // value={inputDescriptionTask}
-            // onChange={e => setInputDescriptionTask(e.target.value)}
             placeholder="description of task"
+            className={styles.taskForm__field}
           />
-          <button
-          // type="button"
-          // onClick={() =>
-          //   createNewTask(fullDate, {
-          //     name: editFirstSymbolToUpperCase(inputNameTask),
-          //     description: editFirstSymbolToUpperCase(inputDescriptionTask),
-          //   })
-          // }
-          >
-            Create task
-          </button>
+          <button className={styles.taskForm__btn}>Create task</button>
         </form>
         <div className={styles.block__listContainer}>
           <div className={styles.listContainer__list}>
@@ -301,8 +300,8 @@ const ItemTodos: FC = () => {
               Tasklist of {choosedDate} {MONTHS[choosedMonth]} {choosedYear} (
               {aWeekDay})
             </h2>
-            {taskList.length ? (
-              taskList.map((task, index) => (
+            {tasksStore.tasksList && tasksStore.tasksList.length ? (
+              tasksStore.tasksList.map((task, index) => (
                 <TodoItem
                   key={task.taskName + task.id}
                   {...task}

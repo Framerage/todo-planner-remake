@@ -11,7 +11,7 @@ export type DateStateProps = {
     taskName: string;
     taskDescrip: string;
     isTaskDone: boolean;
-    id: number;
+    id: string;
     forDate: string;
   };
   error: null;

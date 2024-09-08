@@ -11,8 +11,13 @@ import styles from "./styles.module.scss";
 export const Calendar: FC = observer(() => {
   const [isCreating, setIsCreating] = useState(false);
   const daysInMonth = useMemo(
-    () => new Date(tasksStore.userYear, tasksStore.userMonth + 1, 0).getDate(),
-    [tasksStore.userYear, tasksStore.userMonth],
+    () =>
+      new Date(
+        tasksStore.selectedYear,
+        tasksStore.selectedMonth + 1,
+        0,
+      ).getDate(),
+    [tasksStore.selectedYear, tasksStore.selectedMonth],
   );
 
   const [datesAndTasks, setDatesAndTasks] = useState<
@@ -33,8 +38,8 @@ export const Calendar: FC = observer(() => {
           );
           if (
             nessTimeStamp.getDate() === i + 1 &&
-            tasksStore.userMonth === nessTimeStamp.getMonth() &&
-            tasksStore.userYear === nessTimeStamp.getFullYear()
+            tasksStore.selectedMonth === nessTimeStamp.getMonth() &&
+            tasksStore.selectedYear === nessTimeStamp.getFullYear()
           ) {
             currentDates[i] = {
               ...currentDates[i],
@@ -80,14 +85,14 @@ export const Calendar: FC = observer(() => {
     return currentDates;
   }, [
     tasksStore.tasksList,
-    tasksStore.userMonth,
-    tasksStore.userYear,
+    tasksStore.selectedMonth,
+    tasksStore.selectedYear,
     daysInMonth,
   ]);
 
   useEffect(() => {
     setDatesAndTasks(createCalendar());
-  }, [tasksStore.userMonth, tasksStore.userYear, tasksStore.tasksList]);
+  }, [tasksStore.selectedMonth, tasksStore.selectedYear, tasksStore.tasksList]);
 
   useEffect(() => {
     tasksStore.fetchTasks();
@@ -95,21 +100,25 @@ export const Calendar: FC = observer(() => {
 
   useEffect(
     () =>
-      localStorage.setItem("sessionStoryMonth", String(tasksStore.userMonth)),
-    [tasksStore.userMonth],
+      localStorage.setItem(
+        "sessionStoryMonth",
+        String(tasksStore.selectedMonth),
+      ),
+    [tasksStore.selectedMonth],
   );
   useEffect(
-    () => localStorage.setItem("sessionStoryYear", String(tasksStore.userYear)),
-    [tasksStore.userYear],
+    () =>
+      localStorage.setItem("sessionStoryYear", String(tasksStore.selectedYear)),
+    [tasksStore.selectedYear],
   );
   useEffect(() => {
-    if (tasksStore.userMonth < 0) {
-      tasksStore.setUserMonth(11);
+    if (tasksStore.selectedMonth < 0) {
+      tasksStore.setSelectedMonth(11);
     }
-    if (tasksStore.userMonth > 11) {
-      tasksStore.setUserMonth(0);
+    if (tasksStore.selectedMonth > 11) {
+      tasksStore.setSelectedMonth(0);
     }
-  }, [tasksStore.userMonth]);
+  }, [tasksStore.selectedMonth]);
 
   console.log("render calendar");
   if (isCreating) {
@@ -135,7 +144,7 @@ export const Calendar: FC = observer(() => {
             >
               {"<"}
             </button>
-            <span>{tasksStore.userYear}</span>
+            <span>{tasksStore.selectedYear}</span>
             <button
               className={styles.arrowBtn}
               role="presentation"
@@ -155,7 +164,7 @@ export const Calendar: FC = observer(() => {
               {"<"}
             </button>
             <span className={styles.monthParams__month}>
-              {MONTHS[tasksStore.userMonth]}
+              {MONTHS[tasksStore.selectedMonth]}
             </span>
             <button
               className={styles.arrowBtn}

@@ -40,7 +40,7 @@ const DateItem: FC<DateItemProps> = observer(
       return "lightgrey";
     };
     const getChoosedDate = () => {
-      tasks.setUserDate(date);
+      tasks.setSelectedDate(date);
       localStorage.setItem("sessionStoryDate", String(date));
       navigate(`:${date}`);
     };

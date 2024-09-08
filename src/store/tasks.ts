@@ -1,58 +1,84 @@
 import instance from "api/index";
-import {makeAutoObservable} from "mobx";
+import {action, computed, makeAutoObservable, observable, observe} from "mobx";
+import {observer} from "mobx-react-lite";
+import {DateStateProps} from "types/dates";
 import {TTasksProps} from "types/tasks";
+import {ERRORS_API} from "utils/constants.ts";
 
 class TasksStore {
-  tasksList: TTasksProps[] = [];
+  tasksList: TTasksProps[] | null = null;
 
-  userDate: number | null = null;
+  currentDate: number = new Date().getDate();
 
-  userMonth = new Date().getMonth();
+  selectedDate: number = new Date().getDate();
 
-  userYear = new Date().getFullYear();
+  currentMonth = new Date().getMonth();
+
+  selectedMonth = new Date().getMonth();
+
+  currentYear = new Date().getFullYear();
+
+  selectedYear = new Date().getFullYear();
 
   constructor() {
-    makeAutoObservable(this, {}, {deep: true});
+    makeAutoObservable(this, {tasksList: observable, postNewTask: action});
   }
 
-  setUserDate(date: number) {
-    this.userDate = date;
+  setSelectedDate(date: number) {
+    this.selectedDate = date;
   }
 
-  setUserMonth(month: number) {
-    this.userMonth = month;
+  setSelectedMonth(month: number) {
+    this.selectedMonth = month;
   }
 
   incrementUserMonth() {
-    this.userMonth += 1;
+    this.selectedMonth += 1;
   }
 
   decrementUserMonth() {
-    this.userMonth -= 1;
+    this.selectedMonth -= 1;
   }
 
-  setUserYear(year: number) {
-    this.userYear = year;
+  setSelectedYear(year: number) {
+    this.selectedYear = year;
   }
 
   incrementUserYear() {
-    this.userYear += 1;
+    this.selectedYear += 1;
   }
 
   decrementUserYear() {
-    this.userYear -= 1;
+    this.selectedYear -= 1;
   }
 
   fetchTasks() {
-    instance(`/${localStorage.tasksBase}`).then(res => {
-      this.tasksList = res.data;
+    instance(`/${localStorage.tasksBase}`)
+      .then(res => {
+        this.tasksList = res.data;
+      })
+      .catch(res => {
+        this.tasksList = [];
+        if (res.status !== 200) {
+          throw new Error(ERRORS_API[res.status as keyof typeof ERRORS_API]);
+        }
+      });
+  }
+
+  // set postNewTask(obj: DateStateProps["postedTask"]) {
+  //   instance.post(localStorage.tasksBase, {...obj}).then(res => {
+  //     // this.tasksList.push(res.data);
+  //     this.tasksList = [...this.tasksList, res.data];
+  //   });
+  // }
+  postNewTask(obj: DateStateProps["postedTask"]) {
+    instance.post(localStorage.tasksBase, {...obj}).then(res => {
+      if (!this.tasksList) {
+        this.tasksList = [...res.data];
+        return;
+      }
+      this.tasksList.push(res.data);
     });
-    //   .catch(res => {
-    //     this.tasksList = null;
-    //     if (res.status !== 200) {
-    //       throw new Error(ERRORS_API[res.status as keyof typeof ERRORS_API]);
-    //     }
-    //   });
   }
 }
 export default new TasksStore();
