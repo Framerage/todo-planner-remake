@@ -1,6 +1,5 @@
 import instance from "api/index";
-import {action, computed, makeAutoObservable, observable, observe} from "mobx";
-import {observer} from "mobx-react-lite";
+import {makeAutoObservable} from "mobx";
 import {DateStateProps} from "types/dates";
 import {TTasksProps} from "types/tasks";
 import {ERRORS_API} from "utils/constants.ts";
@@ -8,20 +7,26 @@ import {ERRORS_API} from "utils/constants.ts";
 class TasksStore {
   tasksList: TTasksProps[] | null = null;
 
+  currentTasksList: TTasksProps[] | null = null;
+
   currentDate: number = new Date().getDate();
 
-  selectedDate: number = new Date().getDate();
+  selectedDate: number =
+    Number(localStorage.getItem("sessionStoryDate")) || new Date().getDate();
 
   currentMonth = new Date().getMonth();
 
-  selectedMonth = new Date().getMonth();
+  selectedMonth =
+    Number(localStorage.getItem("sessionStoryMonth")) || new Date().getMonth();
 
   currentYear = new Date().getFullYear();
 
-  selectedYear = new Date().getFullYear();
+  selectedYear =
+    Number(localStorage.getItem("sessionStoryYear")) ||
+    new Date().getFullYear();
 
   constructor() {
-    makeAutoObservable(this, {tasksList: observable, postNewTask: action});
+    makeAutoObservable(this, {}, {deep: true});
   }
 
   setSelectedDate(date: number) {
@@ -65,12 +70,6 @@ class TasksStore {
       });
   }
 
-  // set postNewTask(obj: DateStateProps["postedTask"]) {
-  //   instance.post(localStorage.tasksBase, {...obj}).then(res => {
-  //     // this.tasksList.push(res.data);
-  //     this.tasksList = [...this.tasksList, res.data];
-  //   });
-  // }
   postNewTask(obj: DateStateProps["postedTask"]) {
     instance.post(localStorage.tasksBase, {...obj}).then(res => {
       if (!this.tasksList) {
@@ -78,6 +77,15 @@ class TasksStore {
         return;
       }
       this.tasksList.push(res.data);
+    });
+  }
+
+  deleteTask(id: number) {
+    instance.delete(`${localStorage.tasksBase}/${id}`).then(res => {
+      console.log(res, "result delete");
+      if (res?.status === 200 && res.statusText === "OK") {
+        this.tasksList = this.tasksList?.filter(el => el.id !== id) || [];
+      }
     });
   }
 }

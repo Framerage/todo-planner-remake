@@ -38,6 +38,10 @@
     "ignorePatterns": ["dist", ".eslintrc.cjs"],
   "plugins": [ "react-refresh","@typescript-eslint", "prettier"],
   "rules": {
+    "prefer-destructuring": ["error", {
+      "array": false,
+      "object": false
+    }],
     "no-restricted-imports": ["error", "import1", "import2"],
     "@typescript-eslint/no-unused-vars":"warn",
     "@typescript-eslint/no-var-requires":"off",

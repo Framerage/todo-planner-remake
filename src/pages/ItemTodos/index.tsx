@@ -41,131 +41,24 @@ import cn from "classnames";
 import tasksStore from "store/tasks.ts";
 import {useForm} from "react-hook-form";
 import {useComputed} from "hooks/useComputed";
+import {observer} from "mobx-react-lite";
 import styles from "./styles.module.scss";
 // import {TasksProps} from "types/appTypes";
 
-const ItemTodos: FC = () => {
+const ItemTodos: FC = observer(() => {
   //   const dispatch = useDispatch<AppDispatch>();
   //   const newTask = useSelector(selectPostedTask);
   //   const fetchedTasks = useSelector(selectFetchedTaskBase);
-  const fetchedTasks: any[] = [];
-  const choosedDate = tasksStore.selectedDate;
-  const choosedMonth = tasksStore.selectedMonth;
-  const choosedYear = tasksStore.selectedYear;
+  const selectedDate = tasksStore.selectedDate;
+  const selectedMonth = tasksStore.selectedMonth;
+  const selectedYear = tasksStore.selectedYear;
+  // const {selectedYear, selectedMonth, selectedDate} = tasksStore;
   const [aWeekDay, setAweekDay] = useState("");
-  // const [taskList, setTaskList] = useState<DateStateProps["postedTask"][]>([]);
   const [isTaskListReady, setIsTaskListReadty] = useState(false);
   const fullDate = useMemo(
-    () => getFullChoosedDate(choosedYear, choosedMonth, choosedDate, 0),
-    [choosedYear, choosedMonth, choosedDate],
+    () => getFullChoosedDate(selectedYear, selectedMonth, selectedDate, 0),
+    [selectedYear, selectedMonth, selectedDate],
   );
-  const [isNewTaken, setNewIdTaken] = useState(false);
-  const [inputNameTask, setInputNameTask] = useState("");
-  const [inputDescriptionTask, setInputDescriptionTask] = useState("");
-
-  const createNewTask = useCallback(
-    (date: string, task: {name: string; description: string}) => {
-      const condition = task.name && task.description;
-      if (!condition) {
-        window.alert("Fill all fields");
-      } else {
-        const obj = {
-          taskName: task.name,
-          taskDescrip: task.description,
-          forDate: date,
-          isTaskDone: false,
-        };
-        // тип any потому что хз что подставлять, на TasksProps ругается
-        // dispatch(postNewTask(obj)).then(({payload}: any) =>
-        //   PayloadAction<
-        //     DateStateProps,
-        //     string,
-        //     {
-        //       arg: {
-        //         obj: {
-        //           taskName: string;
-        //           taskDescrip: string;
-        //           isTaskDone: boolean;
-        //           forDate: string;
-        //         };
-        //       };
-        //       requestId: string;
-        //       requestStatus: "fulfilled";
-        //     },
-        //     never
-        //   >
-        // here was empty
-        //   {
-        //     setTaskList(prev => [...prev, payload]);
-        //   },
-        // );
-        setInputNameTask("");
-        setInputDescriptionTask("");
-      }
-    },
-    [tasksStore.tasksList],
-  );
-  // all ok
-  //   useEffect(() => {
-  //     if (isNewTaken) {
-  //       setNewIdTaken(false);
-  //     } else {
-  //       setTaskList(prev =>
-  //         prev.map(item => {
-  //           if (item.taskDescrip === newTask.taskDescrip) {
-  //             return {
-  //               ...item,
-  //               id: newTask.id,
-  //             };
-  //           }
-  //           return item;
-  //         }),
-  //       );
-  //       setNewIdTaken(true);
-  //     }
-  //   }, [newTask]);
-
-  // rerender , all ok
-  //   useEffect(() => {
-  //     dispatch(fetchTaskBase());
-  //   }, []);
-  // all ok
-  // useEffect(() => {
-  //   if (!isTaskListReady && taskList.length === 0) {
-  //     fetchedTasks.map((el: TTasksProps) => {
-  //       const curTimeStamp = getFetchedTimeStamp(el.forDate);
-  //       if (
-  //         choosedDate === curTimeStamp.getDate() &&
-  //         choosedMonth === curTimeStamp.getMonth() &&
-  //         choosedYear === curTimeStamp.getFullYear()
-  //       ) {
-  //         setTaskList(prev => [...prev, el]);
-  //       }
-  //       return fetchedTasks;
-  //     });
-  //     setAweekDay(WEEK_DAYS[getFetchedTimeStamp(fullDate).getDay()]);
-  //     setIsTaskListReadty(true);
-  //   } else {
-  //     setIsTaskListReadty(false);
-  //   }
-  // }, [fetchedTasks]);
-  // all ok
-  const dayTaskList = useMemo(() => {
-    // const result = tasksStore.tasksList.filter(el => {
-    //   const curTimeStamp = getFetchedTimeStamp(el.forDate);
-    //   return (
-    //     choosedDate === curTimeStamp.getDate() &&
-    //     choosedMonth === curTimeStamp.getMonth() &&
-    //     choosedYear === curTimeStamp.getFullYear()
-    //   );
-    // });
-    // return result;
-    return tasksStore.tasksList;
-  }, [choosedYear, choosedMonth, choosedDate, tasksStore]);
-
-  // const dayTaskList = useComputed(() => tasksStore.tasksList);
-
-  // console.log(tasksStore.tasksList.length, "tasksStore.tasksList", dayTaskList);
 
   useEffect(() => {
     if (!tasksStore.tasksList) {
@@ -194,13 +87,9 @@ const ItemTodos: FC = () => {
     },
     [tasksStore.tasksList],
   );
-  // all ok
+
   const removeTask = useCallback(
-    (id: number) => {
-      //   dispatch(deleteChoosedTask(id)).then(() => {
-      //     setTaskList(taskList.filter(el => el.id !== id));
-      //   });
-    },
+    (id: number) => tasksStore.deleteTask(id),
     [tasksStore.tasksList],
   );
   // all ok
@@ -208,9 +97,9 @@ const ItemTodos: FC = () => {
     (id: number, increaserDate: number) => {
       if (window.confirm("Are you sure?") && increaserDate !== 0) {
         const nessesaryDate = getFullChoosedDate(
-          choosedYear,
-          choosedMonth,
-          choosedDate,
+          selectedYear,
+          selectedMonth,
+          selectedDate,
           FULL_DAY_MSECONDS * increaserDate,
         );
         // dispatch(
@@ -222,7 +111,7 @@ const ItemTodos: FC = () => {
         window.alert("Ok,think about it");
       }
     },
-    [choosedYear, choosedMonth, choosedDate, tasksStore.tasksList],
+    [selectedYear, selectedMonth, selectedDate, tasksStore.tasksList],
   );
 
   const removeAllTasks = useCallback(() => {
@@ -238,16 +127,14 @@ const ItemTodos: FC = () => {
     taskName: string;
     taskDescription: string;
   }
-  const {register, handleSubmit, setValue} = useForm<ITaskItem>();
+  const {register, handleSubmit, setValue, setFocus} = useForm<ITaskItem>();
 
   const handleCreateTask = useCallback(
     (data: {taskName: string; taskDescription: string}) => {
-      // authStore.fetchAuth({userName: data.userName, userPass: data.userPass});
       if (!data.taskName || !data.taskDescription) {
         alert("Заполните все поля");
         return;
       }
-      console.log(data, " task data");
       const obj = {
         id: Math.random().toFixed(2),
         taskName: editFirstSymbolToUpperCase(data.taskName),
@@ -258,9 +145,23 @@ const ItemTodos: FC = () => {
       tasksStore.postNewTask(obj);
       setValue("taskName", "");
       setValue("taskDescription", "");
+      setFocus("taskName");
     },
     [fullDate],
   );
+  const currentTaskList = useMemo(() => {
+    if (!tasksStore.tasksList) {
+      return [];
+    }
+    return tasksStore.tasksList.filter(el => {
+      const curTimeStamp = getFetchedTimeStamp(el.forDate);
+      return (
+        selectedDate === curTimeStamp.getDate() &&
+        selectedMonth === curTimeStamp.getMonth() &&
+        selectedYear === curTimeStamp.getFullYear()
+      );
+    });
+  }, [tasksStore.tasksList, selectedDate, selectedMonth, selectedYear]);
   return (
     <div className={styles.todoList}>
       <div className={styles.todoList__block}>
@@ -278,14 +179,12 @@ const ItemTodos: FC = () => {
           className={styles.taskForm}
           onSubmit={handleSubmit(handleCreateTask)}
         >
-          <label htmlFor="taskNameField">
-            <input
-              id="taskNameField"
-              {...register("taskName", {required: true})}
-              placeholder="name of task"
-              className={styles.taskForm__field}
-            />
-          </label>
+          <input
+            id="taskNameField"
+            {...register("taskName", {required: true})}
+            placeholder="name of task"
+            className={styles.taskForm__field}
+          />
 
           <input
             {...register("taskDescription", {required: true})}
@@ -295,13 +194,13 @@ const ItemTodos: FC = () => {
           <button className={styles.taskForm__btn}>Create task</button>
         </form>
         <div className={styles.block__listContainer}>
+          <h2>
+            Tasklist of {selectedDate} {MONTHS[selectedMonth]} {selectedYear} (
+            {aWeekDay})
+          </h2>
           <div className={styles.listContainer__list}>
-            <h2>
-              Tasklist of {choosedDate} {MONTHS[choosedMonth]} {choosedYear} (
-              {aWeekDay})
-            </h2>
-            {tasksStore.tasksList && tasksStore.tasksList.length ? (
-              tasksStore.tasksList.map((task, index) => (
+            {currentTaskList.length ? (
+              currentTaskList.map((task, index) => (
                 <TodoItem
                   key={task.taskName + task.id}
                   {...task}
@@ -319,5 +218,5 @@ const ItemTodos: FC = () => {
       </div>
     </div>
   );
-};
+});
 export default ItemTodos;

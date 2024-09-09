@@ -93,7 +93,7 @@ const TodoItem: FC<TodoItemProps> = ({
       <div
         className={cn(
           {
-            [styles.invis]: isModalActive,
+            [styles.invis]: !isModalActive,
           },
           styles.modalBlock,
         )}
