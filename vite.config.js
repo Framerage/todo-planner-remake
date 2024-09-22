@@ -1,27 +1,22 @@
-import { defineConfig } from "vite";
+import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react()],
-    resolve: {
-        alias: {
-            assets: "/src/assets",
-            api: "/src/api",
-            components: "/src/components",
-            hooks: "/src/hooks",
-            // helpers: "/src/helpers",
-            // modules: "/src/modules",
-            pages: "/src/pages",
-            // styles: "/src/styles",
-            store: "/src/store",
-            types: "/src/types",
-            // typings: "/src/typings",
-            utils: "/src/utils",
-            // constants: "/src/constants",
-        },
+  plugins: [react()],
+  resolve: {
+    alias: {
+      assets: "/src/assets",
+      api: "/src/api",
+      components: "/src/components",
+      hooks: "/src/hooks",
+      pages: "/src/pages",
+      store: "/src/store",
+      types: "/src/types",
+      utils: "/src/utils",
     },
-    base: "/",
-    server: {
-        open: "/",
-    },
+  },
+  base: "/todo-planner-remake",
+  server: {
+    open: "/todo-planner-remake",
+  },
 });

@@ -20,8 +20,8 @@ export const MONTHS: string[] = [
   "November",
   "December",
 ];
-// const MAIN_PATH = "/todo-planner-remake";
-const MAIN_PATH = "";
+export const MAIN_PATH = "/todo-planner-remake";
+// export const MAIN_PATH = "";
 export const CLOSE_ROUTES: {
   [key: string]: {path: string; endpoint: string; isIndex?: boolean};
 } = {

@@ -12,7 +12,7 @@ export const MainPage: FC = () => {
         </Link>
       </li>
       <li>
-        <Link to={CLOSE_ROUTES.calendar.endpoint} className={styles.menuItem}>
+        <Link to={CLOSE_ROUTES.calendar.path} className={styles.menuItem}>
           Calendar
         </Link>
       </li>
