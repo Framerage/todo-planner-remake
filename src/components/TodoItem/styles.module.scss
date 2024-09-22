@@ -102,14 +102,14 @@
           cursor: pointer;
           transition: 0.2s;
           background-size: cover;
-          background-image: url(../../assets/images/inWorking.png);
+          background-image: url(assets/icons/inWorking.png);
           &:hover {
             box-shadow: 0 0 10px 2px green;
           }
         }
         .taskBtnDone{
           border: 1px solid green;
-          background-image: url(../../assets/images/done.svg);
+          background-image: url(assets/icons/done.svg);
         }
         .active__removeBtn {
           margin: 5px;
@@ -176,13 +176,13 @@
       width: 15px !important;
       height: 15px;
       color: $textHeadersColor;
-      text-shadow: 0 0 5px red, 0 0 10px red,
-        0 0 15px $themeTsColorSelection;
       display: flex;
       justify-content: center;
       align-items: center;
+      border: none;
+      background: none;
       cursor: pointer;
-      background-image: url(../../assets/images/editBtn.png);
+      background-image: url(assets/icons/editBtn.png);
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;

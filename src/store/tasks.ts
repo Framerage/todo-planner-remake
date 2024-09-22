@@ -1,5 +1,5 @@
 import instance from "api/index";
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, observable} from "mobx";
 import {DateStateProps} from "types/dates";
 import {TTasksProps} from "types/tasks";
 import {ERRORS_API} from "utils/constants.ts";
@@ -26,7 +26,7 @@ class TasksStore {
     new Date().getFullYear();
 
   constructor() {
-    makeAutoObservable(this, {}, {deep: true});
+    makeAutoObservable(this, {tasksList: observable}, {deep: true});
   }
 
   setSelectedDate(date: number) {
@@ -82,11 +82,44 @@ class TasksStore {
 
   deleteTask(id: number) {
     instance.delete(`${localStorage.tasksBase}/${id}`).then(res => {
-      console.log(res, "result delete");
       if (res?.status === 200 && res.statusText === "OK") {
         this.tasksList = this.tasksList?.filter(el => el.id !== id) || [];
       }
     });
+  }
+
+  editTask({
+    id,
+    params,
+  }: {
+    id: number;
+    params: {
+      taskName?: string;
+      taskDescrip?: string;
+      forDate?: string;
+      isTaskDone?: boolean;
+    };
+  }) {
+    instance
+      .put(`${localStorage.tasksBase}/${id}`, {
+        ...params,
+      })
+      .then(res => {
+        if (res?.status === 200 && res.statusText === "OK") {
+          instance(`/${localStorage.tasksBase}`)
+            .then(res => {
+              this.tasksList = res.data;
+            })
+            .catch(res => {
+              this.tasksList = [];
+              if (res.status !== 200) {
+                throw new Error(
+                  ERRORS_API[res.status as keyof typeof ERRORS_API],
+                );
+              }
+            });
+        }
+      });
   }
 }
 export default new TasksStore();

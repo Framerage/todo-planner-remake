@@ -69,7 +69,7 @@ export const Calendar: FC = observer(() => {
           }
         }
       }
-      setTimeout(() => setIsCreating(false), 2000);
+      setTimeout(() => setIsCreating(false), 500);
       return currentDates;
     }
     for (let i = 0; i < daysInMonth; i += 1) {
@@ -120,15 +120,16 @@ export const Calendar: FC = observer(() => {
     }
   }, [tasksStore.selectedMonth]);
 
-  console.log("render calendar");
   if (isCreating) {
     return (
-      <Loader
-        loaderWidth={150}
-        loaderHeight={150}
-        dotWidth={15}
-        dotHeight={15}
-      />
+      <div className={styles.calendar}>
+        <Loader
+          loaderWidth={150}
+          loaderHeight={150}
+          dotWidth={15}
+          dotHeight={15}
+        />
+      </div>
     );
   }
   return (

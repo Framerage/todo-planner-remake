@@ -1,41 +1,21 @@
-import {useState} from "react";
-// import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useNavigation} from "react-router-dom";
-// import {PATHS_BASE} from "utils/constances/constances";
+import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
+import {CLOSE_ROUTES} from "utils/constants.ts";
 import styles from "./styles.module.scss";
-// import {createBrowserHistory} from "history";
-// import {selectUserName} from "store/auth/selectors";
-// import {dropLoginToken} from "store/auth/actions";
 import user from "../../assets/icons/user(dark).png";
 
 type HeaderProps = {
   namePage: string;
 };
 function Header({namePage}: HeaderProps) {
-  //   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  //   const loginUser = useSelector(selectUserName);
-  //   const [cookies, setCookies] = useCookies(["userToken"]);
-  //   const hist = createBrowserHistory();
-  const [themeColor, setThemeColor] = useState("0");
   const onDropAuth = () => {
-    // dispatch(dropLoginToken(""));
-    // setCookies("userToken", "", {path: "todo-planner-remake/"});
-    // navigate(PATHS_BASE.firstPage);
     Cookies.remove("accTkn");
     localStorage.clear();
+    navigate(CLOSE_ROUTES.home.path);
   };
-  const changeTheme = (e: any) => {
-    setThemeColor(e.target.value);
-    document.documentElement.style.setProperty(
-      "--themeColor",
-      `#${e.target.value}`,
-    );
-  };
+
   const curUser = localStorage.getItem("userName");
-  // TODO: авторизация, роуты
   return (
     <header className={styles.header}>
       <div className={styles.header__logo}>ToDo Planner</div>
@@ -46,26 +26,18 @@ function Header({namePage}: HeaderProps) {
           <img role="presentation" onClick={onDropAuth} src={user} alt="user" />
         </div>
       </div>
-      {/* <div className={styles.header__returnBtn}>
+      <div className={styles.header__returnBtn}>
         <div
           role="presentation"
-          //   style={{
-          //     display: !cookies.userToken ? "none" : "",
-          //   }}
+          style={{
+            display: !Cookies.get("accTkn") ? "none" : "",
+          }}
           className={styles.returnBtn}
-          //   onClick={() => hist.go(-1)}
+          onClick={() => navigate(-1)}
         >
           {"<"}
         </div>
-      </div> */}
-      <input
-        className={styles.header__colorRange}
-        type="range"
-        min={0}
-        max={9999}
-        value={themeColor}
-        onChange={changeTheme}
-      />
+      </div>
     </header>
   );
 }
