@@ -19,4 +19,20 @@ export default defineConfig({
   server: {
     open: "/todo-planner-remake",
   },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/[name].js",
+        chunkFileNames: "assets/[name].js",
+        assetFileNames: "assets/[name].[ext]",
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "./src/styles.module.scss";',
+      },
+    },
+  },
 });
