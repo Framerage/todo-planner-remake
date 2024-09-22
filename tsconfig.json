@@ -1,32 +1,49 @@
 {
   "compilerOptions": {
-    // "alwaysStrict": true,
-    // "noImplicitAny": true,
-    // "strictNullChecks": true,
-    // "strictPropertyInitialization": true,
-    // "strictFunctionTypes": true,
-    // "noImplicitThis": true,
-    // "strictBindCallApply": true,
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "target": "ES2023",
+    "useDefineForClassFields": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+
+    /* Bundler mode */
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
+
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "src",
     "paths": {
-      "@modules/*": ["/modules/*"],
-      "@services/*": ["services/*"]
-    }
+      "assets/*": ["assets/*"],
+      "api/*": ["api/*"],
+      "components/*": ["components/*"],
+      // "constants/*": ["constants/*"],
+      "hooks/*": ["hooks/*"],
+      // "helpers/*": ["helpers/*"],
+      // "modules/*": ["modules/*"],
+      "pages/*": ["pages/*"],
+      "store/*": ["store/*"],
+      "types/*": ["types/*"],
+      // "styles/*": ["styles/*"],
+      "utils/*": ["utils/*"]
+    },
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src","**/*.ts","**/*.tsx","src", "src/types"]
+  "include": ["src", "**/*.ts", "**/*.tsx", "src", "src/types","src/@types"],
+  "references": [
+
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
 }

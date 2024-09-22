@@ -1,8 +1,16 @@
 {
-    "extends": "./tsconfig.json",
-    "include": [    
-        "src/**/*.ts",
-        "src/**/*.js",
-    "test/**/*.ts",
-    "typings/**/*.ts",],
-}
+    "compilerOptions": {
+      "types": ["@types/node"],
+      "noEmit": true,
+      "allowJs": true
+    },
+    "extends": "./tsconfig.base.json",
+    "include": [
+      "tools/**/*.ts",
+      "tools/**/*.mts",
+      ".eslintrc.json",
+      "jest.config.base.js",
+      "jest.config.js",
+      "jest.preset.js"
+    ]
+  }

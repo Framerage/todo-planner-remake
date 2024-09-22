@@ -1,0 +1,41 @@
+@import 'utils/variables/colors.scss';
+
+.authForm {
+    border: 1px solid red;
+    width: 100%;
+    min-width: 250px;
+    max-width: 350px;
+    height: 150px;
+    border: 2px solid $bordersColor;
+    border-radius: 20px;
+    box-shadow: 0 0 20px 5px $themeBsColor;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+
+    .formItem{
+      font-size: 3em;
+      color: #000;
+      border-radius: 5px;
+    }
+    .formInput {
+        @extend .formItem;
+        padding: 3px;
+    }
+    .formBtn {
+        @extend .formItem;
+        padding: 5px;
+      &:hover{
+          cursor: pointer;
+          box-shadow: 0 0 10px 5px $themeBsColor;
+        }
+        &:focus{
+          cursor: pointer;
+          box-shadow: 0 0 10px 5px $themeBsColor;
+        }
+      }
+    
+  }

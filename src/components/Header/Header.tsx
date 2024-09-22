@@ -1,67 +1,43 @@
-import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {PATHS_BASE} from "utils/constances/constances";
-import "./styles.scss";
-import {useCookies} from "react-cookie";
-import {createBrowserHistory} from "history";
-import {selectUserName} from "store/auth/selectors";
-import {dropLoginToken} from "store/auth/actions";
-import user from "assets/images/user(dark).png";
+import Cookies from "js-cookie";
+import {CLOSE_ROUTES} from "utils/constants.ts";
+import styles from "./styles.module.scss";
+import user from "../../assets/icons/user(dark).png";
 
 type HeaderProps = {
   namePage: string;
 };
 function Header({namePage}: HeaderProps) {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loginUser = useSelector(selectUserName);
-  const [cookies, setCookies] = useCookies(["userToken"]);
-  const hist = createBrowserHistory();
-  const [themeColor, setThemeColor] = useState("0");
   const onDropAuth = () => {
-    dispatch(dropLoginToken(""));
-    setCookies("userToken", "", {path: "todo-planner-remake/"});
-    navigate(PATHS_BASE.firstPage);
+    Cookies.remove("accTkn");
     localStorage.clear();
+    navigate(CLOSE_ROUTES.home.path);
   };
-  const changeTheme = (e: any) => {
-    setThemeColor(e.target.value);
-    document.documentElement.style.setProperty(
-      "--themeColor",
-      `#${e.target.value}`,
-    );
-  };
+
+  const curUser = localStorage.getItem("userName");
   return (
-    <header className="header">
-      <div className="header__logo">ToDo Planner</div>
-      <div className="header__content">
-        <span className="content__pageName">{namePage}</span>
-        <div className="content__navigation">
-          <span className="userName">{loginUser}</span>
+    <header className={styles.header}>
+      <div className={styles.header__logo}>ToDo Planner</div>
+      <div className={styles.header__content}>
+        <span className={styles.content__pageName}>{namePage}</span>
+        <div className={styles.content__navigation}>
+          <span className={styles.userName}>{curUser}</span>
           <img role="presentation" onClick={onDropAuth} src={user} alt="user" />
         </div>
       </div>
-      <div className="header__returnBtn">
+      <div className={styles.header__returnBtn}>
         <div
           role="presentation"
           style={{
-            display: !cookies.userToken ? "none" : "",
+            display: !Cookies.get("accTkn") ? "none" : "",
           }}
-          className="returnBtn"
-          onClick={() => hist.go(-1)}
+          className={styles.returnBtn}
+          onClick={() => navigate(-1)}
         >
           {"<"}
         </div>
       </div>
-      <input
-        className="header__colorRange"
-        type="range"
-        min={0}
-        max={999999}
-        value={themeColor}
-        onChange={changeTheme}
-      />
     </header>
   );
 }

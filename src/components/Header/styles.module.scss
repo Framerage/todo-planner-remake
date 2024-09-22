@@ -1,0 +1,149 @@
+@import 'utils/variables/colors.scss';
+.header {
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+text-align: center;
+  justify-content: center;
+  align-items: center;
+  position:sticky; 
+  width: 100%;
+  position:-webkit-sticky; 
+  margin-bottom: 30px;
+  top:0;
+  z-index: 1000000;
+  background: linear-gradient(black 92%,transparent);
+  .header__logo {
+    width:600px;
+    color: $textHeadersColor;
+    text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+      0 0 15px $themeBsColor, 0 0 20px $themeBsColor, 0 0 25px white;
+    font-size: 10em;
+    margin: 20px 0;
+  }
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+    width: 540px;
+    .content__pageName {
+      color: $textHeadersColor;
+      text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+        0 0 15px $themeBsColor, 0 0 20px $themeBsColor, 0 0 25px white;
+      font-size: 5em;
+      margin: 0 20px;
+    }
+    .content__navigation {
+      display: flex;
+      justify-content: space-between;
+
+      .userName{
+        color: $textHeadersColor;
+        text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+          0 0 15px $themeBsColor, 0 0 20px $themeBsColor, 0 0 25px white;
+        font-size: 5em;
+      margin: 0 20px;
+
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        box-shadow: 0 0 20px 5px $themeBsColor;
+        background-color: white;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: 0.2s;
+        &:hover {
+          box-shadow: 0 0 20px 5px rgb(191, 140, 238);
+        }
+      }
+    }
+  }
+  .header__returnBtn {
+    width:600px;
+    
+    display: flex;
+    justify-content: flex-start;
+    .returnBtn {
+      font-size: 4em;
+      color: $textHeadersColor;
+      text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+        0 0 15px $themeBsColor, 0 0 20px $themeBsColor, 0 0 25px white;
+      width: 30px;
+      height: 30px;
+      border: 1px solid $bordersColor;
+      border-radius: 15px;
+      box-shadow: 0 0 10px 5px $themeBsColor;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 5px;
+      &:hover {
+        box-shadow: 0 0 20px 5px rgb(191, 140, 238);
+      }
+    }
+  }
+  .header__colorRange{
+    width: 300px;
+    -webkit-appearance: none !important;
+    background:linear-gradient(to right,white,lightgreen,lightblue,lightgrey,yellow,green,blue,violet,red,orange,yellow,white);
+    height:10px;
+    margin-top: 10px;
+  }
+  .header__colorRange::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background:transparent;
+    border: 1px solid white;
+    border-radius: 7px;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.2s;
+    &:hover {
+      opacity: 1;
+      border: 2px solid white;
+      transform: scale(1.05);
+    }
+}
+}
+@media screen and (min-width: 300px) and (max-width: 476px) {
+  .header {
+    .header__logo{
+      width: 300px;
+    }
+    .header__content{
+      width: 260px;
+    }
+    .header__returnBtn{
+      width: 300px;
+    }
+  }
+}
+@media screen and (min-width: 477px) and (max-width: 768px) {
+  .header {
+    .header__logo{
+      width: 350px;
+    }
+    .header__content{
+      width: 310px;
+    }
+    .header__returnBtn{
+      width: 370px;
+    }
+  }
+}
+@media screen and (min-width: 769px) and (max-width: 1048px) {
+  .header {
+    .header__logo{
+      width: 400px;
+    }
+    .header__content{
+      width: 360px;
+    }
+    .header__returnBtn{
+      width: 450px;
+    }
+  }
+}
