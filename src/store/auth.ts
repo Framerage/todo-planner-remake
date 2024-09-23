@@ -9,6 +9,8 @@ interface IAuthInitialStore {
 class AuthStore implements IAuthInitialStore {
   isAuth = false;
 
+  authIsLoading = false;
+
   authError = null;
 
   constructor() {
@@ -25,6 +27,7 @@ class AuthStore implements IAuthInitialStore {
 
   fetchAuth({userName, userPass}: {userName: string; userPass: string}) {
     // temp logic
+    this.authIsLoading = true;
     instance("/login")
       .then(res => {
         const user = res.data.find(
@@ -35,11 +38,13 @@ class AuthStore implements IAuthInitialStore {
         localStorage.setItem("userName", userName);
         Cookies.set("accTkn", user.token);
         this.isAuth = !!user.token;
+        this.authIsLoading = false;
       })
       .catch(err => {
         this.isAuth = false;
         this.authError = err;
         alert("not rigth datas");
+        this.authIsLoading = false;
       });
   }
 }

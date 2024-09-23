@@ -1,5 +1,6 @@
 import {useForm} from "react-hook-form";
 import authStore from "store/auth.ts";
+import Loader from "components/Loader";
 import styles from "./styles.module.scss";
 
 interface LoginFormData {
@@ -11,6 +12,9 @@ const AuthPage = () => {
   const handleAuth = (data: {userName: string; userPass: string}) => {
     authStore.fetchAuth({userName: data.userName, userPass: data.userPass});
   };
+  if (authStore.authIsLoading) {
+    return <Loader loaderWidth={150} loaderHeight={150} />;
+  }
   return (
     <form className={styles.authForm} onSubmit={handleSubmit(handleAuth)}>
       <input
