@@ -12,7 +12,10 @@ type TodoItemProps = {
   isTaskDone: boolean;
   removeTask: (id: number) => void;
   transferTask: Function;
-  editTask: Function;
+  editTask: (
+    id: number,
+    params: {taskName?: string; taskDescrip?: string; isTaskDone?: boolean},
+  ) => void;
 };
 type TFormKeys = "taskName" | "taskDescrip";
 interface IEditForm {
@@ -83,7 +86,7 @@ const TodoItem: FC<TodoItemProps> = memo(
       [typeOfText],
     );
     return (
-      <div
+      <li
         className={cn(
           {
             [styles.taskDone]: isTaskDone,
@@ -175,7 +178,7 @@ const TodoItem: FC<TodoItemProps> = memo(
             </div>
           </div>
         </div>
-      </div>
+      </li>
     );
   },
 );

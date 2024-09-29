@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  backface-visibility:hidden;
   .modalBlock{
     width: 102%;
     min-height: 125px;
@@ -51,7 +52,6 @@
     border: 1px solid $bordersColor;
     border-radius: 10px;
     box-shadow: 0 0 10px 2px $themeBsColor;
-    margin: 10px 0;
     padding: 0 5px;
     display: flex;
     justify-content: space-between;

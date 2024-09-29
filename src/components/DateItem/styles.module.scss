@@ -1,4 +1,6 @@
 @import 'utils/variables/colors.scss';
+@import 'utils/default/effects.scss';
+
 .dates__item {
   position: relative;
   transition: 0.1s;
@@ -6,10 +8,13 @@
   border-radius: 25px;
   font-size: 4px;
   cursor: pointer;
+  background: none;
+  border: none;
   &:hover {
     scale: 1.02;
     box-shadow: 0 0 10px 2px $themeBsColor;
   }
+  @extend .focusedElement;
   .item__date {
     color: $textHeadersColor;
     text-shadow: 0 0 5px $themeTsColorMain, 0 0 10px $themeTsColorMain,

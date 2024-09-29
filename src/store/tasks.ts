@@ -7,6 +7,8 @@ import {ERRORS_API} from "utils/constants.ts";
 class TasksStore {
   tasksList: TTasksProps[] | null = null;
 
+  taskListIsLoading: boolean = false;
+
   currentTasksList: TTasksProps[] | null = null;
 
   currentDate: number = new Date().getDate();
@@ -58,6 +60,7 @@ class TasksStore {
   }
 
   fetchTasks() {
+    this.taskListIsLoading = true;
     instance(`/${localStorage.tasksBase}`)
       .then(res => {
         this.tasksList = res.data;
@@ -67,6 +70,9 @@ class TasksStore {
         if (res.status !== 200) {
           throw new Error(ERRORS_API[res.status as keyof typeof ERRORS_API]);
         }
+      })
+      .finally(() => {
+        this.taskListIsLoading = false;
       });
   }
 

@@ -1,0 +1,107 @@
+@import 'utils/variables/colors.scss';
+@import 'utils/default/effects.scss';
+.loaderWrapper{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+.dateWrapper{
+  padding: 20px;
+  position: relative;
+  .dateFormWrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    position: sticky;
+    top: 150px;
+    z-index: 1000001;
+    background: linear-gradient(to bottom, $bg 90%, transparent );
+    padding: 20px 0;
+    margin-bottom: 10px;
+    .dateHeadline{
+      color: white;
+      text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+      0 0 15px white, 0 0 20px $themeBsColor;
+      font-size: 7em;
+      padding: 2px;
+      max-height: 80px;
+      text-align: center;
+    }
+    .dateForm {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 0 auto;
+      gap: 10px;
+      .dateField {
+        color: white;
+        background-color: $bg;
+        border: 1px solid white;
+        width: 250px;
+        font-size: 3em;
+        margin: 5px 0;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 2px $themeBsColor;
+        @extend .focusedElement;
+      }
+      .creatingBtn {
+        border-radius: 10px;
+        font-size: 3em;
+        padding: 5px;
+        color: white;
+        margin: 5px 0;
+        background-color: black;
+        border: 1px solid white;
+        box-shadow: 0 0 10px 2px $themeBsColor;
+        cursor: pointer;
+        transition: 0.2s;
+        &:hover {
+          box-shadow: 0 0 15px 2px white;
+        }
+        @extend .focusedElement;
+      }
+      
+    }
+  }
+  .dateListWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 15px;
+    .listCleanerBtn{
+      position: sticky;
+      top: 230px;
+      z-index: 10000101;
+      border: 1px solid red;
+      width: min-content;
+      color: red;
+      background-color: $bg;
+      padding: 5px;
+      text-wrap: nowrap;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.2s;
+      &:focus,&:hover{
+        box-shadow:  0 0 5px red, 0 0 10px white, 0 0 15px red;
+      }
+    }
+    .dateList{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      list-style: none;
+      h2{
+        color: white;
+        text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
+        0 0 15px white, 0 0 20px $themeBsColor;
+        font-size: 7em;
+        text-align: center;
+      }
+    }
+  }
+}

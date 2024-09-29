@@ -9,7 +9,7 @@ import {observer} from "mobx-react-lite";
 import {MainPage} from "pages/Main/";
 import {Calendar} from "pages/Calendar";
 import {useEffect} from "react";
-import ItemTodos from "pages/ItemTodos";
+import {DateTodos} from "pages/DateTodos";
 import Header from "../Header";
 import styles from "./styles.module.scss";
 
@@ -40,7 +40,7 @@ const AppLayout = observer(() => {
             />
             <Route
               path={`${CLOSE_ROUTES.calendar.path}/:id`}
-              element={<ItemTodos />}
+              element={<DateTodos />}
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

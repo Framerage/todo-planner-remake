@@ -12,7 +12,7 @@ const Loader: FC<{
   dotWidth = 25,
   dotHeight = 25,
 }) => {
-  const dots = Array(20).fill({color: "rgba(250,155,5,0.9)"}, 0);
+  const dots = Array(20).fill({color: "rgba(45,85,255,0.9)"}, 0);
 
   const itemStyle = (index: number) => {
     return {

@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import tasks from "store/tasks";
@@ -13,7 +13,10 @@ type DateItemProps = {
 
 const DateItem: FC<DateItemProps> = observer(
   ({date, taskCount, readyCounter}) => {
+    const dateRef = useRef<HTMLButtonElement | null>(null);
     const navigate = useNavigate();
+    const lastItem = localStorage.getItem("sessionStoryDate");
+
     const counterStyle = () => {
       if (taskCount > 6) {
         return "orange";
@@ -45,11 +48,19 @@ const DateItem: FC<DateItemProps> = observer(
       navigate(`:${date}`);
     };
 
+    useEffect(() => {
+      if (dateRef && dateRef.current && lastItem) {
+        if (lastItem === String(date)) {
+          dateRef?.current?.focus();
+        }
+      }
+    }, [dateRef, lastItem]);
     return (
-      <div
+      <button
         role="presentation"
         onClick={getChoosedDate}
         className={styles.dates__item}
+        ref={dateRef}
       >
         <div className={styles.item__date}>{date}</div>
         <span
@@ -68,7 +79,7 @@ const DateItem: FC<DateItemProps> = observer(
         >
           {readyCounter}
         </span>
-      </div>
+      </button>
     );
   },
 );

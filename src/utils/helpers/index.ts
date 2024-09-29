@@ -12,15 +12,15 @@ export const checkResponseStatus = (resp: number) => {
     throw new Error(ERRORS_API[resp as keyof typeof ERRORS_API]);
   }
 };
-export const getFullChoosedDate = (
-  choosedYear: number,
-  choosedMonth: number,
-  choosedDate: number,
+export const getFullSelectedDate = (
+  selectedYear: number,
+  selectedMonth: number,
+  selectedDate: number,
   increaser: number,
 ) =>
   // 2022-10-10
   new Date(
-    new Date(choosedYear, choosedMonth, choosedDate).getTime() + increaser,
+    new Date(selectedYear, selectedMonth, selectedDate).getTime() + increaser,
   )
     .toLocaleDateString()
     .split(".")
