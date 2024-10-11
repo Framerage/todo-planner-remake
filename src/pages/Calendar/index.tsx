@@ -72,7 +72,15 @@ export const Calendar: FC = observer(() => {
       setTimeout(() => setIsCreating(false), 1000);
       return currentDates;
     }
-
+    for (let i = 0; i < daysInMonth; i += 1) {
+      currentDates[i] = {
+        ...currentDates[i],
+        date: i + 1,
+        taskCount: 0,
+        readyCounter: 0,
+      };
+    }
+    setIsCreating(false);
     return currentDates;
   }, [
     tasksStore.tasksList,
