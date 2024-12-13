@@ -1,6 +1,10 @@
 import TodoItem from "components/TodoItem";
-import {getFetchedTimeStamp, getFullSelectedDate} from "utils/helpers";
-import {FC, useCallback, useEffect} from "react";
+import {
+  getFetchedTimeStamp,
+  getFullSelectedDate,
+  reformatSTringByLower,
+} from "utils/helpers";
+import {FC, useCallback, useEffect, useMemo} from "react";
 import {TTasksProps} from "types/tasks";
 import tasksStore from "store/tasks.ts";
 import {FULL_DAY_MSECONDS} from "utils/constants.ts";
@@ -31,7 +35,7 @@ export const DateList: FC = observer(() => {
   const selectedDate = tasksStore.selectedDate;
   const selectedMonth = tasksStore.selectedMonth;
   const selectedYear = tasksStore.selectedYear;
-
+  const searchValue = tasksStore.taskSearchValue;
   useEffect(() => {
     if (!tasksStore.tasksList) {
       tasksStore.fetchTasks();
@@ -71,7 +75,23 @@ export const DateList: FC = observer(() => {
     selectedYear,
   );
 
+  const filteredListBySearch = useMemo(() => {
+    return filteredList.filter(
+      item =>
+        reformatSTringByLower(item.taskName).includes(
+          reformatSTringByLower(searchValue),
+        ) ||
+        reformatSTringByLower(item.taskDescrip).includes(
+          reformatSTringByLower(searchValue),
+        ),
+    );
+  }, [filteredList, searchValue]);
+
   const removeAllTasks = useCallback(async () => {
+    const isSuccess = window.confirm("Is ok?");
+
+    if (!isSuccess) return;
+
     const removePromises: Promise<unknown>[] = [];
     filteredList.forEach(item => {
       removePromises.push(new Promise(() => tasksStore.deleteTask(item.id)));
@@ -93,12 +113,14 @@ export const DateList: FC = observer(() => {
   }
   return (
     <div className={styles.dateListWrapper}>
-      <button onClick={removeAllTasks} className={styles.listCleanerBtn}>
-        Delete all
-      </button>
+      <div className={styles.listCleanerContainer}>
+        <button onClick={removeAllTasks} className={styles.listCleanerBtn}>
+          Delete all
+        </button>
+      </div>
       <ul className={styles.dateList}>
-        {filteredList.length ? (
-          filteredList.map((task, index) => (
+        {filteredListBySearch.length ? (
+          filteredListBySearch.map((task, index) => (
             <TodoItem
               key={task.taskName + task.id}
               {...task}

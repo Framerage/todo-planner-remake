@@ -21,7 +21,6 @@
     z-index: 1000001;
     background: linear-gradient(to bottom, $bg 90%, transparent );
     padding: 20px 0;
-    margin-bottom: 10px;
     .dateHeadline{
       color: white;
       text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
@@ -69,27 +68,31 @@
     }
   }
   .dateListWrapper{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
     padding: 0 15px;
-    .listCleanerBtn{
+    .listCleanerContainer{
+      padding: 0 10px;
       position: sticky;
       top: 230px;
       z-index: 10000101;
-      border: 1px solid red;
-      width: min-content;
-      color: red;
-      background-color: $bg;
-      padding: 5px;
-      text-wrap: nowrap;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.2s;
-      &:focus,&:hover{
-        box-shadow:  0 0 5px red, 0 0 10px white, 0 0 15px red;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: flex-start;
+      .listCleanerBtn{
+        border: 1px solid red;
+        width: min-content;
+        color: red;
+        background-color: $bg;
+        padding: 5px;
+        text-wrap: nowrap;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        &:focus,&:hover{
+          box-shadow:  0 0 5px red, 0 0 10px white, 0 0 15px red;
+        }
       }
     }
+
     .dateList{
       display: flex;
       flex-direction: column;
@@ -101,6 +104,17 @@
         0 0 15px white, 0 0 20px $themeBsColor;
         font-size: 7em;
         text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 300px) and (max-width: 476px){
+  .dateWrapper{
+    .dateListWrapper{
+      .listCleanerContainer{
+        justify-content: flex-end;
+        top: 352px;
       }
     }
   }

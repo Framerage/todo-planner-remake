@@ -5,7 +5,7 @@ import {
   getFetchedTimeStamp,
   getFullSelectedDate,
 } from "utils/helpers";
-import {MONTHS, WEEK_DAYS} from "utils/constants.ts";
+import {FULL_DAY_MSECONDS, MONTHS, WEEK_DAYS} from "utils/constants.ts";
 import tasksStore from "store/tasks.ts";
 import {observer} from "mobx-react-lite";
 import styles from "./styles.module.scss";
@@ -51,6 +51,40 @@ export const DateFormCreating: FC = observer(() => {
       setFocus("taskName");
     },
     [fullDate],
+  );
+
+  const daysInMonth = useMemo(
+    () =>
+      new Date(
+        tasksStore.selectedYear,
+        tasksStore.selectedMonth + 1,
+        0,
+      ).getDate(),
+    [tasksStore.selectedYear, tasksStore.selectedMonth],
+  );
+  //TODO: add btns
+
+  const handleChangeDate = useCallback(
+    (newDay: number) => {
+      if (selectedDate + newDay > daysInMonth) {
+        tasksStore.incrementUserMonth();
+        return;
+      }
+      if (selectedDate + newDay < 0) {
+        tasksStore.decrementUserMonth();
+        return;
+      }
+      const necessaryDate = getFullSelectedDate(
+        selectedYear,
+        selectedMonth,
+        selectedDate,
+        FULL_DAY_MSECONDS * newDay,
+      );
+      const newDate = new Date(necessaryDate);
+      tasksStore.setSelectedDate(newDate.getDate());
+      tasksStore.setSelectedMonth(newDate.getMonth());
+    },
+    [selectedDate, selectedMonth, selectedYear, daysInMonth],
   );
   return (
     <div className={styles.dateFormWrapper}>

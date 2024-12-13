@@ -27,6 +27,8 @@ class TasksStore {
     Number(localStorage.getItem("sessionStoryYear")) ||
     new Date().getFullYear();
 
+  taskSearchValue: string = "";
+
   constructor() {
     makeAutoObservable(this, {tasksList: observable}, {deep: true});
   }
@@ -37,26 +39,46 @@ class TasksStore {
 
   setSelectedMonth(month: number) {
     this.selectedMonth = month;
+    localStorage.setItem("sessionStoryMonth", String(month));
   }
 
   incrementUserMonth() {
+    if (this.selectedMonth + 1 > 11) {
+      this.selectedMonth = 0;
+      localStorage.setItem("sessionStoryMonth", String(this.selectedMonth));
+      return;
+    }
     this.selectedMonth += 1;
+    localStorage.setItem("sessionStoryMonth", String(this.selectedMonth));
   }
 
   decrementUserMonth() {
+    if (this.selectedMonth - 1 < 0) {
+      this.selectedMonth = 11;
+      localStorage.setItem("sessionStoryMonth", String(this.selectedMonth));
+      return;
+    }
     this.selectedMonth -= 1;
+    localStorage.setItem("sessionStoryMonth", String(this.selectedMonth));
   }
 
   setSelectedYear(year: number) {
     this.selectedYear = year;
+    localStorage.setItem("sessionStoryYear", String(year));
   }
 
   incrementUserYear() {
     this.selectedYear += 1;
+    localStorage.setItem("sessionStoryYear", String(this.selectedYear));
   }
 
   decrementUserYear() {
     this.selectedYear -= 1;
+    localStorage.setItem("sessionStoryYear", String(this.selectedYear));
+  }
+
+  setSearchValue(value: string | null) {
+    this.taskSearchValue = value || "";
   }
 
   fetchTasks() {
