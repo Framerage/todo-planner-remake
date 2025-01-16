@@ -1,15 +1,29 @@
 import {FC, memo} from "react";
+import cn from "classnames";
+import styles from "./styles.module.scss";
 
 interface IStepBtnProps {
   btnText: string;
-  onClickStepBtn: () => void;
+  onClickStepBtn?: () => void;
+  extraClass?: string;
+  isDisabled?: boolean;
+  btnType?: HTMLButtonElement["type"];
 }
-//TODO: create step btn by styles
-const StepBtn: FC<IStepBtnProps> = memo(({btnText, onClickStepBtn}) => {
-  return (
-    <button type="button" onClick={onClickStepBtn}>
-      {btnText}
-    </button>
-  );
-});
+
+const StepBtn: FC<IStepBtnProps> = memo(
+  ({btnText, onClickStepBtn, extraClass, isDisabled, btnType = "button"}) => {
+    return (
+      <button
+        type={btnType}
+        onClick={onClickStepBtn}
+        className={cn(styles.stepBtn, extraClass, {
+          [styles.disabledBtn]: isDisabled,
+        })}
+        disabled={isDisabled}
+      >
+        {btnText}
+      </button>
+    );
+  },
+);
 export default StepBtn;

@@ -1,0 +1,29 @@
+@import 'utils/variables/colors.scss';
+.stepBtn{
+    min-height: 20px;
+    background-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 2px $themeBsColor;
+    padding: 2px 4px;
+    &:active{
+        transform: scale(0.9);
+    }
+    &:hover{
+        box-shadow: 0 0 10px 2px #fff;
+    }
+}
+.disabledBtn{
+    user-select: none;
+    box-shadow: none;
+    cursor: auto;
+    &:active{
+        transform: none;
+    }
+    &:hover{
+        box-shadow: none;
+    }
+}

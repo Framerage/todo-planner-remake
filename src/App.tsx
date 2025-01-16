@@ -1,6 +1,6 @@
 import {BrowserRouter} from "react-router-dom";
 import AppLayout from "./components/Layout";
-// import "./styles.module.scss";
+import "react-calendar/dist/Calendar.css";
 
 function App() {
   return (

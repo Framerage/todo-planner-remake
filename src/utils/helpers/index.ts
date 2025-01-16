@@ -33,7 +33,7 @@ export const reformatSTringByLower = (str: string) => {
     return "";
   }
   if (typeof str !== "string") {
-    return JSON.stringify(str);
+    return JSON.stringify(str).toLocaleLowerCase();
   }
   return str.toLocaleLowerCase();
 };

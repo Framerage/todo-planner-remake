@@ -3,9 +3,9 @@ import {editFirstSymbolToUpperCase} from "utils/helpers";
 import cn from "classnames";
 import {useForm} from "react-hook-form";
 import StepBtn from "components/StepBtn/StepBtn";
+import Calendar from "react-calendar";
+import tasksStore from "store/tasks.ts";
 import styles from "./styles.module.scss";
-
-//TODO: add types for eslint for check entries
 
 type TodoItemProps = {
   taskName: string;
@@ -20,7 +20,7 @@ type TodoItemProps = {
     params: {taskName?: string; taskDescrip?: string; isTaskDone?: boolean},
   ) => void;
 };
-type TFormKeys = "taskName" | "taskDescrip";
+
 interface IEditForm {
   taskName?: string;
   taskDescrip?: string;
@@ -36,11 +36,10 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
     transferTask,
     editTask,
   } = props;
-  const [increaserDate, setIncreaserDate] = useState(0);
   const [isDone, setIsDone] = useState(isTaskDone);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
-  const [typeOfText, setTypeOfText] = useState<TFormKeys>("taskName");
-
+  const currentDate = new Date();
   const {register, handleSubmit} = useForm<IEditForm>();
 
   const onRemoveTask = (num: number) => {
@@ -52,14 +51,14 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
   };
 
   const onCheckTask = useCallback(
-    (num: number) => {
+    (id: number) => {
       if (window.confirm("Is task ready?")) {
         if (isDone) {
           setIsDone(false);
-          editTask(num, {isTaskDone: false});
+          editTask(id, {isTaskDone: false});
         } else {
           setIsDone(true);
-          editTask(num, {isTaskDone: true});
+          editTask(id, {isTaskDone: true});
         }
       } else {
         setIsDone(false);
@@ -68,141 +67,110 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
     },
     [isDone],
   );
-  const activeModal = useCallback(
-    (type: TFormKeys) => {
-      setTypeOfText(type);
-      setIsModalActive(true);
-    },
-    [isModalActive, typeOfText],
-  );
 
-  const handleEditTask = useCallback(
-    (data: IEditForm) => {
-      if (!data[typeOfText]) {
-        alert("Fill field");
-        return;
-      }
-      editTask(id, {
-        [typeOfText]: editFirstSymbolToUpperCase(data[typeOfText]),
-      });
-      setIsModalActive(false);
-    },
-    [typeOfText],
-  );
-
-  const hanleCallCalendar = () => {
-    //TODO: create calendar and add libaury
-    console.log("call calendar");
+  const handleEditTask = (data: IEditForm) => {
+    if (!data.taskName || !data.taskDescrip) {
+      alert("Fill field");
+      return;
+    }
+    editTask(id, {
+      taskName: editFirstSymbolToUpperCase(data.taskName),
+      taskDescrip: editFirstSymbolToUpperCase(data.taskDescrip),
+    });
+    setIsModalActive(false);
   };
+
   return (
-    <li
-      className={cn(
-        {
-          [styles.taskDone]: isTaskDone,
-        },
-        styles.itemBlock,
-      )}
-    >
-      <form
-        onSubmit={handleSubmit(handleEditTask)}
-        className={cn(
-          {
-            [styles.invis]: !isModalActive,
-          },
-          styles.modalBlock,
-        )}
-      >
-        <input
-          {...register(typeOfText, {required: true})}
-          value={props[typeOfText]}
-        />
-        <button className={styles.modalBtn}>OK</button>
-        <button
-          className={styles.modalBtn}
-          type="button"
-          onClick={() => setIsModalActive(false)}
+    <li className={cn(styles.task, {[styles.task_done]: isTaskDone})}>
+      <div className={styles.content}>
+        <form
+          onSubmit={handleSubmit(handleEditTask)}
+          className={cn(
+            {
+              [styles.invisModal]: !isModalActive,
+            },
+            styles.modal,
+          )}
         >
-          x
-        </button>
-      </form>
-
-      <div className={styles.todoItem}>
-        <div className={styles.todoItem__text}>
-          <div className={styles.text__title}>
-            <span>{index}:&nbsp;</span>
-            <span>{taskName}</span>
-            <button
-              role="presentation"
-              onClick={() => activeModal("taskName")}
-              className={styles.active__editBtn}
-            >
-              &nbsp;
-            </button>
+          <div className={styles.windows}>
+            <input
+              {...register("taskName", {required: true})}
+              defaultValue={props.taskName}
+            />
+            <textarea
+              {...register("taskDescrip", {required: true})}
+              defaultValue={props.taskDescrip}
+            />
           </div>
-          <div className={styles.text__descrip}>
-            {taskDescrip}
-            <button
-              role="presentation"
-              onClick={() => activeModal("taskDescrip")}
-              className={styles.active__editBtn}
-            >
-              &nbsp;
-            </button>
+          <div className={styles.formActive}>
+            <StepBtn btnType="submit" btnText="Ok" />
+            <StepBtn
+              btnText="Cancel"
+              onClickStepBtn={() => setIsModalActive(false)}
+            />
           </div>
+        </form>
+        <div className={styles.title}>
+          <span>{index}:</span>
+          <span>{taskName}</span>
+          <button
+            onClick={() => setIsModalActive(true)}
+            className={cn(styles.editBtn, {
+              [styles.editBtn_disabled]: isTaskDone,
+            })}
+            disabled={isTaskDone}
+          />
         </div>
-        <div className={styles.todoItem_active}>
-          <div className={styles.active__kinds}>
-            <div
-              role="presentation"
-              onClick={() => onCheckTask(id)}
-              className={cn(
-                {
-                  [styles.taskBtnDone]: isTaskDone,
-                },
-                styles.active__TaskBtn,
-              )}
-            >
-              o
-            </div>
-            <div
-              role="presentation"
-              onClick={() => onRemoveTask(id)}
-              className={styles.active__removeBtn}
-            >
-              x
-            </div>
-          </div>
-          <div className={styles.transferContainer}>
-            <div className={styles.stepsContainer}>
-              <StepBtn
-                btnText="prev day"
-                onClickStepBtn={() => transferTask(id, -1)}
-              />
-              <StepBtn
-                btnText="next day"
-                onClickStepBtn={() => transferTask(id, 1)}
-              />
-            </div>
-            <button onClick={hanleCallCalendar}>Other date</button>
-          </div>
-
-          {/* <div className={styles.active__transferBtn}>
-            <p
-              role="presentation"
-              onClick={() => transferTask(id, increaserDate)}
-            >
-              move to
-            </p>
-            <div className={styles.transferBtn__text}>
-              <input
-                type="number"
-                value={increaserDate}
-                onChange={e => setIncreaserDate(Number(e.target.value))}
-              />
-              days
-            </div>
-          </div> */}
+        <p>{taskDescrip}</p>
+      </div>
+      <div className={styles.active}>
+        <div className={styles.status}>
+          <button
+            onClick={() => onCheckTask(id)}
+            className={cn(styles.statusBtn, styles.behaviorBtn, {
+              [styles.success]: isTaskDone,
+            })}
+          />
+          <button
+            onClick={() => onRemoveTask(id)}
+            className={cn(styles.statusBtn, styles.removeBtn)}
+          >
+            x
+          </button>
         </div>
+        <div className={styles.extraBehavior}>
+          <StepBtn
+            btnText="prev day"
+            onClickStepBtn={() => transferTask(id, -1)}
+            isDisabled={isTaskDone}
+          />
+          <StepBtn
+            btnText="next day"
+            onClickStepBtn={() => transferTask(id, 1)}
+            isDisabled={isTaskDone}
+          />
+        </div>
+        <StepBtn
+          btnText="calendar"
+          onClickStepBtn={() => setIsCalendarOpen(!isCalendarOpen)}
+          isDisabled={isTaskDone}
+          extraClass={styles.extraBtn}
+        />
+        <Calendar
+          value={currentDate}
+          onClickDay={test => {
+            tasksStore.editTask({
+              id,
+              params: {
+                forDate: `${test.toLocaleDateString().split(".").reverse().join("-")}`,
+              },
+            });
+            setIsCalendarOpen(false);
+          }}
+          className={cn(styles.calendarBtn, {
+            [styles.calendarBtn_opened]: isCalendarOpen,
+          })}
+        />
       </div>
     </li>
   );

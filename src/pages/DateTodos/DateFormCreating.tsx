@@ -5,9 +5,10 @@ import {
   getFetchedTimeStamp,
   getFullSelectedDate,
 } from "utils/helpers";
-import {FULL_DAY_MSECONDS, MONTHS, WEEK_DAYS} from "utils/constants.ts";
+import {MONTHS, WEEK_DAYS} from "utils/constants.ts";
 import tasksStore from "store/tasks.ts";
 import {observer} from "mobx-react-lite";
+import StepBtn from "components/StepBtn/StepBtn";
 import styles from "./styles.module.scss";
 
 interface IFormCreatingData {
@@ -62,30 +63,22 @@ export const DateFormCreating: FC = observer(() => {
       ).getDate(),
     [tasksStore.selectedYear, tasksStore.selectedMonth],
   );
-  //TODO: add btns
 
   const handleChangeDate = useCallback(
     (newDay: number) => {
       if (selectedDate + newDay > daysInMonth) {
-        tasksStore.incrementUserMonth();
+        tasksStore.setSelectedDate(1);
         return;
       }
-      if (selectedDate + newDay < 0) {
-        tasksStore.decrementUserMonth();
+      if (selectedDate + newDay < 1) {
+        tasksStore.setSelectedDate(daysInMonth);
         return;
       }
-      const necessaryDate = getFullSelectedDate(
-        selectedYear,
-        selectedMonth,
-        selectedDate,
-        FULL_DAY_MSECONDS * newDay,
-      );
-      const newDate = new Date(necessaryDate);
-      tasksStore.setSelectedDate(newDate.getDate());
-      tasksStore.setSelectedMonth(newDate.getMonth());
+      tasksStore.setSelectedDate(selectedDate + newDay);
     },
     [selectedDate, selectedMonth, selectedYear, daysInMonth],
   );
+
   return (
     <div className={styles.dateFormWrapper}>
       <h2 className={styles.dateHeadline}>
@@ -110,6 +103,18 @@ export const DateFormCreating: FC = observer(() => {
         />
         <button className={styles.creatingBtn}>Create task</button>
       </form>
+      <div className={styles.dayArrows}>
+        <StepBtn
+          btnText="<"
+          onClickStepBtn={() => handleChangeDate(-1)}
+          extraClass={styles.arrow}
+        />
+        <StepBtn
+          btnText=">"
+          onClickStepBtn={() => handleChangeDate(1)}
+          extraClass={styles.arrow}
+        />
+      </div>
     </div>
   );
 });

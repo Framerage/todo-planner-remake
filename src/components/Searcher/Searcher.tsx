@@ -46,7 +46,7 @@ const Searcher: FC<IProps> = observer(
               />
               <img
                 src={SearchIcon}
-                alt="SchIcon"
+                alt="SearchIcon"
                 className={classes.searcherIcon}
                 onClick={() => setIsSearcherActive(false)}
               />
