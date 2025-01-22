@@ -3,20 +3,20 @@
     display: flex;
     align-items: center;
     position: relative;
+    max-width: 300px;
 }
 .searcherInput{
     width: 100%;
     height: 40px;
-    border: 2px solid black;
+    border: 2px solid white;
     border-radius: 20px;
-    background: linear-gradient(30deg,var(--last_menu_color),var(--medium_menu_color),var(--last_menu_color));
+    background-color: transparent;
     font-size: 16px;
     font-weight: 600;
     color: white;
-    text-shadow: 0 0 5px black;
     padding: 5px 10px;
     animation: inputHidden 1.5s ease-in-out alternate;
-    border: 1px solid black;
+    box-shadow: 0 0 10px 2px $themeBsColor;
 }
 @keyframes inputHidden{
     0%{
@@ -34,9 +34,8 @@
     top: 0px;
     right: 0%;
     transition: 0.2s;
-    border: 1px solid black;
+    border: 1px solid white;
     border-radius: 50%;
-    background-color: var(--light_app_color);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -52,7 +51,7 @@
         transform: rotate(0deg);
     }
     100%{
-        left: 95%;
+        left: 86%;
         right: 0;
         transform: rotate(720deg);
     }
@@ -63,16 +62,17 @@
 .searcherBtn{
     width: 100px;
     height: 40px;
-    border: 2px solid black;
+    border: 2px solid white;
     border-radius: 20px;
-    background: linear-gradient(30deg,var(--last_menu_color),var(--medium_menu_color),var(--last_menu_color));
+    background-color: transparent;
     font-size: 16px;
     font-weight: 600;
-    color: black;
+    color: white;
     padding: 5px 10px;
     cursor: pointer;
     transition: 0.2s;
     animation: btnHidden 1.5s ease-in-out alternate;
+    box-shadow: 0 0 10px 2px $themeBsColor;
 }
 @keyframes btnHidden{
     0%{
@@ -83,9 +83,7 @@
     }
 }
 .searcherBtn:hover{
-    border-color: white;
-    color: white;
-    text-shadow: 0 0 5px black;
+    transform: scale(0.9);
 }
 .searcherBtn:active{
     transform: scale(0.9);

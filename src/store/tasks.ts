@@ -77,8 +77,8 @@ class TasksStore {
     localStorage.setItem("sessionStoryYear", String(this.selectedYear));
   }
 
-  setSearchValue(value: string | null) {
-    this.taskSearchValue = value || "";
+  setSearchValue(value: string) {
+    this.taskSearchValue = value;
   }
 
   fetchTasks() {
