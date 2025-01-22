@@ -2,6 +2,9 @@ import {FC, memo, useCallback, useState} from "react";
 import {editFirstSymbolToUpperCase} from "utils/helpers";
 import cn from "classnames";
 import {useForm} from "react-hook-form";
+import StepBtn from "components/StepBtn/StepBtn";
+import Calendar from "react-calendar";
+import tasksStore from "store/tasks.ts";
 import styles from "./styles.module.scss";
 
 type TodoItemProps = {
@@ -11,19 +14,19 @@ type TodoItemProps = {
   id: number;
   isTaskDone: boolean;
   removeTask: (id: number) => void;
-  transferTask: Function;
+  transferTask: (id: number, increaser: number) => void;
   editTask: (
     id: number,
     params: {taskName?: string; taskDescrip?: string; isTaskDone?: boolean},
   ) => void;
 };
-type TFormKeys = "taskName" | "taskDescrip";
+
 interface IEditForm {
   taskName?: string;
   taskDescrip?: string;
 }
-const TodoItem: FC<TodoItemProps> = memo(
-  ({
+const TodoItem: FC<TodoItemProps> = memo(props => {
+  const {
     taskName,
     taskDescrip,
     index,
@@ -32,154 +35,144 @@ const TodoItem: FC<TodoItemProps> = memo(
     removeTask,
     transferTask,
     editTask,
-  }) => {
-    const [increaserDate, setIncreaserDate] = useState(0);
-    const [isDone, setIsDone] = useState(isTaskDone);
-    const [isModalActive, setIsModalActive] = useState(false);
-    const [typeOfText, setTypeOfText] = useState<TFormKeys>("taskName");
+  } = props;
+  const [isDone, setIsDone] = useState(isTaskDone);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isModalActive, setIsModalActive] = useState(false);
+  const currentDate = new Date();
+  const {register, handleSubmit} = useForm<IEditForm>();
 
-    const {register, handleSubmit} = useForm<IEditForm>();
-    const onRemoveTask = (num: number) => {
-      if (window.confirm("Are you sure?")) {
-        removeTask(num);
-      } else {
-        window.alert("Think about removing");
-      }
-    };
+  const onRemoveTask = (num: number) => {
+    if (window.confirm("Are you sure?")) {
+      removeTask(num);
+    } else {
+      window.alert("Think about removing");
+    }
+  };
 
-    const onCheckTask = useCallback(
-      (num: number) => {
-        if (window.confirm("Is task ready?")) {
-          if (isDone) {
-            setIsDone(false);
-            editTask(num, {isTaskDone: false});
-          } else {
-            setIsDone(true);
-            editTask(num, {isTaskDone: true});
-          }
-        } else {
+  const onCheckTask = useCallback(
+    (id: number) => {
+      if (window.confirm("Is task ready?")) {
+        if (isDone) {
           setIsDone(false);
-          window.alert("Think about task");
+          editTask(id, {isTaskDone: false});
+        } else {
+          setIsDone(true);
+          editTask(id, {isTaskDone: true});
         }
-      },
-      [isDone],
-    );
-    const activeModal = useCallback(
-      (type: TFormKeys) => {
-        setTypeOfText(type);
-        setIsModalActive(true);
-      },
-      [isModalActive, typeOfText],
-    );
+      } else {
+        setIsDone(false);
+        window.alert("Think about task");
+      }
+    },
+    [isDone],
+  );
 
-    const handleEditTask = useCallback(
-      (data: IEditForm) => {
-        if (!data[typeOfText]) {
-          alert("Fill field");
-          return;
-        }
-        editTask(id, {
-          [typeOfText]: editFirstSymbolToUpperCase(data[typeOfText]),
-        });
-        setIsModalActive(false);
-      },
-      [typeOfText],
-    );
-    return (
-      <li
-        className={cn(
-          {
-            [styles.taskDone]: isTaskDone,
-          },
-          styles.itemBlock,
-        )}
-      >
+  const handleEditTask = (data: IEditForm) => {
+    if (!data.taskName || !data.taskDescrip) {
+      alert("Fill field");
+      return;
+    }
+    editTask(id, {
+      taskName: editFirstSymbolToUpperCase(data.taskName),
+      taskDescrip: editFirstSymbolToUpperCase(data.taskDescrip),
+    });
+    setIsModalActive(false);
+  };
+
+  return (
+    <li className={cn(styles.task, {[styles.task_done]: isTaskDone})}>
+      <div className={styles.content}>
         <form
           onSubmit={handleSubmit(handleEditTask)}
           className={cn(
             {
-              [styles.invis]: !isModalActive,
+              [styles.invisModal]: !isModalActive,
             },
-            styles.modalBlock,
+            styles.modal,
           )}
         >
-          <input {...register(typeOfText, {required: true})} />
-          <button className={styles.modalBtn}>OK</button>
+          <div className={styles.windows}>
+            <input
+              {...register("taskName", {required: true})}
+              defaultValue={props.taskName}
+            />
+            <textarea
+              {...register("taskDescrip", {required: true})}
+              defaultValue={props.taskDescrip}
+            />
+          </div>
+          <div className={styles.formActive}>
+            <StepBtn btnType="submit" btnText="Ok" />
+            <StepBtn
+              btnText="Cancel"
+              onClickStepBtn={() => setIsModalActive(false)}
+            />
+          </div>
+        </form>
+        <div className={styles.title}>
+          <span>{index}:</span>
+          <span>{taskName}</span>
           <button
-            className={styles.modalBtn}
-            type="button"
-            onClick={() => setIsModalActive(false)}
+            onClick={() => setIsModalActive(true)}
+            className={cn(styles.editBtn, {
+              [styles.editBtn_disabled]: isTaskDone,
+            })}
+            disabled={isTaskDone}
+          />
+        </div>
+        <p>{taskDescrip}</p>
+      </div>
+      <div className={styles.active}>
+        <div className={styles.status}>
+          <button
+            onClick={() => onCheckTask(id)}
+            className={cn(styles.statusBtn, styles.behaviorBtn, {
+              [styles.success]: isTaskDone,
+            })}
+          />
+          <button
+            onClick={() => onRemoveTask(id)}
+            className={cn(styles.statusBtn, styles.removeBtn)}
           >
             x
           </button>
-        </form>
-
-        <div className={styles.todoItem}>
-          <div className={styles.todoItem__text}>
-            <div className={styles.text__title}>
-              <span>{index}:&nbsp;</span>
-              <span>{taskName}</span>
-              <button
-                role="presentation"
-                onClick={() => activeModal("taskName")}
-                className={styles.active__editBtn}
-              >
-                &nbsp;
-              </button>
-            </div>
-            <div className={styles.text__descrip}>
-              {taskDescrip}
-              <button
-                role="presentation"
-                onClick={() => activeModal("taskDescrip")}
-                className={styles.active__editBtn}
-              >
-                &nbsp;
-              </button>
-            </div>
-          </div>
-          <div className={styles.todoItem_active}>
-            <div className={styles.active__kinds}>
-              <div
-                role="presentation"
-                onClick={() => onCheckTask(id)}
-                className={cn(
-                  {
-                    [styles.taskBtnDone]: isTaskDone,
-                  },
-                  styles.active__TaskBtn,
-                )}
-              >
-                o
-              </div>
-              <div
-                role="presentation"
-                onClick={() => onRemoveTask(id)}
-                className={styles.active__removeBtn}
-              >
-                x
-              </div>
-            </div>
-            <div className={styles.active__transferBtn}>
-              <p
-                role="presentation"
-                onClick={() => transferTask(id, increaserDate)}
-              >
-                move to
-              </p>
-              <div className={styles.transferBtn__text}>
-                <input
-                  type="number"
-                  value={increaserDate}
-                  onChange={e => setIncreaserDate(Number(e.target.value))}
-                />
-                days
-              </div>
-            </div>
-          </div>
         </div>
-      </li>
-    );
-  },
-);
+        <div className={styles.extraBehavior}>
+          <StepBtn
+            btnText="prev day"
+            onClickStepBtn={() => transferTask(id, -1)}
+            isDisabled={isTaskDone}
+          />
+          <StepBtn
+            btnText="next day"
+            onClickStepBtn={() => transferTask(id, 1)}
+            isDisabled={isTaskDone}
+          />
+        </div>
+        <StepBtn
+          btnText="calendar"
+          onClickStepBtn={() => setIsCalendarOpen(!isCalendarOpen)}
+          isDisabled={isTaskDone}
+          extraClass={styles.extraBtn}
+        />
+        <Calendar
+          value={currentDate}
+          onClickDay={test => {
+            tasksStore.editTask({
+              id,
+              params: {
+                forDate: `${test.toLocaleDateString().split(".").reverse().join("-")}`,
+              },
+            });
+            setIsCalendarOpen(false);
+          }}
+          className={cn(styles.calendarBtn, {
+            [styles.calendarBtn_opened]: isCalendarOpen,
+          })}
+        />
+      </div>
+    </li>
+  );
+});
 export default TodoItem;

@@ -97,28 +97,6 @@ export const Calendar: FC = observer(() => {
     tasksStore.fetchTasks();
   }, []);
 
-  useEffect(
-    () =>
-      localStorage.setItem(
-        "sessionStoryMonth",
-        String(tasksStore.selectedMonth),
-      ),
-    [tasksStore.selectedMonth],
-  );
-  useEffect(
-    () =>
-      localStorage.setItem("sessionStoryYear", String(tasksStore.selectedYear)),
-    [tasksStore.selectedYear],
-  );
-  useEffect(() => {
-    if (tasksStore.selectedMonth < 0) {
-      tasksStore.setSelectedMonth(11);
-    }
-    if (tasksStore.selectedMonth > 11) {
-      tasksStore.setSelectedMonth(0);
-    }
-  }, [tasksStore.selectedMonth]);
-
   if (tasksStore.taskListIsLoading || isCreating) {
     return (
       <div className={styles.calendar}>

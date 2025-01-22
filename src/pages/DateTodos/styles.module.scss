@@ -7,10 +7,10 @@
   padding: 50px 0;
 }
 .dateWrapper{
-  padding: 20px;
+  padding: 20px 8px;
   position: relative;
+  width: 100%;
   .dateFormWrapper{
-    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -21,7 +21,7 @@
     z-index: 1000001;
     background: linear-gradient(to bottom, $bg 90%, transparent );
     padding: 20px 0;
-    margin-bottom: 10px;
+    margin: 0 auto;
     .dateHeadline{
       color: white;
       text-shadow: 0 0 5px $themeBsColor, 0 0 10px $themeBsColor,
@@ -41,7 +41,7 @@
         color: white;
         background-color: $bg;
         border: 1px solid white;
-        width: 250px;
+        min-width: 200px;
         font-size: 3em;
         margin: 5px 0;
         padding: 5px;
@@ -61,35 +61,52 @@
         cursor: pointer;
         transition: 0.2s;
         &:hover {
-          box-shadow: 0 0 15px 2px white;
+          box-shadow: 0 0 15px 2px #fff;
         }
         @extend .focusedElement;
       }
       
     }
-  }
-  .dateListWrapper{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 0 15px;
-    .listCleanerBtn{
-      position: sticky;
-      top: 230px;
-      z-index: 10000101;
-      border: 1px solid red;
-      width: min-content;
-      color: red;
-      background-color: $bg;
-      padding: 5px;
-      text-wrap: nowrap;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.2s;
-      &:focus,&:hover{
-        box-shadow:  0 0 5px red, 0 0 10px white, 0 0 15px red;
+    .dayArrows{
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      gap: 240px;
+      top: 140px;
+      z-index: -1;
+      backface-visibility: visible;
+      .arrow{
+        font-size: 10em;
+        line-height: 80px;
       }
     }
+  }
+  .dateListWrapper{
+    width: fit-content;
+    margin: 0 auto;
+    .listCleanerContainer{
+      position: sticky;
+      top: 385px;
+      z-index: 10000101;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: flex-end;
+      .listCleanerBtn{
+        border: 1px solid red;
+        width: min-content;
+        color: red;
+        background-color: $bg;
+        padding: 5px;
+        text-wrap: nowrap;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        &:focus,&:hover{
+          box-shadow:  0 0 5px red, 0 0 10px white, 0 0 15px red;
+        }
+      }
+    }
+
     .dateList{
       display: flex;
       flex-direction: column;
@@ -101,6 +118,16 @@
         0 0 15px white, 0 0 20px $themeBsColor;
         font-size: 7em;
         text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 300px) and (max-width: 476px){
+  .dateWrapper{
+    .dateListWrapper{
+      .listCleanerContainer{
+        top: 420px;
       }
     }
   }

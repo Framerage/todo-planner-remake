@@ -12,6 +12,7 @@ export const checkResponseStatus = (resp: number) => {
     throw new Error(ERRORS_API[resp as keyof typeof ERRORS_API]);
   }
 };
+//TODO: get date like a object to use methods by get month/year/day
 export const getFullSelectedDate = (
   selectedYear: number,
   selectedMonth: number,
@@ -26,3 +27,13 @@ export const getFullSelectedDate = (
     .split(".")
     .reverse()
     .join("-");
+
+export const reformatSTringByLower = (str: string) => {
+  if (!str) {
+    return "";
+  }
+  if (typeof str !== "string") {
+    return JSON.stringify(str).toLocaleLowerCase();
+  }
+  return str.toLocaleLowerCase();
+};

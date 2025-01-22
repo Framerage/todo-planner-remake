@@ -23,14 +23,10 @@
       "assets/*": ["assets/*"],
       "api/*": ["api/*"],
       "components/*": ["components/*"],
-      // "constants/*": ["constants/*"],
       "hooks/*": ["hooks/*"],
-      // "helpers/*": ["helpers/*"],
-      // "modules/*": ["modules/*"],
       "pages/*": ["pages/*"],
       "store/*": ["store/*"],
       "types/*": ["types/*"],
-      // "styles/*": ["styles/*"],
       "utils/*": ["utils/*"]
     },
     /* Linting */

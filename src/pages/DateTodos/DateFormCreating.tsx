@@ -8,6 +8,8 @@ import {
 import {MONTHS, WEEK_DAYS} from "utils/constants.ts";
 import tasksStore from "store/tasks.ts";
 import {observer} from "mobx-react-lite";
+import StepBtn from "components/StepBtn/StepBtn";
+import Searcher from "components/Searcher/Searcher";
 import styles from "./styles.module.scss";
 
 interface IFormCreatingData {
@@ -52,8 +54,36 @@ export const DateFormCreating: FC = observer(() => {
     },
     [fullDate],
   );
+
+  const daysInMonth = useMemo(
+    () =>
+      new Date(
+        tasksStore.selectedYear,
+        tasksStore.selectedMonth + 1,
+        0,
+      ).getDate(),
+    [tasksStore.selectedYear, tasksStore.selectedMonth],
+  );
+
+  const handleChangeDate = useCallback(
+    (newDay: number) => {
+      if (selectedDate + newDay > daysInMonth) {
+        tasksStore.setSelectedDate(1);
+        return;
+      }
+      if (selectedDate + newDay < 1) {
+        tasksStore.setSelectedDate(daysInMonth);
+        return;
+      }
+      tasksStore.setSelectedDate(selectedDate + newDay);
+    },
+    [selectedDate, selectedMonth, selectedYear, daysInMonth],
+  );
+
   return (
     <div className={styles.dateFormWrapper}>
+      <Searcher />
+
       <h2 className={styles.dateHeadline}>
         Tasklist of {selectedDate} {MONTHS[selectedMonth]} {selectedYear} (
         {aWeekDay})
@@ -76,6 +106,24 @@ export const DateFormCreating: FC = observer(() => {
         />
         <button className={styles.creatingBtn}>Create task</button>
       </form>
+      <div className={styles.dayArrows}>
+        <StepBtn
+          btnText="<"
+          onClickStepBtn={() => {
+            handleChangeDate(-1);
+            tasksStore.setSearchValue("");
+          }}
+          extraClass={styles.arrow}
+        />
+        <StepBtn
+          btnText=">"
+          onClickStepBtn={() => {
+            handleChangeDate(1);
+            tasksStore.setSearchValue("");
+          }}
+          extraClass={styles.arrow}
+        />
+      </div>
     </div>
   );
 });
