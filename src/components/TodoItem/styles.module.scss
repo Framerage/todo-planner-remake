@@ -26,11 +26,8 @@
     gap: 8px;
     .modal{
       max-height: 200px;
-      z-index: 100;
       border-radius: 8px;
       padding: 8px;
-      top: -16px;
-      left: -16px;
       font-size: 4em;
       background-color: black;
       opacity: 0.9;
@@ -58,6 +55,9 @@
       }
     }
     .invisModal{
+      &:focus-within{
+        user-select: none;
+      }
       max-height: 0px;
       padding: 0 8px;
     }

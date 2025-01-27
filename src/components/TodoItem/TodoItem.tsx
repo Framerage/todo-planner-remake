@@ -83,6 +83,18 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
   return (
     <li className={cn(styles.task, {[styles.task_done]: isTaskDone})}>
       <div className={styles.content}>
+        <div className={styles.title}>
+          <span>{index}:</span>
+          <span>{taskName}</span>
+          <button
+            onClick={() => setIsModalActive(true)}
+            className={cn(styles.editBtn, {
+              [styles.editBtn_disabled]: isTaskDone,
+            })}
+            disabled={isTaskDone}
+          />
+        </div>
+        <p>{taskDescrip}</p>
         <form
           onSubmit={handleSubmit(handleEditTask)}
           className={cn(
@@ -96,33 +108,29 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
             <input
               {...register("taskName", {required: true})}
               defaultValue={props.taskName}
+              disabled={!isModalActive}
             />
             <textarea
               {...register("taskDescrip", {required: true})}
               defaultValue={props.taskDescrip}
+              disabled={!isModalActive}
             />
           </div>
           <div className={styles.formActive}>
-            <StepBtn btnType="submit" btnText="Ok" />
+            <StepBtn
+              btnType="submit"
+              btnText="Ok"
+              isDisabled={!isModalActive}
+            />
             <StepBtn
               btnText="Cancel"
               onClickStepBtn={() => setIsModalActive(false)}
+              isDisabled={!isModalActive}
             />
           </div>
         </form>
-        <div className={styles.title}>
-          <span>{index}:</span>
-          <span>{taskName}</span>
-          <button
-            onClick={() => setIsModalActive(true)}
-            className={cn(styles.editBtn, {
-              [styles.editBtn_disabled]: isTaskDone,
-            })}
-            disabled={isTaskDone}
-          />
-        </div>
-        <p>{taskDescrip}</p>
       </div>
+
       <div className={styles.active}>
         <div className={styles.status}>
           <button
