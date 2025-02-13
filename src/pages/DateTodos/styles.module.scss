@@ -86,8 +86,8 @@
     margin: 0 auto;
     .listCleanerContainer{
       position: sticky;
-      top: 385px;
-      z-index: 10000101;
+      top: 410px;
+      z-index: 1000001;
       margin-bottom: 10px;
       display: flex;
       justify-content: flex-end;
@@ -101,6 +101,8 @@
         border-radius: 5px;
         cursor: pointer;
         transition: 0.2s;
+        position: absolute;
+        top: -25px;
         &:focus,&:hover{
           box-shadow:  0 0 5px red, 0 0 10px white, 0 0 15px red;
         }
@@ -127,7 +129,7 @@
   .dateWrapper{
     .dateListWrapper{
       .listCleanerContainer{
-        top: 420px;
+        top: 440px;
       }
     }
   }
