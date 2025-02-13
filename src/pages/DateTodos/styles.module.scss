@@ -91,6 +91,9 @@
       margin-bottom: 10px;
       display: flex;
       justify-content: flex-end;
+      min-width: 290px;
+      max-width: 800px;
+      width: 100%;
       .listCleanerBtn{
         border: 1px solid red;
         width: min-content;
