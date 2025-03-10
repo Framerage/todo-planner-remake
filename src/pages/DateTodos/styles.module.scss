@@ -17,8 +17,8 @@
     justify-content: flex-start;
     align-items: center;
     position: sticky;
-    top: 150px;
-    z-index: 1000001;
+    top: 0px;
+    z-index: 100;
     background: linear-gradient(to bottom, $bg 90%, transparent );
     padding: 20px 0;
     margin: 0 auto;
@@ -86,7 +86,7 @@
     margin: 0 auto;
     .listCleanerContainer{
       position: sticky;
-      top: 410px;
+      top: 258px;
       z-index: 1000001;
       margin-bottom: 10px;
       display: flex;
@@ -132,7 +132,7 @@
   .dateWrapper{
     .dateListWrapper{
       .listCleanerContainer{
-        top: 440px;
+        top: 290px;
       }
     }
   }

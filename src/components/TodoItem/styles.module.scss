@@ -170,31 +170,45 @@
       top: 4px;
     }
     .calendarBtn{
+
       span{
         font-size: 1em;
       }
-      abbr{
-        font-size: 3em;
+      div{
+        font-size: 0.5rem;
+        color: white;
+      }
+      button{
+        font-size: 1.5em;
+        background-color: transparent;
+        color: white;
+        &:hover,&:active,&:focus{
+          background-color: rgba(101, 101, 101,0.7);
+        }
+
       }
       min-width: 300px;
+      width: 100%;
+      max-width: 400px;
       position: absolute;
       z-index: 1000;
-      top: 40px;
-      left: -150px;
+      left: -225px;
       display: none;
       transition-property: display;
       transition-duration: 1s;
       transition-behavior: allow-discrete;
-      background-color: #fff;
-      box-shadow:   inset 0 5px 20px black;
+      background-color: #000;
+      box-shadow:   inset 0 5px 20px grey;
       border-radius: 8px;
-      border: 6px double black;
+      border: 6px double white;
+      filter: contrast();
       &_opened{
         display: block;
       }
     }
   }
 }
+
 @media screen and (min-width: 300px) and (max-width: 476px) {
   .task{
     .active{

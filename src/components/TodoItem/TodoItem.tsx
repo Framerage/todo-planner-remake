@@ -1,6 +1,7 @@
-import {FC, memo, useCallback, useState} from "react";
+import {FC, memo, useCallback, useRef, useState} from "react";
 import {editFirstSymbolToUpperCase} from "utils/helpers";
 import cn from "classnames";
+import {useOnClickOutside} from "hooks/useClickOutside";
 import {useForm} from "react-hook-form";
 import StepBtn from "components/StepBtn/StepBtn";
 import Calendar from "react-calendar";
@@ -41,6 +42,9 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
   const [isModalActive, setIsModalActive] = useState(false);
   const currentDate = new Date();
   const {register, handleSubmit} = useForm<IEditForm>();
+
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+  useOnClickOutside(calendarRef, () => setIsCalendarOpen(false));
 
   const onRemoveTask = (num: number) => {
     if (window.confirm("Are you sure?")) {
@@ -160,17 +164,18 @@ const TodoItem: FC<TodoItemProps> = memo(props => {
         </div>
         <StepBtn
           btnText="calendar"
-          onClickStepBtn={() => setIsCalendarOpen(!isCalendarOpen)}
-          isDisabled={isTaskDone}
+          onClickStepBtn={() => setIsCalendarOpen(true)}
+          isDisabled={isTaskDone || isCalendarOpen}
           extraClass={styles.extraBtn}
         />
         <Calendar
           value={currentDate}
-          onClickDay={test => {
+          inputRef={calendarRef}
+          onClickDay={date => {
             tasksStore.editTask({
               id,
               params: {
-                forDate: `${test.toLocaleDateString().split(".").reverse().join("-")}`,
+                forDate: `${date.toLocaleDateString().split(".").reverse().join("-")}`,
               },
             });
             setIsCalendarOpen(false);

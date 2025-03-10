@@ -8,11 +8,8 @@
 }
 .header{
   width: 100%;
-  position: sticky;
-  top: 0;
+  position: relative;
   padding: 50px 0 20px;
-  background-color: $bg;
-  z-index: 100;
   .contentWrapper{
     max-width: 550px;
     margin: 0 auto;
@@ -20,7 +17,6 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
-    position: relative;
     .logo{
       @extend .textShadowEffect;
       font-size: 10em;
@@ -72,10 +68,11 @@
       display: flex;
       gap: 10px;
       align-items: center;
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: fixed;
+      top: 15px;
+      margin-right: 280px;
       padding: 10px;
+      z-index: 9999;
       .navigationArrow{
         font-size: 4em;
         width: 30px;
@@ -83,9 +80,6 @@
         border: 1px solid $bordersColor;
         border-radius: 15px;
         box-shadow: 0 0 10px 5px $themeBsColor;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         background-color: $bg;
         cursor: pointer;
         transition: 0.2s;
@@ -96,21 +90,5 @@
         }
       }
     }
-}
-}
-
-
-
-@media screen and (min-width: 300px) and (max-width: 476px) {
-  .header{
-    .contentWrapper{
-      .navigation{
-        align-items: center;
-        position: absolute;
-        top: -40px;
-        left: 0;
-        padding: 10px;
-      }
-  }
 }
 }

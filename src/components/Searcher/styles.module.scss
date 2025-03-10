@@ -3,7 +3,8 @@
     display: flex;
     align-items: center;
     position: relative;
-    max-width: 300px;
+    max-width: 270px;
+    margin-left: 50px;
 }
 .searcherInput{
     width: 100%;
@@ -20,9 +21,11 @@
 }
 @keyframes inputHidden{
     0%{
+        margin-left: 50px;
         width: 100px;
     }
     100%{
+        margin-left: 0px;
         width: 100%;
     }
 }
@@ -46,7 +49,7 @@
 }
 @keyframes iconRotate{
     0%{
-        left:0;
+        left:50px;
         right: 100%;
         transform: rotate(0deg);
     }
@@ -60,6 +63,7 @@
     transform: scale(0.9);
 }
 .searcherBtn{
+    margin-left: 50px;
     width: 100px;
     height: 40px;
     border: 2px solid white;
